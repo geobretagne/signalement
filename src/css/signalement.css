@@ -1,0 +1,78 @@
+.zoomin {
+    background-image:url(../img/icon_zoomin.png) !important;
+    height:20px !important;
+    width:20px !important;
+}
+.pan {
+    background-image:url(../img/icon_pan.png) !important;
+    height:20px !important;
+    width:20px !important;
+}
+.identify {
+    background-image:url(../img/information.png) !important;
+    height:20px !important;
+    width:20px !important;
+}
+.drawpoint {
+    background-image: url(../img/add.png) !important;
+    height: 20px !important;
+    width: 20px !important;
+}
+.modifyfeature {
+    background-image: url(../img/comment_edit.png) !important;
+    height: 20px !important;
+    width: 20px !important;
+}
+.deletefeature {
+    background-image: url(../img/delete.png) !important;
+    height: 20px !important;
+    width: 20px !important;
+}
+.deletefeature2{
+    background-image: url(../img/delete2.png) !important;    
+}
+.save{
+            background-image:url(../img/save.png) !important;
+        }  
+.cancel {
+            background-image:url(../img/cancel.png) !important;
+        }  
+.upload-icon {
+            background: url(../img/image_add.png) !important;
+        }
+.rss {
+            background: url(../img/rss.png) !important;
+       height: 20px !important;
+        width: 20px !important;
+        }
+
+.import {
+            background-image: url(../img/table.png) !important;       
+        }
+.help {
+            background-image: url(../img/help.png) !important;
+      
+        }
+.tool{
+            background-image: url(../img/tool.png) !important;
+      
+        }          
+.polygon{
+            background-image:url(../img/polygon.png) !important;
+        }
+.smallrss {
+            background-image: url(../img/smallrss.png) !important;
+       
+        }
+.eye {
+            background-image: url(../img/eye.png) !important;
+       
+        }
+.filter {
+            background-image: url(../img/filter.png) !important;
+       
+        }
+.layers {
+            background-image: url(../img/layers20x.png) !important;
+       
+        }      

@@ -1,0 +1,153 @@
+{
+    "config": {
+        "ogcproxy": {
+            "url": "../proxy/?url="
+        },
+        "geocode": {
+            "service": "ign"
+        },
+        "phplocation": {
+            "url": "../proxy/?url=http://kartenn.region-bretagne.fr/signalement/ws/"
+        },
+        "helpurl": {
+            "url": "https://docs.google.com/document/d/1BlfXeqN7TwmXzf1HdQFHsKtThyoVbQw2LFQuneMwZtc/edit?pli=1"
+        },
+        "login": {
+            "url": "https://geobretagne.fr/cas/login?service:http://kartenn.region-bretagne.fr/dev-signalement/ws/head.php&amp;renew:true"
+        },
+        "logout": {
+            "url": "https://geobretagne.fr/cas/logout?"
+        },
+        "deletecontrol": {
+            "enable": false
+        },
+        "workinglayer": {
+            "label": "Signalements",
+            "featureprefix": "edit_rb",
+            "featuretype": "signalement_adresse",
+            "geometryname": "geom",
+            "wfsurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wfs?",
+            "wmsurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms?",
+            "metadataurl": "http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=58e7b791-8495-47df-819f-0660fb8d8645",            
+            "description": "La couche Signalement voies adresses en Bretagne recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Bretagne",
+            "cswurl": "http://geobretagne.fr/geonetwork/srv/fr/csw?",
+            "kmlurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_voie_adresse",
+            "rssurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms?layers=edit_rb:signalement_adresse&width=742&styles=&srs=EPSG%3A2154&format=application%2Fatom+xml&version=1.1.1&height=330&bbox=136279.0%2C6762356.5%2C370239.031%2C6866311.5&request=GetMap&service=wms&format_options=%3Atrue%3BENCODING%3Agml%3B"
+        },
+        "baselayers": [
+            {
+                "baselayer": {
+                    "label": "OpenStreetMap style Google",
+                    "url": "http://osm.geobretagne.fr/gwc01/service/tms/",
+                    "layername": "imposm:google@EPSG:2154@png",
+                    "description": "Couche osm mise à jour mensuellement",
+                    "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?id=2262",
+                    "type": "png",
+                    "attributiontext": "Data CC-By-SA by",
+                    "attributionurl": "http://openstreetmap.org"
+                }
+            },
+            {
+                "baselayer": {
+                    "label": "scans IGN",
+                    "url": "http://tile.geobretagne.fr/gwc02/service/tms/",
+                    "layername": "carte@EPSG:2154@png",
+                    "description": "Couches Scan 100 et scan 25 de l'IGN",
+                    "metadataurl":"http://google.fr",
+                    "type": "png",
+                    "attributiontext": "Scans IGN",
+                    "attributionurl": "http://ign.fr"
+                }
+            },
+            {
+                "baselayer": {
+                    "label": "Photographie aérienne composite de GéoBretagne",
+                    "url": "http://tile.geobretagne.fr/gwc02/service/tms/",
+                    "layername": "satellite@EPSG:2154@jpeg",
+                    "description": "Le fond photographique de GéoBretagne est un composé d' orthophotographies réalisées par plusieurs producteurs",
+                    "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",
+                    "type": "jpeg",
+                    "attributiontext": "Ortho composite",
+                    "attributionurl": "http://geobretagne.fr"
+                }
+            }
+        ],
+        "wmslayers": [
+            {
+                "wmslayer": {
+                    "label": "Limites administratives",
+                    "url": "http://geobretagne.fr/geoserver/wms?",
+                    "layer": "communes_composite",
+                    "description": "Extrait de la BDCARTO ® - Base de données cartographique de l'IGN au 1/100 000. et de la BDTOPO ® (zoom >= 14)",
+                    "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=b08e6cb1-236c-49b7-88f9-42b500d274d5",
+                    "metadataurl2":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?id=3111",
+                    "style": "",
+                    "visible": "false",
+                    "baselayer": false
+                }
+            },
+            {
+                "wmslayer": {
+                    "label": "Fond de plan Pays de Brest",
+                    "url": "http://geo.brest.fr/PlanVillePays/MAPServer/WMSServer?",
+                    "layer": "0,1,2,3,4,5,6,7,8,9,10,11",
+                    "description": "Plan de ville du Pays de Brest. Cette carte contient le filaire de voies mis à jour par la cellule SIG du Pays de Brest",
+                    "metadataurl":"http://sig.brest.fr",
+                    "style": "",
+                    "visible": "false",
+                    "baselayer": true
+                }
+            }
+        ],
+        "htmltexts": [
+            {
+                "htmltext": {
+                    "id": "0",
+                    "value": "S'abonner à tous les signalements. Le flux RSS généré comprendra tous les signalements enregistrés.Cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "1",
+                    "value": "Sélection d'un flux en fonction d'une emprise polygonale. Tracez sur la carte un polygone. Le flux RSS généré comprendra tous les signalements présents sur cette zone. Puis cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "2",
+                    "value": "Sélection d'un flux en fonction des communes intersectées par une emprise géographique. Tracez sur la carte un polygone. Patientez quelques instants. Puis cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "3",
+                    "value": "Sélection d'un flux sur l'emprise départementale des Côtes d'Armor.Cliquez sur s'abonner."
+                }
+            },            
+            {
+                "htmltext": {
+                    "id": "4",
+                    "value": "Sélection d'un flux sur l'emprise départementale du Finistère.Cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "5",
+                    "value": "Sélection d'un flux sur l'emprise départementale d'Ille et Vilaine.Cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "6",
+                    "value": "Sélection d'un flux sur l'emprise départementale du Morbihan.Cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "7",
+                    "value": "<b>*Avertissement</b></br>En enregistrant ce signalement, j'accepte qu'il soit libre de droit, librement réutilisable, conservé durant 2 ans et que mon adresse mail soit communiquée à tous les utilisateurs."
+                }
+            }
+        ]
+    }
+}
