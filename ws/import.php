@@ -29,7 +29,7 @@ if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 			$row = 1;
 			if (($handle = fopen("../".$dossier . $nomDestination, "r")) !== FALSE) {
 
-				$dbh = pg_connect("host=postgis dbname=sig user=sig password=sigbzh");
+				$dbh = pg_connect("host=postgis dbname=XXXX user=XXXX password=XXXX");
 				 if (!$dbh) {
 					 echo '{success:false, message:'.json_encode("Connexion à la Base Impossible").'}';	 
 					 
