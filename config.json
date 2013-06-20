@@ -31,7 +31,7 @@
             "metadataurl": "http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=58e7b791-8495-47df-819f-0660fb8d8645",            
             "description": "La couche Signalement voies adresses en Bretagne recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Bretagne",
             "cswurl": "http://geobretagne.fr/geonetwork/srv/fr/csw?",
-            "kmlurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_voie_adresse",
+            "kmlurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
             "rssurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms?layers=edit_rb:signalement_adresse&width=742&styles=&srs=EPSG%3A2154&format=application%2Fatom+xml&version=1.1.1&height=330&bbox=136279.0%2C6762356.5%2C370239.031%2C6866311.5&request=GetMap&service=wms&format_options=%3Atrue%3BENCODING%3Agml%3B"
         },
         "baselayers": [
@@ -43,8 +43,8 @@
                     "description": "Couche osm mise à jour mensuellement",
                     "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?id=2262",
                     "type": "png",
-                    "attributiontext": "Data CC-By-SA by",
-                    "attributionurl": "http://openstreetmap.org"
+                    "attributiontext": "© les contributeurs d’OpenStreetMap",
+                    "attributionurl": "http://www.openstreetmap.org/copyright"
                 }
             },
             {
@@ -93,6 +93,18 @@
                     "layer": "0,1,2,3,4,5,6,7,8,9,10,11",
                     "description": "Plan de ville du Pays de Brest. Cette carte contient le filaire de voies mis à jour par la cellule SIG du Pays de Brest",
                     "metadataurl":"http://sig.brest.fr",
+                    "style": "",
+                    "visible": "false",
+                    "baselayer": true
+                }
+            },
+            {
+                "wmslayer": {
+                    "label": "Fond de plan Lorient Agglomération",
+                    "url": "http://geoservices.lorient-agglo.fr/wms?",
+                    "layer": "plan_ville",
+                    "description": "Plan de ville du Pays de Lorient",
+                    "metadataurl":"http://google.fr",
                     "style": "",
                     "visible": "false",
                     "baselayer": true
