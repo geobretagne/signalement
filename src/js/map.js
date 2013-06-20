@@ -78,7 +78,8 @@ Signalement.mainmap = (function () {
                       config.wmslayers[i].wmslayer.label,
                             config.wmslayers[i].wmslayer.url,
                             {layers: config.wmslayers[i].wmslayer.layer,        
-                      transparent: true,      
+                      transparent: true,
+                             version: "1.3.0",      
                       styles: config.wmslayers[i].wmslayer.style},
                       {isBaseLayer: (config.wmslayers[i].wmslayer.baselayer == true)}
                           
@@ -99,7 +100,7 @@ Signalement.mainmap = (function () {
                 projection: new OpenLayers.Projection("EPSG:2154"),
                 displayProjection: new OpenLayers.Projection("EPSG:2154"),
                 units: "m",    
-                numZoomLevels: 19,
+                numZoomLevels: 21,
                 maxResolution: 156543.0339,    
                 //maxExtent: new OpenLayers.Bounds(-357823.2365, 6037008.6939, 2146865.3059, 8541697.2363),
                 maxExtent: new OpenLayers.Bounds(87574.882180659,6695398.0773958,411056.38582558,6920428.688627),
