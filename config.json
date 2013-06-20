@@ -38,35 +38,55 @@
             {
                 "baselayer": {
                     "label": "OpenStreetMap style Google",
-                    "url": "http://osm.geobretagne.fr/gwc01/service/tms/",
-                    "layername": "imposm:google@EPSG:2154@png",
+                    "url": "http://osm.geobretagne.fr/gwc01/service/wmts",
+                    "layername": "osm:google",
+                    "matrixset": "EPSG:3857",
+                    "style": "_null",
+                    "format": "image/png",
                     "description": "Couche osm mise à jour mensuellement",
-                    "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?id=2262",
-                    "type": "png",
-                    "attributiontext": "© les contributeurs d’OpenStreetMap",
-                    "attributionurl": "http://www.openstreetmap.org/copyright"
+                    "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?id=2262",                    
+                    "attributiontext": "Data CC-By-SA by",
+                    "attributionurl": "http://openstreetmap.org"
                 }
             },
             {
                 "baselayer": {
-                    "label": "scans IGN",
-                    "url": "http://tile.geobretagne.fr/gwc02/service/tms/",
-                    "layername": "carte@EPSG:2154@png",
-                    "description": "Couches Scan 100 et scan 25 de l'IGN",
-                    "metadataurl":"http://google.fr",
-                    "type": "png",
-                    "attributiontext": "Scans IGN",
-                    "attributionurl": "http://ign.fr"
+                    "label": "Scan express",
+                    "url": "http://kartenn.region-bretagne.fr/cgi-bin/wmts",
+                    "layername": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD",
+                    "matrixset": "PM",
+                    "style": "normal",
+                    "format": "image/jpeg",
+                    "description": "Cartographie topographique multi-échelles du territoire français issue des bases de données vecteur de l’IGN –réalisée selon un processus cartographique innovant fortement automatisé",
+                    "metadataurl":"http://gpp3-wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_SCAN-EXPRESS_1-0.xml",                    
+                    "attributiontext": "IGNF",
+                    "attributionurl": "http://www.ign.fr"
                 }
             },
+             {
+                "baselayer": {
+                    "label": "Transports",
+                    "url": "http://kartenn.region-bretagne.fr/cgi-bin/wmts",
+                    "layername": "TRANSPORTNETWORKS.ROADS",
+                    "matrixset": "PM",
+                    "style": "normal",
+                    "format": "image/png",
+                    "description": "Affichage du réseau routier français et européen de l’IGN",
+                    "metadataurl":"http://gpp3-wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_SCAN-EXPRESS_1-0.xml",                    
+                    "attributiontext": "IGNF",
+                    "attributionurl": "http://www.ign.fr"
+                }
+            },           
             {
                 "baselayer": {
                     "label": "Photographie aérienne composite de GéoBretagne",
-                    "url": "http://tile.geobretagne.fr/gwc02/service/tms/",
-                    "layername": "satellite@EPSG:2154@jpeg",
+                    "url": "http://tile.geobretagne.fr/gwc02/service/wmts",
+                    "layername": "satellite",
+                    "matrixset": "EPSG:3857",
+                    "style": "_null",
+                    "format": "image/jpeg",
                     "description": "Le fond photographique de GéoBretagne est un composé d' orthophotographies réalisées par plusieurs producteurs",
-                    "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",
-                    "type": "jpeg",
+                    "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
                     "attributiontext": "Ortho composite",
                     "attributionurl": "http://geobretagne.fr"
                 }
@@ -83,6 +103,8 @@
                     "metadataurl2":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?id=3111",
                     "style": "",
                     "visible": "false",
+                    "singletile": false,
+                    "version": "1.3.0",
                     "baselayer": false
                 }
             },
@@ -95,6 +117,8 @@
                     "metadataurl":"http://sig.brest.fr",
                     "style": "",
                     "visible": "false",
+                    "singletile": false,
+                    "version": "1.1.1",
                     "baselayer": true
                 }
             },
@@ -107,6 +131,8 @@
                     "metadataurl":"http://google.fr",
                     "style": "",
                     "visible": "false",
+                    "singletile": true,
+                    "version": "1.3.0",
                     "baselayer": true
                 }
             }

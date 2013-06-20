@@ -59,17 +59,22 @@ Signalement.rss = (function () {
     };
     var rssFiltreWKT = function (geomfield) {
       var geom = rssLayer.features[0];
+      var geometry = geom.geometry.clone();
+      geometry.transform(new OpenLayers.Projection("EPSG:3857"), new OpenLayers.Projection("EPSG:2154"));
+      var projfeat = new OpenLayers.Feature.Vector(geometry);
       var format = new OpenLayers.Format.WKT();    
-        var wkt = format.write(geom);      
+      var wkt = format.write(projfeat);      
       return  "INTERSECTS("+ geomfield +"," + wkt + ")";
       
     };
 
     var rssFiltreGML = function () {
       var geom = rssLayer.features[0];
-      var format = new OpenLayers.Format.GML();    
-      var gml = format.createFeatureXML(geom);      
-      var polygon = format.getElementsByTagNameNS(gml,"*","geometry")[0].firstChild;       
+      var format = new OpenLayers.Format.GML.v3();
+      format.srsName = "EPSG:3857";     
+      var gml = format.write(geom);
+      var xml = new OpenLayers.Format.XML().read(gml);
+      var polygon = format.getElementsByTagNameNS(xml,"*","geometry")[0].firstChild;       
       return serializeXmlNode(polygon);      
     };
     
@@ -142,7 +147,7 @@ Signalement.rss = (function () {
         }
         mon_loader2.show();
         var wfsurl = "http://geobretagne.fr/geoserver/geob_loc/wfs";    
-        var postRequest = '<wfs:GetFeature service="WFS" version="1.0.0"'
+        var postRequest = '<wfs:GetFeature service="WFS" version="1.1.0"'
         + ' outputFormat="json"'
         + ' xmlns:topp="http://www.openplans.org/topp"'
         + ' xmlns:wfs="http://www.opengis.net/wfs"'
@@ -150,9 +155,9 @@ Signalement.rss = (function () {
         + ' xmlns:gml="http://www.opengis.net/gml"'
         + ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
         + ' xsi:schemaLocation="http://www.opengis.net/wfs'
-        + ' http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd">'
-        +  ' <wfs:Query typeName="geob_loc:COMMUNE">'
-        +  ' <ogc:PropertyName>INSE</ogc:PropertyName> '
+        + ' http://schemas.opengis.net/wfs/1.1.0/WFS-basic.xsd">'
+        + ' <wfs:Query srsName="EPSG:3857" typeName="geob_loc:COMMUNE">'
+        + ' <ogc:PropertyName>INSE</ogc:PropertyName> '
         + ' <ogc:PropertyName>COMMUNE</ogc:PropertyName>'
         +  ' <Filter>'
         +    ' <Intersects>'

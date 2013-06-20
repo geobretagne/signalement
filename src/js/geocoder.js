@@ -223,7 +223,7 @@ Signalement.geocoder = (function () {
         infogeocoder = {
             formatted_address: msg
         };
-        var ptResult = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:2154"));
+        var ptResult = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:3857"));
         var size = new OpenLayers.Size(20, 34);
         var offset = new OpenLayers.Pixel(-(size.w / 2), - size.h);
         var icon = new OpenLayers.Icon('src/img/googlemarker.png', size, offset);
