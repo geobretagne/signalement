@@ -78,7 +78,7 @@ Signalement.main = (function () {
         toolbar.add([Signalement.toolbar.create(map, config)]);
 
         var mapPanelOptions = {
-            title: "Gestion des signalements",
+            title: "SIGN'ADRESSE - Gestion des signalements",
             region: "center",
             id: "myMapPanel",
             height: 400,
