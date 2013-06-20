@@ -103,7 +103,7 @@
                     "label": "Fond de plan Lorient Agglomération",
                     "url": "http://geoservices.lorient-agglo.fr/wms?",
                     "layer": "plan_ville",
-                    "description": "Plan de ville du Pays de Lorient",
+                    "description": "Plan de ville Lorient Agglomération",
                     "metadataurl":"http://google.fr",
                     "style": "",
                     "visible": "false",
