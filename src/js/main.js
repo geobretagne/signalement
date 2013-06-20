@@ -111,8 +111,8 @@ Signalement.main = (function () {
         }
         
         else {
-            //mapPanelOptions.center = new OpenLayers.LonLat(352047, 6788957);
-            mapPanelOptions.zoom = 9;
+            mapPanelOptions.center = new OpenLayers.LonLat(-333445.31476491, 6118631.2393202);           
+            mapPanelOptions.zoom = 8;
         }
         
         
