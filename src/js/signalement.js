@@ -253,11 +253,11 @@ Signalement.signalement = (function () {
                 case "OpenLayers.Protocol.HTTP":
                     oFeature.layer.protocol.commit([oFeature]);
                     break;
-                case "OpenLayers.Protocol.WFS.v1_0_0":
+                case "OpenLayers.Protocol.WFS.v1_1_0":
                     saveStrategy.save([oFeature]);
                     break;
                 default:
-                    alert("not suported");
+                    alert("Cette version de wfs n'est pas supportée");
                 }
                 modifyPtCtrl.selectControl.unselect(oFeature);
             }
@@ -473,14 +473,15 @@ Signalement.signalement = (function () {
             }
             mon_loader.show();
             var wfsurl = "http://geobretagne.fr/geoserver/bzh/wfs?";            
-            var post = '<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.0.0"' + ' outputFormat="json"'+ ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><wfs:Query typeName="bzh:bdtopo_commune" ' +
-            'srsName="EPSG:2154" xmlns:feature="http://geobretagne.fr/ns/bzh">' +
+            var post = '<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0"' + ' outputFormat="json"'+ ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
+            '<wfs:Query typeName="bzh:bdtopo_commune" ' +
+            'srsName="EPSG:3857" xmlns:feature="http://geobretagne.fr/ns/bzh">' +
             ' <PropertyName>code_insee</PropertyName> ' +
             ' <PropertyName>nom</PropertyName> ' +
             '<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">' +            
             '<ogc:Contains>' +
                 '<ogc:PropertyName>the_geom</ogc:PropertyName>' +
-                '<gml:MultiPoint srsName="http://www.opengis.net/gml/srs/epsg.xml#2154" xmlns:gml="http://www.opengis.net/gml">' +
+                '<gml:MultiPoint srsName="http://www.opengis.net/gml/srs/epsg.xml#3857" xmlns:gml="http://www.opengis.net/gml">' +
                     '<gml:pointMember>' +
                         '<gml:Point>' +
                             '<gml:coordinates decimal="." cs="," ts=" ">'+point+'</gml:coordinates>' +
