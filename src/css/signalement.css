@@ -75,4 +75,11 @@
 .layers {
             background-image: url(../img/layers20x.png) !important;
        
-        }      
+        }   
+.olcontrolattribution {
+  font-size: smaller;
+  left: 3px !important;
+  bottom: 1em !important;
+  position: absolute;
+  display: block;
+}
