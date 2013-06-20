@@ -59,8 +59,11 @@ Signalement.rss = (function () {
     };
     var rssFiltreWKT = function (geomfield) {
       var geom = rssLayer.features[0];
+      var geometry = geom.geometry.clone();
+      geometry.transform(new OpenLayers.Projection("EPSG:3857"), new OpenLayers.Projection("EPSG:2154"));
+      var projfeat = new OpenLayers.Feature.Vector(geometry);
       var format = new OpenLayers.Format.WKT();    
-        var wkt = format.write(geom);      
+      var wkt = format.write(projfeat);      
       return  "INTERSECTS("+ geomfield +"," + wkt + ")";
       
     };
