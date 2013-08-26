@@ -83,3 +83,8 @@
   position: absolute;
   display: block;
 }
+
+p img {
+position: absolute;
+padding-left: 110px;
+}

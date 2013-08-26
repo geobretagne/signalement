@@ -53,7 +53,7 @@ Signalement.signalement = (function () {
 
     var popup;
 
-    // Style appliqu顠 la couche signalements   
+    // Style appliqué la couche signalements   
     var iconStyleDefault = new OpenLayers.Style({
         externalGraphic: "src/img/add.png",
         graphicWidth: 20,
@@ -84,6 +84,13 @@ Signalement.signalement = (function () {
         'delete': iconStyleDelete,
         'temporary': iconStyleImport
     });
+    
+    var oRules = {
+                'public': {externalGraphic: "src/img/add.png"},                
+                'privé': {externalGraphic: "src/img/prive.png"}
+    };
+    
+    oStyleMap.addUniqueValueRules("default", "contributeur", oRules);    
 
     var highlightStyle = new OpenLayers.Style({
         pointRadius: 13,
