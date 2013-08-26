@@ -66,7 +66,7 @@ Signalement.importer = (function () {
                 width: 320,
                 frame: true,
             iconCls:'import',
-                title: 'Import de données',
+                title: 'Importer des signalements',
                 //autoHeight: true,
                 bodyStyle: 'padding: 10px 10px 0 10px;',
                 labelWidth: 60,
