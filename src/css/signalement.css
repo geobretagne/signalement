@@ -49,6 +49,9 @@
 .import {
             background-image: url(../img/table.png) !important;       
         }
+.workflow {
+            background-image: url(../img/workflow.png) !important;       
+        }
 .help {
             background-image: url(../img/help.png) !important;
       

@@ -128,13 +128,14 @@ Signalement.main = (function () {
         var paramPanel = Signalement.parametrage.create();
         var layerPanel = Signalement.treelayer.create(map, config.workinglayer.label);
         var csvUploadForm = Signalement.importer.create(map, WFSSignal, phplocation);
+        var workflowForm = Signalement.workflow.create(map, WFSSignal, phplocation);
         var filterPanel = Signalement.timefilter.create(map, WFSSignal, toolbar, -6);
 
         //    Création du panel avancé
         var advancedPanel = new Ext.Panel({
             region: "east",
             title: "Outils",
-            items: [layerPanel, filterPanel, rssPanel, paramPanel, csvUploadForm, downloadForm],
+            items: [layerPanel, filterPanel, rssPanel, paramPanel, csvUploadForm, workflowForm, downloadForm],
             width: 320,
             minWidth: 175,
             maxWidth: 400,
