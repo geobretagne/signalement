@@ -38,7 +38,7 @@ Signalement.workflow = (function () {
             layer = l;
             phplocation = phploc;
             
-            var csvUploadForm = new Ext.FormPanel({        
+            var workflowForm = new Ext.FormPanel({        
                 fileUpload: true,
                 width: 320,
                 frame: true,
@@ -54,10 +54,10 @@ Signalement.workflow = (function () {
                 items: [
             {
                     xtype: 'fileuploadfield',
-                    id: 'lefichiercsv',
+                    id: 'workflowcsv',
                     emptyText: 'Sélectionnez un fichier csv',
                     fieldLabel: 'fichier',
-                    name: 'lefichiercsv',
+                    name: 'workflowcsv',
                     buttonText: '',
                     buttonCfg: {
                         iconCls: 'upload-icon'
@@ -66,14 +66,14 @@ Signalement.workflow = (function () {
                 buttons: [{
                     text: 'Transférer',
                     handler: function(){
-                        if(csvUploadForm.getForm().isValid()){
-                          csvUploadForm.getForm().submit({                           
+                        if(workflowForm.getForm().isValid()){
+                          workflowForm.getForm().submit({                           
                                 url: phplocation + 'workflow.php',
                                 waitMsg: 'Transfert du fichier et traitement...',            
                                 success: function(frm, o){                                                    
                                     Signalement.main.showMsg("Succès", o.result.message);                            
                               },
-                    failure:function(csvUploadForm, o){              
+                    failure:function(workflowForm, o){              
                               Signalement.main.showMsg('Erreur', o.result.message);
                               }
                           });
@@ -82,7 +82,7 @@ Signalement.workflow = (function () {
                 },{
                     text: 'Rétablir',
                     handler: function(){
-                        csvUploadForm.getForm().reset();
+                        workflowForm.getForm().reset();
                     }
                 },
             {
@@ -96,7 +96,7 @@ Signalement.workflow = (function () {
         });
             
       
-            return csvUploadForm;
+            return workflowForm;
         }
     }
 })();
