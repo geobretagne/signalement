@@ -109,8 +109,10 @@ Signalement.mainmap = (function () {
              var wmtsLayers = new Array();
                   var layerscount = config.baselayers.length;
                   for (var i=0; i<layerscount; i++){
-                    var bl = config.baselayers[i].baselayer;
-                    _addWMTSLayer(bl);                             
+					if (config.baselayers[i].baselayer.type === "wmts") {
+						var bl = config.baselayers[i].baselayer;
+						_addWMTSLayer(bl); 
+					}
                 }
                   
                   //Configuration des couches wms

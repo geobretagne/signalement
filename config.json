@@ -37,6 +37,7 @@
         "baselayers": [
             {
                 "baselayer": {
+					"type": "wmts",
                     "label": "OpenStreetMap style Google",
                     "url": "http://osm.geobretagne.fr/gwc01/service/wmts",
                     "layername": "osm:google",
@@ -51,6 +52,7 @@
             },
             {
                 "baselayer": {
+					"type": "wmts",
                     "label": "Scan express",
                     "url": "http://kartenn.region-bretagne.fr/cgi-bin/wmts",
                     "layername": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD",
@@ -65,6 +67,7 @@
             },
              {
                 "baselayer": {
+					"type": "wmts",
                     "label": "Transports",
                     "url": "http://kartenn.region-bretagne.fr/cgi-bin/wmts",
                     "layername": "TRANSPORTNETWORKS.ROADS",
@@ -79,6 +82,7 @@
             },           
             {
                 "baselayer": {
+					"type": "wmts",
                     "label": "Photographie aérienne composite de GéoBretagne",
                     "url": "http://tile.geobretagne.fr/gwc02/service/wmts",
                     "layername": "satellite",
