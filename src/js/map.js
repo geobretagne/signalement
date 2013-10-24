@@ -86,7 +86,7 @@ Signalement.mainmap = (function () {
 
         create: function (mapconfig) {
             config = mapconfig;
-            
+            OpenLayers.DOTS_PER_INCH = 90.71428571428572;
             var mp = new OpenLayers.Control.MousePosition();
             mp.displayProjection = new OpenLayers.Projection("EPSG:3857");
               //Définition des options à appliquer à la carte principale et à la carte
