@@ -94,6 +94,22 @@
                     "attributiontext": "Ortho composite",
                     "attributionurl": "http://geobretagne.fr"
                 }
+            },
+			{
+                "baselayer": {
+					"type": "tms",
+                    "label": "Fond de plan Rennes métropole",
+                    "url": "http://geo.rennesmetropole.fr/tms/4569/",
+                    "layername": "PVCI",                    
+                    "tileorigin": "-218373.484375, 6095908.0",
+                    "format": "png",
+					"serviceversion":"",
+					"maxresolution": "2357.536343401",
+                    "description": "Descriptif Rennes Métropole",
+                    "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
+                    "attributiontext": "Fond de plan Rennes Métropole",
+                    "attributionurl": "http://rennes-metropole.fr"
+                }
             }
         ],
         "wmslayers": [

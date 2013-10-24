@@ -53,6 +53,20 @@ Signalement.mainmap = (function () {
                     });      
 
     };
+	
+	var _addTMSLayer = function (l) {
+		var tmsLayer = new OpenLayers.Layer.TMS(
+			l.label,
+			l.url,
+			{	layername: l.layername,
+				type: l.format,
+				tileOrigin: new OpenLayers.LonLat(l.tileorigin.split(",")[0],l.tileorigin.split(",")[1]),
+				serviceVersion: l.serviceversion,
+				maxResolution: parseFloat(l.maxresolution)
+			}
+		);
+		map.addLayer(tmsLayer);
+	};
     
    
 
@@ -106,14 +120,20 @@ Signalement.mainmap = (function () {
               });
             map.addLayer(new OpenLayers.Layer.OSM());   
                        
-             var wmtsLayers = new Array();
+             //var wmtsLayers = new Array();
                   var layerscount = config.baselayers.length;
-                  for (var i=0; i<layerscount; i++){
-					if (config.baselayers[i].baselayer.type === "wmts") {
+					  for (var i=0; i<layerscount; i++){
 						var bl = config.baselayers[i].baselayer;
-						_addWMTSLayer(bl); 
+						switch(config.baselayers[i].baselayer.type)
+						{
+							case "wmts":
+								_addWMTSLayer(bl); 
+								break;
+							case "tms":
+								_addTMSLayer(bl);
+								break;
+						}
 					}
-                }
                   
                   //Configuration des couches wms
                   var wmsLayers = new Array();
