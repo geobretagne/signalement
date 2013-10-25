@@ -33,7 +33,7 @@
             "description": "La couche Signalement voies adresses en Bretagne recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Bretagne<p><img src='src/img/add.png'</img>contribution publique</p><p><img src='src/img/prive.png'</img>contribution privée</p>",
             "cswurl": "http://geobretagne.fr/geonetwork/srv/fr/csw?",
             "kmlurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
-            "rssurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms?layers=edit_rb:signalement_adresse&width=742&styles=&srs=EPSG%3A2154&format=application%2Fatom+xml&version=1.1.1&height=330&bbox=136279.0%2C6762356.5%2C370239.031%2C6866311.5&request=GetMap&service=wms&format_options=%3Atrue%3BENCODING%3Agml%3B"
+            "rssurl": "http://kartenn.region-bretagne.fr/ws/rss/rss.php?"
         },
         "baselayers": [
             {
