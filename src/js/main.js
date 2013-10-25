@@ -1,5 +1,4 @@
-Ext.BLANK_IMAGE_URL = "../mapfishapp/lib/externals/ext/resources/images/default/s.gif";
-//Ext.BLANK_IMAGE_URL = "../ext3.4/resources/images/default/s.gif";
+Ext.BLANK_IMAGE_URL = "lib/externals/ext/resources/images/default/s.gif"
 Ext.namespace("Signalement");
 
 Signalement.main = (function () {
