@@ -36,10 +36,20 @@ Signalement.main = (function () {
         Proj4js.defs["EPSG:3857"] = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs";        
         Proj4js.defs["EPSG:2154"] = "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
         Proj4js.defs["EPSG:4326"] = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
-
+		
+		var today = new Date();        
+        var beginDate = new Date(new Date().add(Date.MONTH, -6));        
+        var wfsfilter = new OpenLayers.Filter.Comparison({
+                type: OpenLayers.Filter.Comparison.BETWEEN,
+                property: "date_saisie",
+                lowerBoundary: OpenLayers.Date.toISOString(beginDate),
+                upperBoundary: OpenLayers.Date.toISOString(today)
+        });		
+        
         // Layer WFS-T des signalements    
         var WFSSignal = new OpenLayers.Layer.Vector(config.workinglayer.label, {
-            strategies: [new OpenLayers.Strategy.BBOX()],
+            strategies: [new OpenLayers.Strategy.Fixed()],
+            filter: wfsfilter,
             protocol: new OpenLayers.Protocol.WFS({
                 url: config.workinglayer.wfsurl,
                 version: "1.1.0",
@@ -128,8 +138,8 @@ Signalement.main = (function () {
         var paramPanel = Signalement.parametrage.create();
         var layerPanel = Signalement.treelayer.create(map, config.workinglayer.label);
         var csvUploadForm = Signalement.importer.create(map, WFSSignal, phplocation);
-        var workflowForm = Signalement.workflow.create(map, WFSSignal, phplocation);
-        var filterPanel = Signalement.timefilter.create(map, WFSSignal, toolbar, -6);
+        var workflowForm = Signalement.workflow.create(map, WFSSignal, phplocation);        
+		var filterPanel = Signalement.remotefilter.create(map, WFSSignal, toolbar, -6);
 
         //    Création du panel avancé
         var advancedPanel = new Ext.Panel({
