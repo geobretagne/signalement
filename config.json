@@ -23,6 +23,7 @@
         },
         "workinglayer": {
             "label": "Signalements",
+			"cluster": "true",
             "featureprefix": "edit_rb",
             "featuretype": "signalement_adresse",
             "geometryname": "geom",

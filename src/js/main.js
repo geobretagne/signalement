@@ -3,6 +3,7 @@ Ext.namespace("Signalement");
 
 Signalement.main = (function () {
     "use strict";
+	var cluster = false;
     var extractUrlParams, loadConfigFailure, loadConfigSuccess;
 
     extractUrlParams = function () {
@@ -44,10 +45,17 @@ Signalement.main = (function () {
                 lowerBoundary: OpenLayers.Date.toISOString(beginDate),
                 upperBoundary: OpenLayers.Date.toISOString(today)
         });		
+		var strategies = [new OpenLayers.Strategy.Fixed()];
+		// cluster
+		if (config.workinglayer.cluster === 'true') {
+			cluster = true;
+			var clusterStrategy = new OpenLayers.Strategy.Cluster({distance:45, threshold:2});
+			strategies.push(clusterStrategy);
+		}
         
         // Layer WFS-T des signalements    
         var WFSSignal = new OpenLayers.Layer.Vector(config.workinglayer.label, {
-            strategies: [new OpenLayers.Strategy.Fixed()],
+            strategies: strategies,
             filter: wfsfilter,
             protocol: new OpenLayers.Protocol.WFS({
                 url: config.workinglayer.wfsurl,
@@ -59,7 +67,8 @@ Signalement.main = (function () {
                 extractAttributes: true,
                 schema: config.workinglayer.wfsurl + "service=WFS&version=1.1.0&request=DescribeFeatureType&TypeName=" + config.workinglayer.featuretype
             })
-        });
+        });		
+		
         WFSSignal.tp = {
             name: config.workinglayer.label,
             url: config.workinglayer.wfsurl,
@@ -129,7 +138,7 @@ Signalement.main = (function () {
         var mapPanel = new GeoExt.MapPanel(mapPanelOptions);
 
         // initialisations des différents modules
-        var signalFormWindow = Signalement.signalement.create(map, mapPanel, toolbar, WFSSignal, true, phplocation,config.htmltexts[7]);
+        var signalFormWindow = Signalement.signalement.create(map, mapPanel, toolbar, WFSSignal, true, phplocation,config.htmltexts[7],cluster);
         Signalement.geocoder.create(map, toolbar, config.geocode.service);
         var rssPanel = Signalement.rss.create(map, config.workinglayer.rssurl, config.htmltexts, toolbar);
         var downloadForm = Signalement.download.create(config.workinglayer);

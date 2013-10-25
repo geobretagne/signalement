@@ -78,7 +78,7 @@ Signalement.signalement = (function () {
     });
 
 
-    var oStyleMap = new OpenLayers.StyleMap({
+    var normalStyleMap = new OpenLayers.StyleMap({
         'default': iconStyleDefault,
         'select': iconStyleSelect,
         'delete': iconStyleDelete,
@@ -90,25 +90,64 @@ Signalement.signalement = (function () {
                 'privé': {externalGraphic: "src/img/prive.png"}
     };
     
-    oStyleMap.addUniqueValueRules("default", "contributeur", oRules);    
+    normalStyleMap.addUniqueValueRules("default", "contributeur", oRules);
 
-    var highlightStyle = new OpenLayers.Style({
-        pointRadius: 13,
-        graphicName: "square",
-        fillColor: "#ffcc66",
-        fillOpacity: 0,
-        strokeColor: "red",
-        strokeWidth: 3,
-        strokeOpacity: 1
-    });
-
-    var highlightStyleMap = new OpenLayers.StyleMap({
-        'default': highlightStyle
-    });
+	//Cluster
+	var cluster_default_style = new OpenLayers.Style({
+                    pointRadius: "${radius}",
+                    fillColor: "${color}",
+                    fillOpacity: 0.8,
+                    strokeColor: "#01B0F0",
+                    strokeWidth: 5,
+                    strokeOpacity: 0.4,
+                    label: "${label}",
+                    fontColor: "#ffffff",
+                }, {
+                    context: {
+                        radius: function(feature) {
+                            if(feature.cluster) {
+                                return Math.min(feature.attributes.count, 14) + 6;
+                            }
+                            else {
+                                return 10;
+                            }
+                        },
+                        color: function(feature) {
+                            var c = "";
+                            if (feature.cluster) {
+                                c = "#96CA2D";
+                            }
+                            else {                                
+                                switch(feature.attributes.contributeur)
+                                {
+                                case "public":
+                                  c = "#0000ff";
+                                  break;
+                                case "privé":
+                                  c = "#ff0000";
+                                  break;
+                                default:
+                                  c = "#ffffff";
+                                }
+                            }                            
+                            return c;  
+                          },
+                        label: function(feature) {
+                            // clustered features count or blank if feature is not a cluster
+                            return feature.cluster ? feature.cluster.length : "";  
+                          }
+                    }
+                });
+                
+    var cluster_select_style = OpenLayers.Util.applyDefaults({ strokeWidth: 7, strokeOpacity: 1}, cluster_default_style.clone());
+	
+	var clusterStyleMap = new OpenLayers.StyleMap({"default": cluster_default_style, "select": cluster_select_style});
 
     // fonctions d'affichage des messages
     var showSuccessMsg = function () {
             Signalement.main.showMsg("Succès", "Transaction exécutée avec succès");
+			//cluster
+            wfsLayer.refresh();
         };
 
     var showFailMsg = function () {
@@ -170,6 +209,7 @@ Signalement.signalement = (function () {
     // Fonctions d'ꥩtion et de crꢴion
 
     var onSignalModificationStart = function (object) {
+		if (!object.feature.cluster) {
             var oFeature;
             if (object.geometry) {
                 oFeature = object;
@@ -194,8 +234,8 @@ Signalement.signalement = (function () {
                     }
                 }
             }
-
-        };
+		}
+    };
 
     var onSignalModification = function (object) {
             var oFeature;
@@ -247,9 +287,8 @@ Signalement.signalement = (function () {
      * 
      * Peut seulement enregistrer une entit顠 la fois utilisant Strategy.Save : l'entit顳ꭥctionnꥮ
      */
-    var saveSignal = function () {
-            var oFeature = getSelectedSignal();
-
+    var saveSignal = function (f) {
+            var oFeature = f;
             if (isValidSignalAttributes(oFeature, signalAttributes)) {
 
                 if (oFeature.state != OpenLayers.State.INSERT) {
@@ -335,6 +374,11 @@ Signalement.signalement = (function () {
         };
     var signalFeatureAdded = function (object) {
             var oFeature = object.feature;
+			// cluster
+            if (oFeature.layer == null){
+                oFeature.layer = wfsLayer;
+                wfsLayer.addFeatures([oFeature]);
+            }
             var point = oFeature.geometry.getVertices()[0].x + "," + oFeature.geometry.getVertices()[0].y;
             getCommuneInfos(point);
             oFeature.state = OpenLayers.State.INSERT;
@@ -534,20 +578,32 @@ Signalement.signalement = (function () {
             if (typeof popup != 'undefined') {
                 popup.destroy();
             }
-            //je definis les params de mon popup
-            var ident = "Signalement : " + e.fid.split(".")[1]
-            var htmlContent = "commune : <b>" + e.attributes.libco + "</b><br/>" + "référentiel : <b>" + e.attributes.type_ref + "</b><br/>" + "nature : <b>" + e.attributes.nature_ref + "</b><br/>" + "commentaires : <b>" + e.attributes.comment_ref + "</b><br/>" + "contributeur : <b>" + e.attributes.contributeur + "</b><br/>" + "mail : <b>" + e.attributes.mel + "</b><br/>" + "acte : <b>" + e.attributes.acte_ref + "</b><br/>" + "date : <b>" + new Date(e.attributes.date_saisie).format('d/m/Y') + "</b><br/>";
+            
+			var htmlContent ="";
+            var ident="";
+            // test cluster
+            if (e.cluster) {
+                ident = "Sign. groupés ("+e.cluster.length+")";
+                htmlContent = "Pour afficher les informations relatives à ces signalements, veuillez zoomer davantage.";
+            }
+			else
+			{                
+                ident = "Signalement : " + e.fid.split(".")[1]
+                htmlContent = "commune : <b>" + e.attributes.libco + "</b><br/>" + "référentiel : <b>" + e.attributes.type_ref + "</b><br/>" + "nature : <b>" + e.attributes.nature_ref + "</b><br/>" + "commentaires : <b>" + e.attributes.comment_ref + "</b><br/>" + "contributeur : <b>" + e.attributes.contributeur + "</b><br/>" + "mail : <b>" + e.attributes.mel + "</b><br/>" + "acte : <b>" + e.attributes.acte_ref + "</b><br/>" + "date : <b>" + new Date(e.attributes.date_saisie).format('d/m/Y') + "</b><br/>";
 
-            if (e.attributes.url_1) {
-                if (e.attributes.url_1.match('http://')) {
-                    htmlContent += "fichier 1 : <a href='" + e.attributes.url_1 + "' target='_blank'>Lien</a><br/>";
+                if (e.attributes.url_1) {
+                    if (e.attributes.url_1.match('http://')) {
+                        htmlContent += "fichier 1 : <a href='" + e.attributes.url_1 + "' target='_blank'>Lien</a><br/>";
+                    }
                 }
+                if (e.attributes.url_2) {
+                    if (e.attributes.url_2.match('http://')) {
+                        htmlContent += "fichier 2 : <a href='" + e.attributes.url_2 + "' target='_blank'>Lien</a><br/>";
+                    }
+                 }
             }
-            if (e.attributes.url_2) {
-                if (e.attributes.url_2.match('http://')) {
-                    htmlContent += "fichier 2 : <a href='" + e.attributes.url_2 + "' target='_blank'>Lien</a><br/>";
-                }
-            }
+			
+			//****************************
             var size = new OpenLayers.Size(20, 34);
             var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
 
@@ -667,16 +723,19 @@ Signalement.signalement = (function () {
          * m - {OpenLayers.Map} The map instance.
          */
 
-        create: function (m, mp, tb, l, hover, phploc,disclaimer) {
+        create: function (m, mp, tb, l, hover, phploc,disclaimer, cluster) {
             map = m;
             mapPanel = mp;
             phplocation = phploc;
             toolbar = tb;
             wfsLayer = l;
             enableSelectOver = hover;
-            wfsLayer.styleMap = oStyleMap;
-
-
+			//cluster
+			if (cluster) {
+				wfsLayer.styleMap = clusterStyleMap;
+			} else {
+				wfsLayer.styleMap = normalStyleMap;
+			}
             // Outil ajout d'un nouvel enregistrement
             drawPtCtrl = new OpenLayers.Control.DrawFeature(wfsLayer, OpenLayers.Handler.Point, {
                 title: 'Dessiner un signalement'
@@ -1011,8 +1070,9 @@ Signalement.signalement = (function () {
                     formBind: true,
                     iconCls: "save",
                     tooltip: 'Enregistrer les modifications courantes et la géométrie',
-                    handler: function () {
-                        saveSignal();
+                    handler: function () {                        
+						var oFeature = getSelectedSignal();
+                        saveSignal(oFeature);
                     }
                 }, {
                     text: 'Annuler',

@@ -282,9 +282,9 @@ Signalement.remotefilter = (function () {
                 ]
             });
 
-            drawPtCtrl.events.register("activate", '', function () {
+            /*drawPtCtrl.events.register("activate", '', function () {
                 filterStrategy.deactivate();
-            }); // FILTER TIME
+            });*/
 
             return filterForm;
         }
