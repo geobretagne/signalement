@@ -54,6 +54,24 @@ Signalement.mainmap = (function () {
 
     };
 	
+	_noServiceVersionGetUrl = function (bounds) {
+		bounds=this.adjustBounds(bounds);
+		var res=this.map.getResolution();
+		var x=Math.round((bounds.left-this.tileOrigin.lon)/(res*this.tileSize.w));
+		var y=Math.round((bounds.bottom-this.tileOrigin.lat)/(res*this.tileSize.h));
+		var z=this.serverResolutions!=null?OpenLayers.Util.indexOf(this.serverResolutions,res):this.map.getZoom()+this.zoomOffset;	
+		if (this.serviceVersion==="null") {
+			var path=this.layername+"/"+z+"/"+x+"/"+y+"."+this.type;
+		} else {
+			var path=this.serviceVersion+"/"+this.layername+"/"+z+"/"+x+"/"+y+"."+this.type;
+		}
+		var url=this.url;
+		if(OpenLayers.Util.isArray(url)){
+			url=this.selectUrl(path,url);
+		}
+		return url+path;
+	};
+	
 	var _addTMSLayer = function (l) {
 		var tmsLayer = new OpenLayers.Layer.TMS(
 			l.label,
@@ -62,7 +80,8 @@ Signalement.mainmap = (function () {
 				type: l.format,
 				tileOrigin: new OpenLayers.LonLat(l.tileorigin.split(",")[0],l.tileorigin.split(",")[1]),
 				serviceVersion: l.serviceversion,
-				maxResolution: parseFloat(l.maxresolution)
+				maxResolution: parseFloat(l.maxresolution),
+				getURL: _noServiceVersionGetUrl
 			}
 		);
 		map.addLayer(tmsLayer);
