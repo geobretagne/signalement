@@ -472,9 +472,9 @@ Signalement.signalement = (function () {
                 initLoader();
             }
             mon_loader.show();
-            var wfsurl = "http://geobretagne.fr/geoserver/bzh/wfs?";            
-            var post = '<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.0.0"' + ' outputFormat="json"'+ ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><wfs:Query typeName="bzh:bdtopo_commune" ' +
-            'srsName="EPSG:2154" xmlns:feature="http://geobretagne.fr/ns/bzh">' +
+            var wfsurl = "http://geobretagne.fr/geoserver/ign/wfs?";            
+            var post = '<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.0.0"' + ' outputFormat="json"'+ ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><wfs:Query typeName="ign:bdtopo_commune" ' +
+            'srsName="EPSG:2154" xmlns:feature="http://geobretagne.fr/ns/ign">' +
             ' <PropertyName>code_insee</PropertyName> ' +
             ' <PropertyName>nom</PropertyName> ' +
             '<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">' +            
