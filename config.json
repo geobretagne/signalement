@@ -117,8 +117,8 @@
             {
                 "wmslayer": {
                     "label": "Limites administratives",
-                    "url": "http://geobretagne.fr/geoserver/wms?",
-                    "layer": "communes_composite",
+                    "url": "http://geobretagne.fr/geoserver/ign/wms?",
+                    "layer": "bdtopo_commune",
                     "description": "Extrait de la BDCARTO ® - Base de données cartographique de l'IGN au 1/100 000. et de la BDTOPO ® (zoom >= 14)",
                     "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=b08e6cb1-236c-49b7-88f9-42b500d274d5",
                     "metadataurl2":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?id=3111",
