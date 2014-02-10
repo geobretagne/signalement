@@ -47,7 +47,7 @@
                     "format": "image/png",
                     "description": "Couche osm mise à jour mensuellement",
                     "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?id=2262",                    
-                    "attributiontext": "Data CC-By-SA by",
+                    "attributiontext": "© les contributeurs d’OpenStreetMap",
                     "attributionurl": "http://openstreetmap.org"
                 }
             },
