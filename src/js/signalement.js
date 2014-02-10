@@ -202,6 +202,7 @@ Signalement.signalement = (function () {
             }
             signalFormWindow.setPosition(nWinXPos, nWinYPos);
             Ext.getCmp('deleteBtn').setVisible(feature.state !== 'Insert');
+            hideField(signalForm.getForm().findField('nature_mod'));
             signalFormWindow.show();
 
         };
@@ -225,6 +226,13 @@ Signalement.signalement = (function () {
 
             if (oFeature.state != "Insert") {
                 parseFeatureAttributesToForm(oFeature, signalForm);
+                if (oFeature.attributes['nature_ref'] === 'modification') {
+                    showField(signalForm.getForm().findField('nature_mod'));
+                }
+                else {
+                    hideField(signalForm.getForm().findField('nature_mod'));
+                }
+                
             } else {
                 //signalForm.getForm().findField("public").setValue('oui');
                 if (Ext.util.Cookies.get("mel")) {
@@ -441,6 +449,19 @@ Signalement.signalement = (function () {
                 }
             }
         };
+        
+    var hideField = function (field) {
+        field.disable();// for validation
+        field.hide();
+        field.getEl().up('.x-form-item').setDisplayed(false); // hide label
+    };
+
+    var showField = function (field) {        
+        field.enable();
+        field.show();
+        field.getEl().up('.x-form-item').setDisplayed(true);// show label
+    };
+
 
     /**
      * Method: isValidSignalAttributes
@@ -847,6 +868,12 @@ Signalement.signalement = (function () {
                 ['modification', 'modification'],
                 ['suppression', 'suppression']
             ];
+            var naturemodData = [
+                ['sens', 'sens de la voie'],
+                ['tracé', 'tracé'],
+                ['vitesse', 'vitesse'],
+                ['autre', 'autre']
+            ];
             var booleanData = [
                 ['oui', 'oui'],
                 ['non', 'non']
@@ -866,6 +893,11 @@ Signalement.signalement = (function () {
             var natureStore = new Ext.data.SimpleStore({
                 fields: ['value', 'text'],
                 data: natureData
+            });
+            
+            var naturemodStore = new Ext.data.SimpleStore({
+                fields: ['value', 'text'],
+                data: naturemodData
             });
             
             var contributeurStore = new Ext.data.SimpleStore({
@@ -904,6 +936,29 @@ Signalement.signalement = (function () {
                 mode: 'local',
                 triggerAction: 'all',
                 emptyText: 'Nature ...',
+                listWidth: 167,
+                allowBlank: false
+            });
+            
+            natureCombo.on('select', function(box, record, index) {
+                if (record.data.value === 'modification') {
+                    showField(signalForm.getForm().findField('nature_mod'));                    
+                }
+                else {
+                   hideField(signalForm.getForm().findField('nature_mod'));                   
+                }                
+            });
+            
+            var naturemodCombo = new Ext.form.ComboBox({
+                id: 'nature_mod',
+                fieldLabel: '<font color=red>*</font>' + 'nature de la modification',
+                store: naturemodStore,
+                valueField: 'value',
+                displayField: 'text',
+                editable: false,
+                mode: 'local',
+                triggerAction: 'all',
+                emptyText: 'Type de modification ...',
                 listWidth: 167,
                 allowBlank: false
             });
@@ -988,7 +1043,7 @@ Signalement.signalement = (function () {
                     maxLength: 50,
                     readOnly: true
                 },
-                referentielCombo, natureCombo, acteCombo,
+                referentielCombo, natureCombo, naturemodCombo, acteCombo,
                 {
                     xtype: 'textarea',
                     allowBlank: true,
