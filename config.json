@@ -47,7 +47,7 @@
                     "format": "image/png",
                     "description": "Couche osm mise à jour mensuellement",
                     "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?id=2262",                    
-                    "attributiontext": "Data CC-By-SA by",
+                    "attributiontext": "© les contributeurs d’OpenStreetMap",
                     "attributionurl": "http://openstreetmap.org"
                 }
             },
@@ -110,6 +110,18 @@
                     "metadataurl":"http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
                     "attributiontext": "Fond de plan Rennes Métropole",
                     "attributionurl": "http://rennes-metropole.fr"
+                }
+            },
+			{
+                "baselayer": {
+					"type": "osm",
+                    "label": "Here",
+                    "url": "http://1.base.maps.cloud.api.here.com/maptile/2.1/maptile/newest/normal.day/${z}/${x}/${y}/256/png8?app_id=GRV98mmmhpOPJBD3EPeQ&app_code=VZy4OvINvVDqElvjlqgUJw",                    
+					"maxresolution": "2357.536343401",
+                    "description": "Fond de plan Here",
+                    "metadataurl":"http://here.com/terms",                    
+                    "attributiontext": "©1987 - 2013 HERE, IGN",
+                    "attributionurl": "http://here.com/terms"
                 }
             }
         ],

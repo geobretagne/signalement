@@ -80,11 +80,32 @@ Signalement.mainmap = (function () {
 				type: l.format,
 				tileOrigin: new OpenLayers.LonLat(l.tileorigin.split(",")[0],l.tileorigin.split(",")[1]),
 				serviceVersion: l.serviceversion,
+                isBaseLayer : true,
 				maxResolution: parseFloat(l.maxresolution),
 				getURL: _noServiceVersionGetUrl
 			}
 		);
+        tmsLayer.tp = {name:l.label,
+                    url:l.url,
+                    desc:l.description,
+                    metadata: l.metadataurl
+        };
 		map.addLayer(tmsLayer);
+	};
+    
+    var _addOSMLayer = function (l) {
+		var osmLayer = new OpenLayers.Layer.OSM(l.label,
+            l.url,
+            {attribution:  l.attributiontext +"  <a href='" +l.attributionurl +"'>" +l.attributionurl +"</a>",
+                isBaseLayer: true                            
+            }
+        );  
+        osmLayer.tp = {name:l.label,
+                    url:l.url,
+                    desc:l.description,
+                    metadata: l.metadataurl
+        };        
+		map.addLayer(osmLayer);
 	};
     
    
@@ -150,6 +171,9 @@ Signalement.mainmap = (function () {
 								break;
 							case "tms":
 								_addTMSLayer(bl);
+								break;
+                            case "osm":
+								_addOSMLayer(bl);
 								break;
 						}
 					}
