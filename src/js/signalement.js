@@ -228,9 +228,11 @@ Signalement.signalement = (function () {
                 parseFeatureAttributesToForm(oFeature, signalForm);
                 if (oFeature.attributes['nature_ref'] === 'modification') {
                     showField(signalForm.getForm().findField('nature_mod'));
+                    signalFormWindow.setHeight(525);
                 }
                 else {
                     hideField(signalForm.getForm().findField('nature_mod'));
+                    signalFormWindow.setHeight(500);
                 }
                 
             } else {
@@ -942,10 +944,12 @@ Signalement.signalement = (function () {
             
             natureCombo.on('select', function(box, record, index) {
                 if (record.data.value === 'modification') {
-                    showField(signalForm.getForm().findField('nature_mod'));                    
+                    showField(signalForm.getForm().findField('nature_mod'));
+                    signalFormWindow.setHeight(525);
                 }
                 else {
-                   hideField(signalForm.getForm().findField('nature_mod'));                   
+                   hideField(signalForm.getForm().findField('nature_mod'));
+                   signalFormWindow.setHeight(500);
                 }                
             });
             
@@ -1047,7 +1051,7 @@ Signalement.signalement = (function () {
                 {
                     xtype: 'textarea',
                     allowBlank: true,
-                    fieldLabel: 'commentaires',
+                    fieldLabel: 'commentaires ou description de la modification',
                     id: 'comment_ref',
                     maxLength: 100
                 }, /*{
