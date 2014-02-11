@@ -111,6 +111,18 @@
                     "attributiontext": "Fond de plan Rennes Métropole",
                     "attributionurl": "http://rennes-metropole.fr"
                 }
+            },
+			{
+                "baselayer": {
+					"type": "osm",
+                    "label": "Here",
+                    "url": "http://1.base.maps.cloud.api.here.com/maptile/2.1/maptile/newest/normal.day/${z}/${x}/${y}/256/png8?app_id=GRV98mmmhpOPJBD3EPeQ&app_code=VZy4OvINvVDqElvjlqgUJw",                    
+					"maxresolution": "2357.536343401",
+                    "description": "Fond de plan Here",
+                    "metadataurl":"http://here.com/terms",                    
+                    "attributiontext": "©1987 - 2013 HERE, IGN",
+                    "attributionurl": "http://here.com/terms"
+                }
             }
         ],
         "wmslayers": [
