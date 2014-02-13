@@ -55,7 +55,7 @@ Signalement.workflow = (function () {
             {
                     xtype: 'fileuploadfield',
                     id: 'workflowcsv',
-                    emptyText: 'Sélectionnez un fichier csv',
+                    emptyText: 'Sélectionnez un fichier txt',
                     fieldLabel: 'fichier',
                     name: 'workflowcsv',
                     buttonText: '',
@@ -79,17 +79,12 @@ Signalement.workflow = (function () {
                           });
                         }
                     }
-                },{
-                    text: 'Rétablir',
-                    handler: function(){
-                        workflowForm.getForm().reset();
-                    }
                 },
-            {
+                {
                     text: 'Télécharger un exemple',
                     tooltip: 'Télécharger un fichier exemple',
                     handler: function(){
-                        window.open("imports/workflow.zip");
+                        window.open("traitements/operateur-date.txt");
                     }
                 }
             ]
