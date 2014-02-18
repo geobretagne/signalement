@@ -1,4 +1,4 @@
-﻿Ext.namespace("Signalement");
+Ext.namespace("Signalement");
 
 Signalement.signalement = (function () {
     /*
@@ -873,6 +873,9 @@ Signalement.signalement = (function () {
             var naturemodData = [
                 ['sens', 'sens de la voie'],
                 ['tracé', 'tracé'],
+                ['dénom.', 'dénomination voie'],
+                ['nb. voies', 'nombre de voies'],
+                ['adresse', 'adresse ou lieu-dit'],
                 ['vitesse', 'vitesse'],
                 ['autre', 'autre']
             ];
