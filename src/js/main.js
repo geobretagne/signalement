@@ -49,7 +49,7 @@ Signalement.main = (function () {
 		// cluster
 		if (config.workinglayer.cluster === 'true') {
 			cluster = true;
-			var clusterStrategy = new OpenLayers.Strategy.Cluster({distance:45, threshold:2});
+			var clusterStrategy = new OpenLayers.Strategy.Cluster({distance:45, threshold:5});
 			strategies.push(clusterStrategy);
 		}
         
