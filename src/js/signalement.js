@@ -95,12 +95,13 @@ Signalement.signalement = (function () {
 	//Cluster
 	var cluster_default_style = new OpenLayers.Style({
                     pointRadius: "${radius}",
-                    fillColor: "${color}",
+                    //fillColor: "${color}",
                     fillOpacity: 0.8,
                     strokeColor: "#01B0F0",
                     strokeWidth: 5,
                     strokeOpacity: 0.4,
                     label: "${label}",
+                    externalGraphic: "${graphic}",                    
                     fontColor: "#ffffff",
                 }, {
                     context: {
@@ -112,7 +113,27 @@ Signalement.signalement = (function () {
                                 return 10;
                             }
                         },
-                        color: function(feature) {
+                        graphic: function(feature) {
+                            if(feature.cluster) {
+                                return "src/img/cluster.png";
+                            }
+                            else {                                
+                                var g = "";
+                                switch(feature.attributes.contributeur)
+                                {
+                                case "public":
+                                  g = "src/img/add.png";
+                                  break;
+                                case "privé":
+                                  g = "src/img/prive.png";
+                                  break;
+                                default:
+                                  g = "src/img/add.png";
+                                }
+                                return g;
+                            }
+                        },
+                        /*color: function(feature) {
                             var c = "";
                             if (feature.cluster) {
                                 c = "#96CA2D";
@@ -131,7 +152,7 @@ Signalement.signalement = (function () {
                                 }
                             }                            
                             return c;  
-                          },
+                          },*/
                         label: function(feature) {
                             // clustered features count or blank if feature is not a cluster
                             return feature.cluster ? feature.cluster.length : "";  
@@ -139,7 +160,9 @@ Signalement.signalement = (function () {
                     }
                 });
                 
-    var cluster_select_style = OpenLayers.Util.applyDefaults({ strokeWidth: 7, strokeOpacity: 1}, cluster_default_style.clone());
+    var cluster_select_style = OpenLayers.Util.applyDefaults({ pointRadius: 15}, cluster_default_style.clone());
+    
+    //var cluster_select_style = OpenLayers.Util.applyDefaults({ strokeWidth: 7, strokeOpacity: 1}, cluster_default_style.clone());
 	
 	var clusterStyleMap = new OpenLayers.StyleMap({"default": cluster_default_style, "select": cluster_select_style});
 
