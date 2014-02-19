@@ -1,4 +1,4 @@
-﻿Ext.namespace("Signalement");
+Ext.namespace("Signalement");
 
 Signalement.remotefilter = (function () {
 
@@ -213,7 +213,7 @@ Signalement.remotefilter = (function () {
                 defaultType: 'checkbox',
                 items: [{
                     fieldLabel: '',
-                    boxLabel: 'Signalements publics',
+                    boxLabel: 'Contributeurs publics',
                     id: 'filtre_public',
                     filter: new OpenLayers.Filter.Comparison({
                         type: OpenLayers.Filter.Comparison.EQUAL_TO,
