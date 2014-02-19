@@ -413,6 +413,14 @@ Signalement.rss = (function () {
                     hidden : true,
                     allowBlank:true,    
                     id:"rssurlresult"  
+                  },
+                  {
+                    xtype:'panel',
+                    x: 5,
+                    y: 375,
+                    html:'<a href="http://fr.wikipedia.org/wiki/RSS" target="_blank">Comment utiliser un flux RSS</a>',
+                    height:100,            
+                    id:"rsshelp"
                   }
                   ],            
                   buttons:[
