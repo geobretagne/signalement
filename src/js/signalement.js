@@ -1206,5 +1206,4 @@ Signalement.signalement = (function () {
             return outputmsg;
         }
     }
->>>>>>> master
 })();
