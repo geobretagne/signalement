@@ -39,7 +39,7 @@ Signalement.treelayer = (function () {
                 split: true,
                 margins: '0 2 2 2',
                 cmargins: '2 2 2 2',
-                height: 200,
+                height: 250,
                 html: detailsText
             });
             var tpl = new Ext.Template('<h2 class="title">{name}</h2>', '<p><b>lien ogc</b>: {url}</p>', '<p><b>Description</b>: {desc}</p>', '<p><a href="{metadata}" target="_blank">Afficher les métadonnées</a></p>');

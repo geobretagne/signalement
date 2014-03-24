@@ -1,4 +1,4 @@
-﻿Ext.namespace("Signalement");
+Ext.namespace("Signalement");
 
 Signalement.signalement = (function () {
     /*
@@ -53,7 +53,7 @@ Signalement.signalement = (function () {
 
     var popup;
 
-    // Style appliqu顠 la couche signalements   
+    // Style appliqué la couche signalements   
     var iconStyleDefault = new OpenLayers.Style({
         externalGraphic: "src/img/add.png",
         graphicWidth: 20,
@@ -78,30 +78,99 @@ Signalement.signalement = (function () {
     });
 
 
-    var oStyleMap = new OpenLayers.StyleMap({
+    var normalStyleMap = new OpenLayers.StyleMap({
         'default': iconStyleDefault,
         'select': iconStyleSelect,
         'delete': iconStyleDelete,
         'temporary': iconStyleImport
     });
+    
+    var oRules = {
+                'public': {externalGraphic: "src/img/add.png"},                
+                'privé': {externalGraphic: "src/img/prive.png"}
+    };
+    
+    normalStyleMap.addUniqueValueRules("default", "contributeur", oRules);
 
-    var highlightStyle = new OpenLayers.Style({
-        pointRadius: 13,
-        graphicName: "square",
-        fillColor: "#ffcc66",
-        fillOpacity: 0,
-        strokeColor: "red",
-        strokeWidth: 3,
-        strokeOpacity: 1
-    });
-
-    var highlightStyleMap = new OpenLayers.StyleMap({
-        'default': highlightStyle
-    });
+	//Cluster
+	var cluster_default_style = new OpenLayers.Style({
+                    pointRadius: "${radius}",
+                    //fillColor: "${color}",
+                    fillOpacity: 0.8,
+                    strokeColor: "#01B0F0",
+                    strokeWidth: 5,
+                    strokeOpacity: 0.4,
+                    label: "${label}",
+                    externalGraphic: "${graphic}",                    
+                    fontColor: "#ffffff",
+                }, {
+                    context: {
+                        radius: function(feature) {
+                            if(feature.cluster) {
+                                return Math.min(feature.attributes.count, 14) + 6;
+                            }
+                            else {
+                                return 10;
+                            }
+                        },
+                        graphic: function(feature) {
+                            if(feature.cluster) {
+                                return "src/img/cluster.png";
+                            }
+                            else {                                
+                                var g = "";
+                                switch(feature.attributes.contributeur)
+                                {
+                                case "public":
+                                  g = "src/img/add.png";
+                                  break;
+                                case "privé":
+                                  g = "src/img/prive.png";
+                                  break;
+                                default:
+                                  g = "src/img/add.png";
+                                }
+                                return g;
+                            }
+                        },
+                        /*color: function(feature) {
+                            var c = "";
+                            if (feature.cluster) {
+                                c = "#96CA2D";
+                            }
+                            else {                                
+                                switch(feature.attributes.contributeur)
+                                {
+                                case "public":
+                                  c = "#0000ff";
+                                  break;
+                                case "privé":
+                                  c = "#ff0000";
+                                  break;
+                                default:
+                                  c = "#ffffff";
+                                }
+                            }                            
+                            return c;  
+                          },*/
+                        label: function(feature) {
+                            // clustered features count or blank if feature is not a cluster
+                            return feature.cluster ? feature.cluster.length : "";  
+                          }
+                    }
+                });
+                
+    var cluster_select_style = OpenLayers.Util.applyDefaults({ pointRadius: 15}, cluster_default_style.clone());
+    
+    //var cluster_select_style = OpenLayers.Util.applyDefaults({ strokeWidth: 7, strokeOpacity: 1}, cluster_default_style.clone());
+	
+	var clusterStyleMap = new OpenLayers.StyleMap({"default": cluster_default_style, "select": cluster_select_style});
 
     // fonctions d'affichage des messages
     var showSuccessMsg = function () {
             Signalement.main.showMsg("Succès", "Transaction exécutée avec succès");
+			//cluster
+            wfsLayer.refresh();
         };
 
     var showFailMsg = function () {
@@ -156,6 +225,7 @@ Signalement.signalement = (function () {
             }
             signalFormWindow.setPosition(nWinXPos, nWinYPos);
             Ext.getCmp('deleteBtn').setVisible(feature.state !== 'Insert');
+            hideField(signalForm.getForm().findField('nature_mod'));
             signalFormWindow.show();
 
         };
@@ -163,6 +233,7 @@ Signalement.signalement = (function () {
     // Fonctions d'ꥩtion et de crꢴion
 
     var onSignalModificationStart = function (object) {
+		if (!object.feature.cluster) {
             var oFeature;
             if (object.geometry) {
                 oFeature = object;
@@ -178,6 +249,15 @@ Signalement.signalement = (function () {
 
             if (oFeature.state != "Insert") {
                 parseFeatureAttributesToForm(oFeature, signalForm);
+                if (oFeature.attributes['nature_ref'] === 'modification') {
+                    showField(signalForm.getForm().findField('nature_mod'));
+                    signalFormWindow.setHeight(525);
+                }
+                else {
+                    hideField(signalForm.getForm().findField('nature_mod'));
+                    signalFormWindow.setHeight(500);
+                }
+                
             } else {
                 //signalForm.getForm().findField("public").setValue('oui');
                 if (Ext.util.Cookies.get("mel")) {
@@ -187,8 +267,8 @@ Signalement.signalement = (function () {
                     }
                 }
             }
-
-        };
+		}
+    };
 
     var onSignalModification = function (object) {
             var oFeature;
@@ -240,9 +320,8 @@ Signalement.signalement = (function () {
      * 
      * Peut seulement enregistrer une entit顠 la fois utilisant Strategy.Save : l'entit顳ꭥctionnꥮ
      */
-    var saveSignal = function () {
-            var oFeature = getSelectedSignal();
-
+    var saveSignal = function (f) {
+            var oFeature = f;
             if (isValidSignalAttributes(oFeature, signalAttributes)) {
 
                 if (oFeature.state != OpenLayers.State.INSERT) {
@@ -253,11 +332,11 @@ Signalement.signalement = (function () {
                 case "OpenLayers.Protocol.HTTP":
                     oFeature.layer.protocol.commit([oFeature]);
                     break;
-                case "OpenLayers.Protocol.WFS.v1_0_0":
+                case "OpenLayers.Protocol.WFS.v1_1_0":
                     saveStrategy.save([oFeature]);
                     break;
                 default:
-                    alert("not suported");
+                    alert("Cette version de wfs n'est pas supportée");
                 }
                 modifyPtCtrl.selectControl.unselect(oFeature);
             }
@@ -328,6 +407,11 @@ Signalement.signalement = (function () {
         };
     var signalFeatureAdded = function (object) {
             var oFeature = object.feature;
+			// cluster
+            if (oFeature.layer == null){
+                oFeature.layer = wfsLayer;
+                wfsLayer.addFeatures([oFeature]);
+            }
             var point = oFeature.geometry.getVertices()[0].x + "," + oFeature.geometry.getVertices()[0].y;
             getCommuneInfos(point);
             oFeature.state = OpenLayers.State.INSERT;
@@ -390,6 +474,19 @@ Signalement.signalement = (function () {
                 }
             }
         };
+        
+    var hideField = function (field) {
+        field.disable();// for validation
+        field.hide();
+        field.getEl().up('.x-form-item').setDisplayed(false); // hide label
+    };
+
+    var showField = function (field) {        
+        field.enable();
+        field.show();
+        field.getEl().up('.x-form-item').setDisplayed(true);// show label
+    };
+
 
     /**
      * Method: isValidSignalAttributes
@@ -473,14 +570,15 @@ Signalement.signalement = (function () {
             }
             mon_loader.show();
             var wfsurl = "http://geobretagne.fr/geoserver/ign/wfs?";            
-            var post = '<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.0.0"' + ' outputFormat="json"'+ ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><wfs:Query typeName="ign:bdtopo_commune" ' +
-            'srsName="EPSG:2154" xmlns:feature="http://geobretagne.fr/ns/ign">' +
+            var post = '<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0"' + ' outputFormat="json"'+ ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
+            '<wfs:Query typeName="ign:bdtopo_commune" ' +
+            'srsName="EPSG:3857" xmlns:feature="http://geobretagne.fr/ns/ign">' +
             ' <PropertyName>code_insee</PropertyName> ' +
             ' <PropertyName>nom</PropertyName> ' +
             '<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">' +            
             '<ogc:Contains>' +
                 '<ogc:PropertyName>the_geom</ogc:PropertyName>' +
-                '<gml:MultiPoint srsName="http://www.opengis.net/gml/srs/epsg.xml#2154" xmlns:gml="http://www.opengis.net/gml">' +
+                '<gml:MultiPoint srsName="http://www.opengis.net/gml/srs/epsg.xml#3857" xmlns:gml="http://www.opengis.net/gml">' +
                     '<gml:pointMember>' +
                         '<gml:Point>' +
                             '<gml:coordinates decimal="." cs="," ts=" ">'+point+'</gml:coordinates>' +
@@ -526,20 +624,32 @@ Signalement.signalement = (function () {
             if (typeof popup != 'undefined') {
                 popup.destroy();
             }
-            //je definis les params de mon popup
-            var ident = "Signalement : " + e.fid.split(".")[1]
-            var htmlContent = "commune : <b>" + e.attributes.libco + "</b><br/>" + "référentiel : <b>" + e.attributes.type_ref + "</b><br/>" + "nature : <b>" + e.attributes.nature_ref + "</b><br/>" + "commentaires : <b>" + e.attributes.comment_ref + "</b><br/>" + "contributeur : <b>" + e.attributes.contributeur + "</b><br/>" + "mail : <b>" + e.attributes.mel + "</b><br/>" + "acte : <b>" + e.attributes.acte_ref + "</b><br/>" + "date : <b>" + new Date(e.attributes.date_saisie).format('d/m/Y') + "</b><br/>";
+            
+			var htmlContent ="";
+            var ident="";
+            // test cluster
+            if (e.cluster) {
+                ident = "Sign. groupés ("+e.cluster.length+")";
+                htmlContent = "Pour afficher les informations relatives à ces signalements, veuillez zoomer davantage.";
+            }
+			else
+			{                
+                ident = "Signalement : " + e.fid.split(".")[1]
+                htmlContent = "commune : <b>" + e.attributes.libco + "</b><br/>" + "référentiel : <b>" + e.attributes.type_ref + "</b><br/>" + "nature : <b>" + e.attributes.nature_ref + "</b><br/>" + "commentaires : <b>" + e.attributes.comment_ref + "</b><br/>" + "contributeur : <b>" + e.attributes.contributeur + "</b><br/>" + "mail : <b>" + e.attributes.mel + "</b><br/>" + "acte : <b>" + e.attributes.acte_ref + "</b><br/>" + "date : <b>" + new Date(e.attributes.date_saisie).format('d/m/Y') + "</b><br/>";
 
-            if (e.attributes.url_1) {
-                if (e.attributes.url_1.match('http://')) {
-                    htmlContent += "fichier 1 : <a href='" + e.attributes.url_1 + "' target='_blank'>Lien</a><br/>";
+                if (e.attributes.url_1) {
+                    if (e.attributes.url_1.match('http://')) {
+                        htmlContent += "fichier 1 : <a href='" + e.attributes.url_1 + "' target='_blank'>Lien</a><br/>";
+                    }
                 }
+                if (e.attributes.url_2) {
+                    if (e.attributes.url_2.match('http://')) {
+                        htmlContent += "fichier 2 : <a href='" + e.attributes.url_2 + "' target='_blank'>Lien</a><br/>";
+                    }
+                 }
             }
-            if (e.attributes.url_2) {
-                if (e.attributes.url_2.match('http://')) {
-                    htmlContent += "fichier 2 : <a href='" + e.attributes.url_2 + "' target='_blank'>Lien</a><br/>";
-                }
-            }
+			
+			//****************************
             var size = new OpenLayers.Size(20, 34);
             var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
 
@@ -659,16 +769,19 @@ Signalement.signalement = (function () {
          * m - {OpenLayers.Map} The map instance.
          */
 
-        create: function (m, mp, tb, l, hover, phploc,disclaimer) {
+        create: function (m, mp, tb, l, hover, phploc,disclaimer, cluster) {
             map = m;
             mapPanel = mp;
             phplocation = phploc;
             toolbar = tb;
             wfsLayer = l;
             enableSelectOver = hover;
-            wfsLayer.styleMap = oStyleMap;
-
-
+			//cluster
+			if (cluster) {
+				wfsLayer.styleMap = clusterStyleMap;
+			} else {
+				wfsLayer.styleMap = normalStyleMap;
+			}
             // Outil ajout d'un nouvel enregistrement
             drawPtCtrl = new OpenLayers.Control.DrawFeature(wfsLayer, OpenLayers.Handler.Point, {
                 title: 'Dessiner un signalement'
@@ -780,6 +893,15 @@ Signalement.signalement = (function () {
                 ['modification', 'modification'],
                 ['suppression', 'suppression']
             ];
+            var naturemodData = [
+                ['sens', 'sens de la voie'],
+                ['tracé', 'tracé'],
+                ['dénom.', 'dénomination voie'],
+                ['nb. voies', 'nombre de voies'],
+                ['adresse', 'adresse ou lieu-dit'],
+                ['vitesse', 'vitesse'],
+                ['autre', 'autre']
+            ];
             var booleanData = [
                 ['oui', 'oui'],
                 ['non', 'non']
@@ -799,6 +921,11 @@ Signalement.signalement = (function () {
             var natureStore = new Ext.data.SimpleStore({
                 fields: ['value', 'text'],
                 data: natureData
+            });
+            
+            var naturemodStore = new Ext.data.SimpleStore({
+                fields: ['value', 'text'],
+                data: naturemodData
             });
             
             var contributeurStore = new Ext.data.SimpleStore({
@@ -837,6 +964,31 @@ Signalement.signalement = (function () {
                 mode: 'local',
                 triggerAction: 'all',
                 emptyText: 'Nature ...',
+                listWidth: 167,
+                allowBlank: false
+            });
+            
+            natureCombo.on('select', function(box, record, index) {
+                if (record.data.value === 'modification') {
+                    showField(signalForm.getForm().findField('nature_mod'));
+                    signalFormWindow.setHeight(525);
+                }
+                else {
+                   hideField(signalForm.getForm().findField('nature_mod'));
+                   signalFormWindow.setHeight(500);
+                }                
+            });
+            
+            var naturemodCombo = new Ext.form.ComboBox({
+                id: 'nature_mod',
+                fieldLabel: '<font color=red>*</font>' + 'nature de la modification',
+                store: naturemodStore,
+                valueField: 'value',
+                displayField: 'text',
+                editable: false,
+                mode: 'local',
+                triggerAction: 'all',
+                emptyText: 'Type de modification ...',
                 listWidth: 167,
                 allowBlank: false
             });
@@ -921,11 +1073,11 @@ Signalement.signalement = (function () {
                     maxLength: 50,
                     readOnly: true
                 },
-                referentielCombo, natureCombo, acteCombo,
+                referentielCombo, natureCombo, naturemodCombo, acteCombo,
                 {
                     xtype: 'textarea',
                     allowBlank: true,
-                    fieldLabel: 'commentaires',
+                    fieldLabel: 'commentaires ou description de la modification',
                     id: 'comment_ref',
                     maxLength: 100
                 }, /*{
@@ -1003,8 +1155,9 @@ Signalement.signalement = (function () {
                     formBind: true,
                     iconCls: "save",
                     tooltip: 'Enregistrer les modifications courantes et la géométrie',
-                    handler: function () {
-                        saveSignal();
+                    handler: function () {                        
+						var oFeature = getSelectedSignal();
+                        saveSignal(oFeature);
                     }
                 }, {
                     text: 'Annuler',
@@ -1053,4 +1206,5 @@ Signalement.signalement = (function () {
             return outputmsg;
         }
     }
+>>>>>>> master
 })();

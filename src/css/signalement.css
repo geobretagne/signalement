@@ -49,6 +49,9 @@
 .import {
             background-image: url(../img/table.png) !important;       
         }
+.workflow {
+            background-image: url(../img/workflow.png) !important;       
+        }
 .help {
             background-image: url(../img/help.png) !important;
       
@@ -82,4 +85,17 @@
   bottom: 1em !important;
   position: absolute;
   display: block;
+}
+
+p img {
+position: absolute;
+padding-left: 110px;
+}
+.x-progress-bar {
+	height: 10px!important;
+}
+
+.x-progress-text {
+	height: 100%!important;
+	width: 150px!important;
 }

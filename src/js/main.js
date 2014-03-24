@@ -1,9 +1,9 @@
-Ext.BLANK_IMAGE_URL = "../mapfishapp/lib/externals/ext/resources/images/default/s.gif";
-//Ext.BLANK_IMAGE_URL = "../ext3.4/resources/images/default/s.gif";
+Ext.BLANK_IMAGE_URL = "lib/externals/ext/resources/images/default/s.gif"
 Ext.namespace("Signalement");
 
 Signalement.main = (function () {
     "use strict";
+	var cluster = false;
     var extractUrlParams, loadConfigFailure, loadConfigSuccess;
 
     extractUrlParams = function () {
@@ -33,21 +33,42 @@ Signalement.main = (function () {
         var phplocation = config.phplocation.url;
         var enabledeletecontrol = config.deletecontrol.enable;
         OpenLayers.ProxyHost = ogcproxy;
-
+        Proj4js.defs["EPSG:3857"] = "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs";        
+        Proj4js.defs["EPSG:2154"] = "+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
+        Proj4js.defs["EPSG:4326"] = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+		
+		var today = new Date();        
+        var beginDate = new Date(new Date().add(Date.MONTH, -6));        
+        var wfsfilter = new OpenLayers.Filter.Comparison({
+                type: OpenLayers.Filter.Comparison.BETWEEN,
+                property: "date_saisie",
+                lowerBoundary: OpenLayers.Date.toISOString(beginDate),
+                upperBoundary: OpenLayers.Date.toISOString(today)
+        });		
+		var strategies = [new OpenLayers.Strategy.Fixed()];
+		// cluster
+		if (config.workinglayer.cluster === 'true') {
+			cluster = true;
+			var clusterStrategy = new OpenLayers.Strategy.Cluster({distance:45, threshold:5});
+			strategies.push(clusterStrategy);
+		}
+        
         // Layer WFS-T des signalements    
         var WFSSignal = new OpenLayers.Layer.Vector(config.workinglayer.label, {
-            strategies: [new OpenLayers.Strategy.BBOX()],
+            strategies: strategies,
+            filter: wfsfilter,
             protocol: new OpenLayers.Protocol.WFS({
                 url: config.workinglayer.wfsurl,
-                version: "1.0.0",
+                version: "1.1.0",
                 featureType: config.workinglayer.featuretype,
                 featurePrefix: config.workinglayer.featureprefix,
-                srsName: "EPSG:2154",
+                srsName: "EPSG:3857",
                 geometryName: config.workinglayer.geometryname,
                 extractAttributes: true,
-                schema: config.workinglayer.wfsurl + "service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=" + config.workinglayer.featuretype
+                schema: config.workinglayer.wfsurl + "service=WFS&version=1.1.0&request=DescribeFeatureType&TypeName=" + config.workinglayer.featuretype
             })
-        });
+        });		
+		
         WFSSignal.tp = {
             name: config.workinglayer.label,
             url: config.workinglayer.wfsurl,
@@ -108,8 +129,8 @@ Signalement.main = (function () {
         }
         
         else {
-            //mapPanelOptions.center = new OpenLayers.LonLat(352047, 6788957);
-            mapPanelOptions.zoom = 9;
+            mapPanelOptions.center = new OpenLayers.LonLat(-333445.31476491, 6118631.2393202);           
+            mapPanelOptions.zoom = 8;
         }
         
         
@@ -117,7 +138,7 @@ Signalement.main = (function () {
         var mapPanel = new GeoExt.MapPanel(mapPanelOptions);
 
         // initialisations des différents modules
-        var signalFormWindow = Signalement.signalement.create(map, mapPanel, toolbar, WFSSignal, true, phplocation,config.htmltexts[7]);
+        var signalFormWindow = Signalement.signalement.create(map, mapPanel, toolbar, WFSSignal, true, phplocation,config.htmltexts[7],cluster);
         Signalement.geocoder.create(map, toolbar, config.geocode.service);
         var rssPanel = Signalement.rss.create(map, config.workinglayer.rssurl, config.htmltexts, toolbar);
         var downloadForm = Signalement.download.create(config.workinglayer);
@@ -125,13 +146,14 @@ Signalement.main = (function () {
         var paramPanel = Signalement.parametrage.create();
         var layerPanel = Signalement.treelayer.create(map, config.workinglayer.label);
         var csvUploadForm = Signalement.importer.create(map, WFSSignal, phplocation);
-        var filterPanel = Signalement.timefilter.create(map, WFSSignal, toolbar, -6);
+        var workflowForm = Signalement.workflow.create(map, WFSSignal, phplocation);        
+		var filterPanel = Signalement.remotefilter.create(map, WFSSignal, toolbar, -6);
 
         //    Création du panel avancé
         var advancedPanel = new Ext.Panel({
             region: "east",
             title: "Outils",
-            items: [layerPanel, filterPanel, rssPanel, paramPanel, csvUploadForm, downloadForm],
+            items: [layerPanel, filterPanel, rssPanel, paramPanel, csvUploadForm, workflowForm, downloadForm],
             width: 320,
             minWidth: 175,
             maxWidth: 400,
