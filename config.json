@@ -27,13 +27,13 @@
             "featureprefix": "edit_rb",
             "featuretype": "signalement_adresse",
             "geometryname": "geom",
-            "wfsurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wfs?",
-            "wmsurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms?",
-            "metadataurl": "http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=58e7b791-8495-47df-819f-0660fb8d8645",            
+            "wfsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wfs?",
+            "wmsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms?",
+            "metadataurl": "http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=58e7b791-8495-47df-819f-0660fb8d8645",            
             "description": "La couche Signalement voies adresses en Bretagne recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Bretagne<p><img src='src/img/add.png'</img>contribution publique</p><p><img src='src/img/prive.png'</img>contribution privée</p>",
             "cswurl": "http://geobretagne.fr/geonetwork/srv/fr/csw?",
-            "kmlurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
-            "rssurl": "http://kartenn.region-bretagne.fr/ws/rss/rss.php?"
+            "kmlurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
+            "rssurl": "http://kartenn.region-bretagne.fr/signalement/ws/rss.php?"
         },
         "baselayers": [
             {
