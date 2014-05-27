@@ -1,5 +1,6 @@
 <?php
 //error_reporting(0);
+include_once("../secret/signalement.php");
 $dossier = 'traitements/';
 $fichier = basename($_FILES['workflowcsv']['name']);
 $taille_maxi = 4000000;
@@ -29,7 +30,7 @@ if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 			$row = 1;
 			if (($handle = fopen("../".$dossier . $nomDestination, "r")) !== FALSE) {
 
-				$dbh = pg_connect("host=xxx dbname=xxx user=xxx password=xxx");
+				$dbh = pg_connect($pg_connect_);
 				 if (!$dbh) {
 					 echo '{success:false, message:'.json_encode("Connexion à la Base Impossible").'}';	 
 					 
@@ -44,7 +45,7 @@ if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 				   $row++;
 				   
 				 $idsignal = $data[0];				 
-				 $sql = "INSERT INTO signalement_traitement (id_signal, operateur, workflow) VALUES( $idsignal, '$operateur', '$fichier')";
+				 $sql = "INSERT INTO a_05_adresses.signalement_traitement (id_signal, operateur, workflow) VALUES( $idsignal, '$operateur', '$fichier')";
 				 				 
 				 $result = pg_query($dbh, $sql);
 				

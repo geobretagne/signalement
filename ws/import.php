@@ -1,5 +1,6 @@
-﻿<?php
-error_reporting(0);
+<?php
+//error_reporting(0);
+include_once("../secret/signalement.php");
 $dossier = 'imports/';
 $fichier = basename($_FILES['lefichiercsv']['name']);
 $taille_maxi = 4000000;
@@ -29,7 +30,7 @@ if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 			$row = 1;
 			if (($handle = fopen("../".$dossier . $nomDestination, "r")) !== FALSE) {
 
-				$dbh = pg_connect("host=postgis dbname=XXXX user=XXXX password=XXXX");
+				$dbh = pg_connect($pg_connect_);
 				 if (!$dbh) {
 					 echo '{success:false, message:'.json_encode("Connexion à la Base Impossible").'}';	 
 					 
@@ -41,11 +42,11 @@ if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 				   
 				   $row++;
 				   
-					
+				 $commune = str_replace ( "'", "''", $data[1]);	
 				 $test = str_replace ( "'", "''", $data[5]);
-				 $sql = "INSERT INTO signalement_adresse (depco, libco, type_ref, nature_ref, acte_ref,
+				 $sql = "INSERT INTO a_05_adresses.signalement_adresse (depco, libco, type_ref, nature_ref, acte_ref,
 				 comment_ref, mel, contributeur, url_1, url_2, date_saisie, import, geom) VALUES( '$data[0]',
-				 '$data[1]', '$data[2]', '$data[3]', '$data[4]', '$test',
+				 '$commune', '$data[2]', '$data[3]', '$data[4]', '$test',
 				 '$data[6]', '$data[7]', '$data[8]', '$data[9]', DATE '$data[10]', '$nomDestination',
 				 ST_PointFromText('POINT($data[11] $data[12])', 2154))";
 				 

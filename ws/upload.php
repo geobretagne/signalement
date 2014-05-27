@@ -2,9 +2,9 @@
 <?php
 $dossier = 'docs/';
 $fichier = basename($_FILES['lefichier']['name']);
-$taille_maxi = 4194304;
+$taille_maxi = 4000000;
 $taille = filesize($_FILES['lefichier']['tmp_name']);
-$extensions = array('.odt', '.doc', '.jpg', '.jpeg', '.pdf','.dxf','.dwg');
+$extensions = array('.odt', '.doc', '.jpg', '.jpeg', '.pdf');
 $extension = strrchr($_FILES['lefichier']['name'], '.'); 
 $nomDestination = "f".date("YmdHis").$extension;
 //Début des vérifications de sécurité...

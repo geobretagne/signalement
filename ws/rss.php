@@ -1,34 +1,9 @@
 <?php
+include_once("../secret/signalement.php");
 date_default_timezone_set('Europe/Paris');
 header('Content-Type: application/rss+xml; charset=UTF-8');
-
- error_reporting(-1);
-
-$connexion="";
-if (!$fp = fopen("dev/log/log.txt","r")) {
-echo "Echec de l'ouverture du fichier";
-
-exit;
-
-}
-
-else {
- while(!feof($fp)) {
- // On récupère une ligne
-  $Ligne = fgets($fp,255);
-
- // On affiche la ligne
-
-
- // On stocke l'ensemble des lignes dans une variable
-  $connexion .= $Ligne;
-}
-
-$dbh=pg_connect($connexion);
-
-
-
-
+error_reporting(-1);
+$dbh=pg_connect($pg_connect_);
 
 	if (!$dbh) {
 			echo '{success:false, message:'.json_encode("Connexion à la Base Impossible").'}';	 
@@ -55,10 +30,10 @@ $dbh=pg_connect($connexion);
 								url_1 ,
 								url_2 ,
 								nature_mod,
-								ST_X(geom::geometry) as x_long,
-								ST_Y(geom::geometry) as y_lat,
+								ST_X(ST_Transform(geom::geometry,3857)) as x_long,
+								ST_Y(ST_Transform(geom::geometry,3857)) as y_lat,
 								date_saisie ,
-								contributeur from signalement_adresse where ST_".$p ." AND date_saisie> now()- interval '6 month' ORDER BY date_saisie DESC,idsignal DESC";
+								contributeur from a_05_adresses.signalement_adresse where ST_".$p ." AND date_saisie> now()- interval '6 month' ORDER BY date_saisie DESC,idsignal DESC";
 				
 			 }
 			 else {
@@ -77,10 +52,10 @@ $dbh=pg_connect($connexion);
 								mel ,
 								url_1 ,
 								url_2 ,
-								ST_X(geom::geometry) as x_long,
-								ST_Y(geom::geometry) as y_lat,
+								ST_X(ST_Transform(geom::geometry,3857)) as x_long,
+								ST_Y(ST_Transform(geom::geometry,3857)) as y_lat,
 								date_saisie ,
-								contributeur from signalement_adresse where " .$p." AND  date_saisie> now()- interval '6 month' ORDER BY date_saisie DESC,idsignal DESC" ;
+								contributeur from a_05_adresses.signalement_adresse where " .$p." AND  date_saisie> now()- interval '6 month' ORDER BY date_saisie DESC,idsignal DESC" ;
 			}
 			 
 			 
@@ -97,10 +72,10 @@ $dbh=pg_connect($connexion);
 								mel ,
 								url_1 ,
 								url_2 ,
-								ST_X(geom::geometry) as x_long,
-								ST_Y(geom::geometry) as y_lat,
+								ST_X(ST_Transform(geom::geometry,3857)) as x_long,
+								ST_Y(ST_Transform(geom::geometry,3857)) as y_lat,
 								date_saisie ,
-								contributeur from signalement_adresse where " .$p." AND  date_saisie> now()- interval '6 month' ORDER BY date_saisie DESC,idsignal DESC" ;
+								contributeur from a_05_adresses.signalement_adresse where " .$p." AND  date_saisie> now()- interval '6 month' ORDER BY date_saisie DESC,idsignal DESC" ;
 								
 								
 			 }
@@ -119,17 +94,17 @@ $dbh=pg_connect($connexion);
 								mel ,
 								url_1 ,
 								url_2 ,
-								ST_X(geom::geometry) as x_long,
-								ST_Y(geom::geometry) as y_lat,
+								ST_X(ST_Transform(geom::geometry,3857)) as x_long,
+								ST_Y(ST_Transform(geom::geometry,3857)) as y_lat,
 								date_saisie ,
 								contributeur 
-  from  signalement_adresse where date_saisie> now()- interval '6 month' ORDER BY date_saisie DESC,idsignal DESC" ;
+  from  a_05_adresses.signalement_adresse where date_saisie> now()- interval '6 month' ORDER BY date_saisie DESC,idsignal DESC" ;
 				 }
 				 $result = pg_query($dbh, $sql); 
 				  if (!$result) {
 				  echo("sql=".$sql);
 					 pg_query($dbh,"rollback");
-					 echo '{success:false, message:'.json_encode("erreur dans le traitement de : " .$nomDestination).'}';
+					 echo '{success:false, message:'.json_encode("erreur SQL").'}';
 					 die();
 				 }
 				
@@ -191,11 +166,11 @@ $xml_output .= '<title>SIGN\'ADRESSE</title>
 	  $ur2='<li><strong>Pièce Jointe n°2: </strong><a href='.$url2.' ><img src='.$urlimg1.' style="width:29px;"></a> </li>';
 	}
 	
-	 $link="http://kartenn.region-bretagne.fr/sviewer/?x=".$l["x_long"]."&y=".$l["y_lat"]."&z=17&bl=0&layers=edit_rb%3Asignalement_adresse*Signalement&title=SIGN\'ADRESSE&amp;i=1 ";
+	 $link="http://kartensig/sviewer/?x=".$l["x_long"]."&y=".$l["y_lat"]."&z=17&bl=0&layers=edit_rb%3Asignalement_adresse*signalement&title=SIGN\'ADRESSE&amp;q=1 ";
 	  
       $xml_output .='<item>';
 	  $xml_output .='<guid isPermaLink="false">signalement'.$titre.'</guid>';
-	 $xml_output .='<link> http://kartenn.region-bretagne.fr/sviewer/?x='.$l["x_long"].'&amp;y='.$l["y_lat"].'&amp;z=17&amp;bl=0&amp;layers=edit_rb%3Asignalement_adresse*Signalement&amp;title=SIGN\'ADRESSE&amp;i=1 </link>';
+	 $xml_output .='<link> http://kartensig/sviewer/?x='.$l["x_long"].'&amp;y='.$l["y_lat"].'&amp;z=17&amp;bl=0&amp;layers=edit_rb%3Asignalement_adresse*signalement&amp;title=SIGN\'ADRESSE&amp;q=1 </link>';
       $xml_output .= '<title>Signalement n°'.$titre.'</title>';
 	  $xml_output.= '<pubDate>'.$date2.' GMT </pubDate>'; 
 	
@@ -254,6 +229,4 @@ $xml_output .= '</rss>';
 print $xml_output;
 	pg_close($dbh);
 fclose($fp);
-}
-
 ?>
