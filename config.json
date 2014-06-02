@@ -65,22 +65,7 @@
                     "attributiontext": "IGNF",
                     "attributionurl": "http://www.ign.fr"
                 }
-            },
-             {
-                "baselayer": {
-					"type": "wmts",
-                    "label": "Transports",
-                    "url": "http://kartenn.region-bretagne.fr/cgi-bin/wmts",
-                    "layername": "TRANSPORTNETWORKS.ROADS",
-                    "matrixset": "PM",
-                    "style": "normal",
-                    "format": "image/png",
-                    "description": "Affichage du réseau routier français et européen de l’IGN",
-                    "metadataurl":"http://gpp3-wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_SCAN-EXPRESS_1-0.xml",                    
-                    "attributiontext": "IGNF",
-                    "attributionurl": "http://www.ign.fr"
-                }
-            },           
+            },             
             {
                 "baselayer": {
 					"type": "wmts",
