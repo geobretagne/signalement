@@ -27,13 +27,13 @@
             "featureprefix": "edit_rb",
             "featuretype": "signalement_adresse",
             "geometryname": "geom",
-            "wfsurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wfs?",
-            "wmsurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms?",
-            "metadataurl": "http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=58e7b791-8495-47df-819f-0660fb8d8645",            
+            "wfsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wfs?",
+            "wmsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms?",
+            "metadataurl": "http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=58e7b791-8495-47df-819f-0660fb8d8645",            
             "description": "La couche Signalement voies adresses en Bretagne recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Bretagne<p><img src='src/img/add.png'</img>contribution publique</p><p><img src='src/img/prive.png'</img>contribution privée</p>",
             "cswurl": "http://geobretagne.fr/geonetwork/srv/fr/csw?",
-            "kmlurl": "http://kartenn.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
-            "rssurl": "http://kartenn.region-bretagne.fr/ws/rss/rss.php?"
+            "kmlurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
+            "rssurl": "http://kartenn.region-bretagne.fr/signalement/ws/rss.php?"
         },
         "baselayers": [
             {
@@ -65,22 +65,7 @@
                     "attributiontext": "IGNF",
                     "attributionurl": "http://www.ign.fr"
                 }
-            },
-             {
-                "baselayer": {
-					"type": "wmts",
-                    "label": "Transports",
-                    "url": "http://kartenn.region-bretagne.fr/cgi-bin/wmts",
-                    "layername": "TRANSPORTNETWORKS.ROADS",
-                    "matrixset": "PM",
-                    "style": "normal",
-                    "format": "image/png",
-                    "description": "Affichage du réseau routier français et européen de l’IGN",
-                    "metadataurl":"http://gpp3-wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_SCAN-EXPRESS_1-0.xml",                    
-                    "attributiontext": "IGNF",
-                    "attributionurl": "http://www.ign.fr"
-                }
-            },           
+            },             
             {
                 "baselayer": {
 					"type": "wmts",
@@ -140,21 +125,7 @@
                     "version": "1.3.0",
                     "baselayer": false
                 }
-            },
-            {
-                "wmslayer": {
-                    "label": "Fond de plan Pays de Brest",
-                    "url": "http://geo.brest.fr/PlanVillePays/MAPServer/WMSServer?",
-                    "layer": "0,1,2,3,4,5,6,7,8,9,10,11",
-                    "description": "Plan de ville du Pays de Brest. Cette carte contient le filaire de voies mis à jour par la cellule SIG du Pays de Brest",
-                    "metadataurl":"http://sig.brest.fr",
-                    "style": "",
-                    "visible": "false",
-                    "singletile": false,
-                    "version": "1.1.1",
-                    "baselayer": true
-                }
-            },
+            },            
             {
                 "wmslayer": {
                     "label": "Fond de plan Lorient Agglomération",

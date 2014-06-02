@@ -1,3 +1,15 @@
+/*
+ * 
+ * This file is part of signalement
+ *
+ * signalement is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with signalement.  If not, see <http://www.gnu.org/licenses/>.
+ */
 Ext.namespace("Signalement");
 
 Signalement.signalement = (function () {
@@ -635,7 +647,13 @@ Signalement.signalement = (function () {
 			else
 			{                
                 ident = "Signalement : " + e.fid.split(".")[1]
-                htmlContent = "commune : <b>" + e.attributes.libco + "</b><br/>" + "référentiel : <b>" + e.attributes.type_ref + "</b><br/>" + "nature : <b>" + e.attributes.nature_ref + "</b><br/>" + "commentaires : <b>" + e.attributes.comment_ref + "</b><br/>" + "contributeur : <b>" + e.attributes.contributeur + "</b><br/>" + "mail : <b>" + e.attributes.mel + "</b><br/>" + "acte : <b>" + e.attributes.acte_ref + "</b><br/>" + "date : <b>" + new Date(e.attributes.date_saisie).format('d/m/Y') + "</b><br/>";
+                htmlContent = "commune : <b>" + e.attributes.libco + "</b><br/>" +
+                    "référentiel : <b>" + e.attributes.type_ref + "</b><br/>" + 
+                    "nature : <b>" + e.attributes.nature_ref + "</b><br/>" + 
+                    "commentaires : <b>" + e.attributes.comment_ref + "</b><br/>" + 
+                    "contributeur : <b>" + e.attributes.contributeur + "</b><br/>" + 
+                    "mail : <b>" + e.attributes.mel + "</b><br/>" + "acte : <b>" + e.attributes.acte_ref + "</b><br/>" + 
+                    "date : <b>" + new Date(e.attributes.date_saisie.split('Z')[0]).format('d/m/Y') + "</b><br/>";
 
                 if (e.attributes.url_1) {
                     if (e.attributes.url_1.match('http://')) {
