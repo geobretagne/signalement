@@ -368,6 +368,13 @@ Signalement.signalement = (function () {
      */
     var parseFormAttributesToFeature = function (
         oFeature, aszAttributes, signalForm) {
+            //Fix URL_1 & URL2 no presents in feature.attributes du to null value
+            if (!oFeature.attributes.hasOwnProperty('url_1')) {
+                oFeature.attributes['url_1'] = "";
+            }
+            if (!oFeature.attributes.hasOwnProperty('url_2')) {
+                oFeature.attributes['url_2'] = "";
+            }
             var szAttr, szValue, oDate = new Date(),
                 aoAttr = oFeature.attributes,
                 aoItems = signalForm.items,
@@ -408,6 +415,10 @@ Signalement.signalement = (function () {
             case "mel":
                 oValue = item.getValue();
                 Ext.util.Cookies.set("mel", oValue);
+                break;
+            case "url_1":
+            case "url_2":
+                oValue= item.items.items[0].getValue();
                 break;
             default:
                 oValue = item.getValue();
