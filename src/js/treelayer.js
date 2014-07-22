@@ -77,6 +77,12 @@ Signalement.treelayer = (function () {
                     layer: "Limites administratives",
                     qtip: "Limites administratives"
                     //,icon       : 'src/img/world.png'                
+                },
+                {
+                    nodeType: 'gx_layer',
+                    layer: "Fond cadastral",
+                    qtip: "Fond cadastral"
+                    //,icon       : 'src/img/world.png'                
                 }]
             }, {
                 nodeType: 'gx_baselayercontainer',
