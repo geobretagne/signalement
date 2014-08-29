@@ -106,8 +106,9 @@ Signalement.rss = (function () {
     var genRss = function () {
       var rssurl = "";
       var baseurl = rssUrl;
-      var filtre = Ext.getCmp("cqlfilterA").getValue();      
-      rssurl = baseurl + "&cql_filter=" + filtre;
+      var filtre = Ext.getCmp("cqlfilterA").getValue(); 
+     var filtre2=Ext.getCmp("cqlfilterB").getValue();
+      rssurl = baseurl + "&cql_filter=" + filtre+("&cql_url=")+filtre2;
       return rssurl;
     
     };
@@ -407,6 +408,47 @@ Signalement.rss = (function () {
                         }
                       }
                   },
+                
+                  {
+                    id: "rssradio2",
+                    xtype:'radiogroup',
+                    x: 5,
+                    y: 320,
+                    fieldLabel: 'Filtrer par pièce jointe ',
+                     columns    : 1,
+                       items: [
+                         {boxLabel: 'indifférent', name: 'rssoption2', inputValue: 0, checked:true},
+                         {boxLabel: 'au moins une ', name: 'rssoption2', inputValue: 1},
+                         {boxLabel: 'exactement deux', name: 'rssoption2', inputValue: 2},
+                      
+                      ],
+                    listeners: {
+                        change: function(radiogroup, radio) {  
+                      
+                        removerssfeatures();
+                            switch(radio.inputValue){
+                              case 0:            
+                              Ext.getCmp("cqlfilterB").setValue("0");
+                                 
+                              break; 
+                              case 1:
+                              Ext.getCmp("cqlfilterB").setValue("1");  
+                                                   
+                              break;
+                              case 2:
+                              Ext.getCmp("cqlfilterB").setValue("2");
+                                    
+                         
+                              break;
+                           
+                              
+                          }
+                        }
+                      }
+
+                    },
+                 
+
                   {
                     xtype:'textfield',
                     x: 5,
@@ -417,19 +459,37 @@ Signalement.rss = (function () {
                     allowBlank:false,    
                     id:"cqlfilterA"  
                   },
+                    {
+                    xtype:'textfield',
+                    x: 5,
+                    y: 175,    
+                    anchor:'100%',
+                    value:"0",
+                    hidden : true,
+                    allowBlank:false,    
+                    id:"cqlfilterB"  
+                  },
                   {
                     xtype:'textarea',
                     x: 5,
-                    y: 275,                     
+                    y: 400,                     
                     anchor:'100%',
                     hidden : true,
                     allowBlank:true,    
                     id:"rssurlresult"  
                   },
+                    {
+                    xtype:'panel',
+                    x: 5,
+                    y: 270,
+                    html:'<b>Nombre de pièces jointes</b>',
+                    height:15,            
+                    id:"rsshelp33"
+                  },
                   {
                     xtype:'panel',
                     x: 5,
-                    y: 375,
+                    y: 520,
                     html:'<a href="http://fr.wikipedia.org/wiki/RSS" target="_blank">Comment utiliser un flux RSS</a>',
                     height:100,            
                     id:"rsshelp"
