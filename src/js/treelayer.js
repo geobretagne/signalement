@@ -80,6 +80,12 @@ Signalement.treelayer = (function () {
                 },
                 {
                     nodeType: 'gx_layer',
+                    layer: "Bano",
+                    qtip: "Bano"
+                    //,icon       : 'src/img/world.png'                
+                },
+                {
+                    nodeType: 'gx_layer',
                     layer: "Fond cadastral",
                     qtip: "Fond cadastral"
                     //,icon       : 'src/img/world.png'                
