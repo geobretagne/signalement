@@ -108,7 +108,7 @@ Signalement.rss = (function () {
       var baseurl = rssUrl;
       var filtre = Ext.getCmp("cqlfilterA").getValue(); 
      var filtre2=Ext.getCmp("cqlfilterB").getValue();
-      rssurl = baseurl + "&cql_filter=" + filtre+("&cql_url=")+filtre2;
+      rssurl = baseurl + "&cql_filter=" + filtre+("&pj=")+filtre2;
       return rssurl;
     
     };
@@ -482,7 +482,7 @@ Signalement.rss = (function () {
                     xtype:'panel',
                     x: 5,
                     y: 270,
-                    html:'<b>Nombre de pièces jointes</b>',
+                    html:'<b>Nombre de pièces jointes :</b>',
                     height:15,            
                     id:"rsshelp33"
                   },
