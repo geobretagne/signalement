@@ -368,6 +368,13 @@ Signalement.signalement = (function () {
      */
     var parseFormAttributesToFeature = function (
         oFeature, aszAttributes, signalForm) {
+            //Fix URL_1 & URL2 no presents in feature.attributes du to null value
+            if (!oFeature.attributes.hasOwnProperty('url_1')) {
+                oFeature.attributes['url_1'] = "";
+            }
+            if (!oFeature.attributes.hasOwnProperty('url_2')) {
+                oFeature.attributes['url_2'] = "";
+            }
             var szAttr, szValue, oDate = new Date(),
                 aoAttr = oFeature.attributes,
                 aoItems = signalForm.items,
@@ -408,6 +415,10 @@ Signalement.signalement = (function () {
             case "mel":
                 oValue = item.getValue();
                 Ext.util.Cookies.set("mel", oValue);
+                break;
+            case "url_1":
+            case "url_2":
+                oValue= item.items.items[0].getValue();
                 break;
             default:
                 oValue = item.getValue();
@@ -645,7 +656,7 @@ Signalement.signalement = (function () {
                 htmlContent = "Pour afficher les informations relatives à ces signalements, veuillez zoomer davantage.";
             }
 			else
-			{                
+			{                                 
                 ident = "Signalement : " + e.fid.split(".")[1]
                 htmlContent = "commune : <b>" + e.attributes.libco + "</b><br/>" +
                     "référentiel : <b>" + e.attributes.type_ref + "</b><br/>" + 
@@ -653,7 +664,7 @@ Signalement.signalement = (function () {
                     "commentaires : <b>" + e.attributes.comment_ref + "</b><br/>" + 
                     "contributeur : <b>" + e.attributes.contributeur + "</b><br/>" + 
                     "mail : <b>" + e.attributes.mel + "</b><br/>" + "acte : <b>" + e.attributes.acte_ref + "</b><br/>" + 
-                    "date : <b>" + new Date(e.attributes.date_saisie.split('Z')[0]).format('d/m/Y') + "</b><br/>";
+                    "date : <b>" + new Date(e.attributes.date_saisie.split('Z')[0]).format('d/m/Y') + "</b><br/>";                    
 
                 if (e.attributes.url_1) {
                     if (e.attributes.url_1.match('http://')) {
@@ -664,6 +675,9 @@ Signalement.signalement = (function () {
                     if (e.attributes.url_2.match('http://')) {
                         htmlContent += "fichier 2 : <a href='" + e.attributes.url_2 + "' target='_blank'>Lien</a><br/>";
                     }
+                 }                 
+                if (e.attributes.traitement) {                    
+                    htmlContent += "pris en compte par : <b>" + e.attributes.traitement + "</b><br/>";                   
                  }
             }
 			

@@ -65,6 +65,30 @@ Signalement.mainmap = (function () {
                     });      
 
     };
+    
+    _addGeorest = function () {
+        var layer = new OpenLayers.Layer.WMTS( {                    
+                    name: "Fond de plan Pays de Brest",                    
+                    url:"http://georest.brest.fr/PlanVilleSignalement/MapServer/WMTS",
+                    layer: "public_PlanVilleSignalement",
+                    matrixSet: "default028mm",                    
+                    format: "image/png",
+                    style: "default",                    
+                    isBaseLayer: true,
+                    maxExtent: new OpenLayers.Bounds( -656815.6081874887,5969550.369940238,-107482.80507860315,6282827.005708887),
+                    version: "1.0.0",
+                    requestEncoding: "KVP",
+                    tileOrigin: new OpenLayers.LonLat(-20037700, 30241100 ),
+                    maxResolution: 144.40775548217763,
+                    minResolution: 0.1410231987130641
+                    } );
+        layer.tp = {name:"Fond de plan Pays de Brest",
+                                    url:"http://georest.brest.fr/PlanVilleSignalement/MapServer/WMTS",
+                                    desc:"Fond de plan issu du SIG Pays de Brest",
+                                    metadata: "http://applications002.brest-metropole-oceane.fr/vipdu60/aspx/HTDU502.aspx?TYPE=LOT&ID=REF_Plan%20de%20ville"
+                        };
+       map.addLayer(layer);
+    };
 	
 	_noServiceVersionGetUrl = function (bounds) {
 		bounds=this.adjustBounds(bounds);
@@ -189,7 +213,8 @@ Signalement.mainmap = (function () {
 								break;
 						}
 					}
-                  
+                  //specific for georest.brest.fr (temporary)
+                  _addGeorest();
                   //Configuration des couches wms
                   var wmsLayers = new Array();
                   var wmscount = config.wmslayers.length;
