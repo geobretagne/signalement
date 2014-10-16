@@ -55,7 +55,7 @@
                 "baselayer": {
 					"type": "wmts",
                     "label": "Scan express",
-                    "url": "http://wxs.ign.fr/x1uy9hv7ojndca8335mhgv38/geoportail/wmts",
+                    "url": "http://wxs.ign.fr/01gwgg3by2fpaxwxrfgvynqw/geoportail/wmts",
                     "layername": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD",
                     "matrixset": "PM",
                     "style": "normal",
