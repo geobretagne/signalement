@@ -80,14 +80,14 @@ Signalement.treelayer = (function () {
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: "Bano",
-                    qtip: "Bano"
+                    layer: "BANO",
+                    qtip: "Base Adresses Nationale Ouverte"
                     //,icon       : 'src/img/world.png'                
                 },
                 {
                     nodeType: 'gx_layer',
                     layer: "Fond cadastral",
-                    qtip: "Fond cadastral"
+                    qtip: "Parcelles du cadastre"
                     //,icon       : 'src/img/world.png'                
                 }]
             }, {

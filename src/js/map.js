@@ -84,8 +84,8 @@ Signalement.mainmap = (function () {
                     } );
         layer.tp = {name:"Fond de plan Pays de Brest",
                                     url:"http://georest.brest.fr/PlanVilleSignalement/MapServer/WMTS",
-                                    desc:"Plan de ville du Pays de Brest. Cette carte contient le filaire de voies mis à jour par la cellule SIG du Pays de Brest",
-                                    metadata: "http://sig.brest.fr"
+                                    desc:"Fond de plan issu du SIG Pays de Brest",
+                                    metadata: "http://applications002.brest-metropole-oceane.fr/vipdu60/aspx/HTDU502.aspx?TYPE=LOT&ID=REF_Plan%20de%20ville"
                         };
        map.addLayer(layer);
     };

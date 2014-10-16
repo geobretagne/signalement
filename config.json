@@ -142,11 +142,11 @@
             },
             {
                 "wmslayer": {
-                    "label": "Bano",
+                    "label": "BANO",
                     "url": "http://geobretagne.fr/geoserver/osm/ows?",
                     "layer": "bano",
-                    "description": "bano",
-                    "metadataurl":"bano",                    
+                    "description": "La Base Adresses Nationale Ouverte (BANO) est une initiative d'OpenStreetMap France. Elle a pour objet la constitution d'une base la plus complète possible de points d'adresse à l'échelle de la France. (zoom >= 13)",
+                    "metadataurl":"http://wiki.openstreetmap.org/wiki/WikiProject_France/WikiProject_Base_Adresses_Nationale_Ouverte_(BANO)",                    
                     "style": "",
                     "visible": "false",
                     "singletile": false,
