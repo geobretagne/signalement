@@ -351,7 +351,7 @@ Signalement.rss = (function () {
                     id: "rssradio",
                     xtype:'radiogroup',
                     x: 5,
-                    y: 105,
+                    y: 55,
                     fieldLabel: 'Filtrer',
                      columns    : 1,
                        items: [
@@ -413,7 +413,7 @@ Signalement.rss = (function () {
                     id: "rssradio2",
                     xtype:'radiogroup',
                     x: 5,
-                    y: 320,
+                    y: 250,
                     fieldLabel: 'Filtrer par pièce jointe ',
                      columns    : 1,
                        items: [
@@ -481,7 +481,7 @@ Signalement.rss = (function () {
                     {
                     xtype:'panel',
                     x: 5,
-                    y: 270,
+                    y: 230,
                     html:'<b>Nombre de pièces jointes :</b>',
                     height:15,            
                     id:"rsshelp33"
@@ -489,7 +489,7 @@ Signalement.rss = (function () {
                   {
                     xtype:'panel',
                     x: 5,
-                    y: 520,
+                    y: 330,
                     html:'<a href="http://fr.wikipedia.org/wiki/RSS" target="_blank">Comment utiliser un flux RSS</a>',
                     height:100,            
                     id:"rsshelp"
