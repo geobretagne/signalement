@@ -592,15 +592,15 @@ Signalement.signalement = (function () {
                 initLoader();
             }
             mon_loader.show();
-            var wfsurl = "http://geobretagne.fr/geoserver/ign/wfs?";            
+            var wfsurl = "http://ows.region-bretagne.fr/geoserver/rb/wfs?";            
             var post = '<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0"' + ' outputFormat="json"'+ ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
-            '<wfs:Query typeName="ign:bdtopo_commune" ' +
-            'srsName="EPSG:3857" xmlns:feature="http://geobretagne.fr/ns/ign">' +
-            ' <PropertyName>code_insee</PropertyName> ' +
-            ' <PropertyName>nom</PropertyName> ' +
+            '<wfs:Query typeName="rb:communes_osm" ' +
+            'srsName="EPSG:3857" >' +
+            ' <PropertyName>insee_comm</PropertyName> ' +
+            ' <PropertyName>nom_comm</PropertyName> ' +
             '<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">' +            
             '<ogc:Contains>' +
-                '<ogc:PropertyName>the_geom</ogc:PropertyName>' +
+                '<ogc:PropertyName>geom</ogc:PropertyName>' +
                 '<gml:MultiPoint srsName="http://www.opengis.net/gml/srs/epsg.xml#3857" xmlns:gml="http://www.opengis.net/gml">' +
                     '<gml:pointMember>' +
                         '<gml:Point>' +
@@ -625,10 +625,9 @@ Signalement.signalement = (function () {
     var getCommuneSuccess = function (response) {
 
             var obj = eval("(" + response.responseText + ")");
-            if (obj.features.length > 0) {
-                OpenLayers.Console.log("Commune", obj.features[0].properties.nom);
-                Ext.getCmp('libco').setValue(obj.features[0].properties.nom.toUpperCase());
-                Ext.getCmp('depco').setValue(obj.features[0].properties.code_insee);
+            if (obj.features.length > 0) {                
+                Ext.getCmp('libco').setValue(obj.features[0].properties.nom_comm.toUpperCase());
+                Ext.getCmp('depco').setValue(obj.features[0].properties.insee_comm);
             } else {
                 Signalement.main.showMsg("Erreur", "Aucune commune n'a été trouvée à cet emplacement");
             }
