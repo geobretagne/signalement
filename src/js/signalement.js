@@ -833,7 +833,8 @@ Signalement.signalement = (function () {
             selectFeatureCtrl = new OpenLayers.Control.SelectFeature(wfsLayer, {
                 hover: enableSelectOver,
                 // Fait reference a la fonction popUp
-                onSelect: popUP
+                onSelect: popUP,
+                onUnselect: function(){popup.destroy();}
                 //selectStyle :feature_style
 
             });
