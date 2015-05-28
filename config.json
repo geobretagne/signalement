@@ -10,7 +10,7 @@
             "url": "../proxy/?url=https://www.cigalsace.org/signalement/ws"
         },
         "helpurl": {
-            "url": "https://docs.google.com/document/d/1BlfXeqN7TwmXzf1HdQFHsKtThyoVbQw2LFQuneMwZtc/edit?pli=1"
+            "url": "https://www.cigalsace.org/portail/fr/page/721/manuel-dutilisation-signadresse"
         },
         "login": {
             "url": "https://www.cigalsace.org/cas/login?service:https://www.cigalsace.org/signalement/"
@@ -23,7 +23,7 @@
         },
         "workinglayer": {
             "label": "Signalements",
-			"cluster": "true",
+	    "cluster": "true",
             "featureprefix": "cigal_edit",
             "featuretype": "signalement_adresse",
             "geometryname": "the_geom",
@@ -32,28 +32,30 @@
             "metadataurl": "https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=",            
             "description": "La couche Signalement voies adresses en Alsace recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Alsace<p><img src='src/img/add.png'</img>Adresse</p><p><img src='src/img/voie.png'</img>Voie</p><p><img src='src/img/projet.png'</img>Projet</p>", 
             "cswurl": "https://www.cigalsace.org/geonetwork/srv/fr/csw?",
-            "kmlurl": "https://www.cigalsace.org/geoserver/wms/kml?layers=cigal_edit:signalement_adresse_demo",
-            "rssurl": "https://www.cigalsace.org/geoserver/wms?layers=cigal_edit:signalement_adresse_demo&width=742&styles=&srs=EPSG%3A2154&format=application%2Fatom+xml&version=1.1.1&height=330&bbox=934173%2C6705656%2C1098054%2C6901029&request=GetMap&service=wms&format_options=%3Atrue%3BENCODING%3Agml%3B"
+            "kmlurl": "https://www.cigalsace.org/geoserver/wms/kml?layers=cigal_edit:signalement_adresse",
+            "rssurl": "https://www.cigalsace.org/signalement/ws/rss.php?"
         },
         "baselayers": [
             {
                 "baselayer": {
-					"type": "wmts",
-                    "label": "OpenStreetMap style NORMAL",
-                    "url": "http://osm.geobretagne.fr/gwc01/service/wmts",
-                    "layername": "osm:map",
-                    "matrixset": "EPSG:3857",
+					"type": "rendu bano",
+                    "label": "Rendu BANO",
+                    "url": {"a":"http://a.layers.openstreetmap.fr/bano/${z}/${x}/${y}.png","b":"http://b.layers.openstreetmap.fr/bano/${z}/${x}/${y}.png","c":"http://c.layers.openstreetmap.fr/bano/${z}/${x}/${y}.png"},
+                    "layername": "bano",
+                    "maxzoom": "21",
                     "style": "_null",
-                    "format": "image/png",
-                    "description": "Couche osm mise à jour mensuellement",
-                    "metadataurl":"http://www.openstreetmap.org/copyright",                    
+                    "format": "png",
+                    "description": "Adresses de la BAN ODbL. Legende : <p></p><p><img src='src/img/legende_rendu_bano.png'</img></p>",
+                    "metadataurl":"http://wiki.openstreetmap.org/wiki/WikiProject_France/WikiProject_Base_Adresses_Nationale_Ouverte_%28BANO%29#Rendu_BANO",                    
                     "attributiontext": "© les contributeurs d’OpenStreetMap",
-                    "attributionurl": "http://openstreetmap.org"
+                    "attributionurl": "http://openstreetmap.org",
+                    "visible": false,
+		    "baselayer": false
                 }
             },
             {
                 "baselayer": {
-					"type": "wmts",
+		    "type": "wmts",
                     "label": "Scan express",
                     "url": "https://wxs.ign.fr/8rrocudg7364630fr8yb620s/geoportail/wmts",
                     "layername": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD",
@@ -82,24 +84,10 @@
         "wmslayers": [
 		 {
 				"wmslayer": {
-				"label": "BANO",
-				"url": "https://www.cigalsace.org/geoserver/OSM/ows?",
-				"layer": "OSM_bano-67",
-				"description": "La Base Adresses Nationale Ouverte (BANO) est une initiative d'OpenStreetMap France. Elle a pour objet la constitution d'une base la plus complète possible de points d'adresse à l'échelle de la France. (zoom >= 13)",
-				"metadataurl":"http://wiki.openstreetmap.org/wiki/WikiProject_France/WikiProject_Base_Adresses_Nationale_Ouverte_(BANO)",
-				"style": "OSM_BANO_13",
-				"visible": "false",
-				"singletile": false,
-				"version": "1.3.0",
-				"baselayer": false
-					}
-				},
-		 {
-				"wmslayer": {
 				"label": "Fond cadastral",
 				"url": "https://www.cigalsace.org/geoserver/CG67/wms?",
 				"layer": "CG67_PCI_geo_parcelle",
-				"description": "Le plan du cadastre est un document administratif qui propose l’unique plan parcellaire à grande échelle couvrant le territoire national. (zoom >= 14)",
+				"description": "Disponible pour le 67 hors CUS. Le plan du cadastre est un document administratif qui propose l’unique plan parcellaire à grande échelle couvrant le territoire national. (zoom >= 14)",
 				"metadataurl":"https://www.cigalsace.org/geonetwork/apps/georchestra/?uuid=FR-226-700-011-080",
 				"style": "",
 				"visible": "false",
@@ -136,38 +124,7 @@
 				"version": "1.3.0",
 				"baselayer": true
                 }
-            },				
-			{
-                "wmslayer": {
-				"label": "Photographie aérienne M2A",
-				"url": "http://www.cigalsace.org/geoserver/M2A/wms?",
-				"layer": "M2A_ORTHORVB_TIFA_C48",
-				"description": "Photographie aérienne de la M2A",
-				"metadataurl":"https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=",
-				"metadataurl2":"https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=",
-				"style": "",
-				"visible": "false",
-				"singletile": false,
-				"version": "1.1.0",
-				"baselayer": false
-				}
-			},
-			{
-                "wmslayer": {
-				"label": "Photographie aérienne 1956",
-				"url": "https://www.cigalsace.org/geoserver/cigal/wms?",
-				"layer": "CIGAL_ORTHO_HISTO_1956_ALS_TIF_CC48",
-				"description": "Photographie aérienne de 1956, source IGN.",
-				"metadataurl":"https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=",
-				"metadataurl2":"https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=",
-				"style": "",
-				"visible": "false",
-				"singletile": false,
-				"version": "1.1.0",
-				"baselayer": false
-                }
-            }
-        ],
+            }],
         "htmltexts": [
             {
                 "htmltext": {
@@ -208,12 +165,30 @@
             {
                 "htmltext": {
                     "id": "6",
-                    "value": "Sélection d'un flux sur l'emprise départementale du Morbihan.Cliquez sur s'abonner."
+                    "value": "Sélection d'un flux sur l'emprise de la Communauté de Commune Kochersberg. Cliquez sur s'abonner."
                 }
             },
             {
                 "htmltext": {
                     "id": "7",
+                    "value": "Sélection d'un flux sur l'emprise M2A. Cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "8",
+                    "value": "Sélection d'un flux sur l'emprise CAC. Cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "9",
+                    "value": "Sélection d'un flux sur l'emprise Eurométropole Strasbourg. Cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "10",
                     "value": "<b>*Avertissement</b></br>En enregistrant ce signalement, j'accepte qu'il soit libre de droit, librement réutilisable, conservé durant 2 ans et que mon adresse mail soit communiquée à tous les utilisateurs."
                 }
             }
