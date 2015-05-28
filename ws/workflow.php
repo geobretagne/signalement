@@ -1,13 +1,15 @@
 <?php
-//error_reporting(0);
-include_once("../secret/signalement.php");
-$dossier = 'traitements/';
-$fichier = basename($_FILES['workflowcsv']['name']);
+
+$fichier = basename($_FILES['workflowcsv']['name']); //cus_vu.txt
 $taille_maxi = 4000000;
 $taille = filesize($_FILES['workflowcsv']['tmp_name']);
 $extensions = array('.csv', '.txt');
-$extension = strrchr($_FILES['workflowcsv']['name'], '.'); 
-$nomDestination = $fichier;
+$extension = strrchr($_FILES['workflowcsv']['name'], '.');  // .txt
+$nomDestination = "traitement_".date("Y")."_".date("m")."_".date("d")."_".date("H")."h".date("i")."m".date("s")."_";
+
+$fichier_nom = basename($fichier,$extension);  // cus_vu
+$lefichierimporte = $nomDestination.$fichier_nom;  // traitement_2015_04_08_10h42m55s_cus_vu
+
 //Début des vérifications de sécurité...
 if(!in_array($extension, $extensions)) //Si l'extension n'est pas dans le tableau
 {
@@ -24,51 +26,31 @@ if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 			  'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 
 			  'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
 		 $fichier = preg_replace('/([^.a-z0-9]+)/i', '-', $fichier);
-		 if(move_uploaded_file($_FILES['workflowcsv']['tmp_name'], '../'.$dossier . $nomDestination)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+		 if(move_uploaded_file($_FILES['workflowcsv']['tmp_name'], '../traitements/'. $lefichierimporte.".txt")) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
 		 {
 			// traitement du fichier
-			$row = 1;
-			if (($handle = fopen("../".$dossier . $nomDestination, "r")) !== FALSE) {
+		$file = "../traitements".DIRECTORY_SEPARATOR.$lefichierimporte.".txt";
+			$handle = @fopen($file, 'r');
+			
+			while (($data = @fgetcsv($handle, 2000, ';')) !== FALSE)
+			{
+				if ($row == 0)
+				{
+					$acteur = strtolower($data[0]);
+				}
+				if ($row > 0)
+				{
+					$idsignal = $data[0];
+					$reponse .= "DOWN".$idsignal."UP"; // création d'une chaine avec des enchainements de DOWNidsignalUP. DOWN et UP seront remplacés par les balises dans le script .js
 
-				$dbh = pg_connect($pg_connect_);
-				 if (!$dbh) {
-					 echo '{success:false, message:'.json_encode("Connexion à la Base Impossible").'}';	 
-					 
-					 die();
-				 }
-				$data = fgetcsv($handle, 1000, ";"); // Pour aller à la deuxième ligne
-				$parsefilename = explode("-", $fichier);
-				$operateur = $parsefilename[0];
-				pg_query($dbh,"begin"); 
-				while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-				   
-				   $row++;
-				   
-				 $idsignal = $data[0];				 
-				 $sql = "INSERT INTO a_05_adresses.signalement_traitement (id_signal, operateur, workflow) VALUES( $idsignal, '$operateur', '$fichier')";
-				 				 
-				 $result = pg_query($dbh, $sql);
-				
-				 if (!$result) {
-					 pg_query($dbh,"rollback");
-					 echo '{success:false, message:'.json_encode("erreur dans le traitement de : " .$nomDestination).'}';
-					 die();
-				 }
-					 
-				} // fin while
-				pg_query($dbh,"commit");				
-				// free memory
-				pg_free_result($result);
-				fclose($handle);
-				// close connection
-				pg_close($dbh);
-				echo '{success:true, import1:'.json_encode($nomDestination).", message:".json_encode("Workflow réussi de : " .$nomDestination).'}';
-			} // fin handle open
-						
-			  
-			//fin du traitement 
+				}
+			$row++;				
+			}
+			//$reponse .= '</ogc:Filter></wfs:Update></wfs:Transaction>';
+			$reussi = "Chargement du fichier réussi ! Signalement(s) marqué(s) comme vu(s) !";
 		 }
-		 
+
+echo "{success:true, acteur:".json_encode($acteur).", idsignal:".json_encode($reponse).", message:".json_encode($reussi).'}';			 
 	}
 else
 	{
