@@ -200,7 +200,7 @@ Signalement.rss = (function () {
         var store = new Ext.data.JsonStore({
                     fields: [{
                         name: 'insee',
-                        mapping: 'properties.INSE'
+                        mapping: 'properties.INSEE'
                     }, {
                         name: 'commune',
                         mapping: 'properties.COMMUNE'
