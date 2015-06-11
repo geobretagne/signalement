@@ -170,7 +170,7 @@ Signalement.rss = (function () {
         + ' xsi:schemaLocation="http://www.opengis.net/wfs'
         + ' http://schemas.opengis.net/wfs/1.1.0/WFS-basic.xsd">'
         + ' <wfs:Query srsName="EPSG:3857" typeName="geob_loc:COMMUNE">'
-        + ' <ogc:PropertyName>INSE</ogc:PropertyName> '
+        + ' <ogc:PropertyName>INSEE</ogc:PropertyName> '
         + ' <ogc:PropertyName>COMMUNE</ogc:PropertyName>'
         +  ' <Filter>'
         +    ' <Intersects>'
@@ -247,7 +247,7 @@ Signalement.rss = (function () {
               var communesliste = "";
               for ( var i=0; i < obj.features.length; i++ )
               {
-                inseeliste += obj.features[i].properties.INSE;
+                inseeliste += obj.features[i].properties.INSEE;
                 communesliste += obj.features[i].properties.COMMUNE;
                 if (i != obj.features.length -1)
                 {
