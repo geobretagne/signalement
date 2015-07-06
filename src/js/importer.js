@@ -73,6 +73,33 @@ Signalement.importer = (function () {
             layer = l;
             phplocation = phploc;
             
+var epsgData = [
+				['EPSG:2154','Lambert 93'],
+				['EPSG:3948', 'CC48'],
+				['EPSG:3857', 'WGS84 Web Mercator'],
+				['EPSG:4326', 'WGS84']
+//				,['EPSG:27572', 'Lambert II étendu']
+            ];
+			
+			var epsgStore = new Ext.data.SimpleStore({
+			fields: ['epsg', 'name'],
+			data: epsgData
+			});
+						
+			epsgCombo = new Ext.form.ComboBox({
+                id: 'epsgcombo',
+                //width: 95,
+				listWidth: 160,
+                fieldLabel: 'EPSG',
+				emptyText: 'Sélectionnez un système de projection',
+                store: epsgStore,
+                valueField: 'epsg',
+                displayField: 'name',
+                editable: false,
+                mode: 'local',
+                triggerAction: 'all'
+            });
+            
             var csvUploadForm = new Ext.FormPanel({        
                 fileUpload: true,
                 width: 320,
@@ -92,37 +119,71 @@ Signalement.importer = (function () {
                     xtype: 'fileuploadfield',
                     id: 'lefichiercsv',
                     emptyText: 'Sélectionnez un fichier csv',
-                    fieldLabel: 'fichier',
+                    fieldLabel: 'Fichier',
                     name: 'lefichiercsv',
-                    buttonText: '',
-                    buttonCfg: {
-                        iconCls: 'upload-icon'
-                    }
+                    buttonText: 'Ouvrir',
+                    //buttonCfg: {
+                       // iconCls: 'upload-icon'
+                    //}
                 }],
                 buttons: [{
                     text: 'Transférer',
                     handler: function(){
-                        if(csvUploadForm.getForm().isValid()){
+                        if(csvUploadForm.getForm().isValid() && epsgCombo!==""){
                           csvUploadForm.getForm().submit({
-                            //url: '../proxy/?url=http://kartenn.region-bretagne.fr/signalement/ws/import.php',
-                  url: phplocation + 'import.php',
-                              waitMsg: 'Transfert du fichier et traitement...',            
+                           url: 'https://www.cigalsace.org/signalement/ws/import.php?epsg='+epsgCombo.value,  //etape0
+                              waitMsg: 'Publication de vos signalements', 
+                              waitTitle: 'En cours',
                               success: function(frm, o){
-                                layer.events.register("loadend",null,function(){highlight(o.result.import1)});
-                                layer.refresh({force: true});                      
-                                Signalement.main.showMsg("Succès", o.result.message);                  
+transfert=true;								
+layer.events.register("loadend",null,function(){highlight(o.result.import1)});                    
+publication(o.result.import1); Ext.MessageBox.hide(); //étape 1
+setTimeout(function(){layer.refresh({force: true});Signalement.main.showMsg('Succès !', o.result.message);},2000); //etape 2 => 2 secondes accordées à étape1
+               
                           
                               },
                     failure:function(csvUploadForm, o){              
-                              Signalement.main.showMsg('Erreur', o.result.message);
+                              Signalement.main.showMsg('Echec !', o.result.message);
+                              Ext.MessageBox.hide();
                               }
                           });
+//...........Fonctions de lecture du fichier txt et publication des nouveaux signalements............//
+function lire(fichier)
+{
+if(window.XMLHttpRequest) obj = new XMLHttpRequest(); //Pour Firefox, Opera,...
+else if(window.ActiveXObject) obj = new ActiveXObject("Microsoft.XMLHTTP"); //Pour Internet Explorer 
+else return(false);
+if (obj.overrideMimeType) obj.overrideMimeType("text/xml"); //Évite un bug de Safari
+obj.open("GET", fichier, false);
+obj.send(null);
+if(obj.readyState == 4) return(obj.responseText);
+else return(false);
+}
+//...............Fonction qui envoie une requête POST au serveur. Le corps de la requête est stocké dans un fichier texte du repertoire ./xml_out/.............	
+function publication(lesinsert) 
+{
+var lexml = './xml_out/'+lesinsert;
+var contenu = lire(lexml);		  
+
+
+var requetehttppost = new XMLHttpRequest();
+var url = "https://www.cigalsace.org/geoserver/cigal_edit/wfs";
+var params = contenu; 
+
+
+requetehttppost.open("POST", url, true);
+requetehttppost.setRequestHeader("Content-type", " application/xml; charset=UTF-8");
+requetehttppost.setRequestHeader("Referer", "https://www.cigalsace.org/signalement/");
+requetehttppost.setRequestHeader("Accept-Language", "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3");
+requetehttppost.setRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+requetehttppost.setRequestHeader("Host", "www.cigalsace.org");
+
+requetehttppost.send(params);
+
+csvUploadForm.getForm().reset(); //efface le fichier Ouvert dans le formulaire
+}
+//..............................................................................//                          
                         }
-                    }
-                },{
-                    text: 'Rétablir',
-                    handler: function(){
-                        csvUploadForm.getForm().reset();
                     }
                 },
             {
