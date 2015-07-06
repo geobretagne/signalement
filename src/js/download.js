@@ -27,7 +27,7 @@ Signalement.download = (function () {
     
     var kmlurl = null;
     
-    var metadataurl = "http://geobretagne.fr/geonetwork/srv/fr/metadata.show?uuid=58e7b791-8495-47df-819f-0660fb8d8645";
+    var metadataurl = "https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=XXX";
     
     
     
