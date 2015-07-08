@@ -69,10 +69,10 @@ Signalement.parametrage = (function () {
             });
             
             var paramPanel = new Ext.Panel({
-                title: 'Paramétrage',
+                title: 'Partager l'emprise de la carte',
                 frame: true,
                 iconCls:'tool',
-                html: "<b>Cette boîte à outil permet de générer l'adresse correspondant à l'affichage actuel (cadrage, fond cartographique)</b>",                 
+                html: "Cet outil permet de générer l'URL correspondant à l'affichage actuel (cadrage, fond cartographique,...)",                 
                 items:[permaPanel]
               });
       
