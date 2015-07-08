@@ -66,29 +66,6 @@ Signalement.mainmap = (function () {
 
     };
     
-    _addGeorest = function () {
-        var layer = new OpenLayers.Layer.WMTS( {                    
-                    name: "Fond de plan Pays de Brest",                    
-                    url:"http://georest.brest.fr/PlanVilleSignalement/MapServer/WMTS",
-                    layer: "public_PlanVilleSignalement",
-                    matrixSet: "default028mm",                    
-                    format: "image/png",
-                    style: "default",                    
-                    isBaseLayer: true,
-                    maxExtent: new OpenLayers.Bounds( -656815.6081874887,5969550.369940238,-107482.80507860315,6282827.005708887),
-                    version: "1.0.0",
-                    requestEncoding: "KVP",
-                    tileOrigin: new OpenLayers.LonLat(-20037700, 30241100 ),
-                    maxResolution: 144.40775548217763,
-                    minResolution: 0.1410231987130641
-                    } );
-        layer.tp = {name:"Fond de plan Pays de Brest",
-                                    url:"http://georest.brest.fr/PlanVilleSignalement/MapServer/WMTS",
-                                    desc:"Fond de plan issu du SIG Pays de Brest",
-                                    metadata: "http://applications002.brest-metropole-oceane.fr/vipdu60/aspx/HTDU502.aspx?TYPE=LOT&ID=REF_Plan%20de%20ville"
-                        };
-       map.addLayer(layer);
-    };
 	
 	_noServiceVersionGetUrl = function (bounds) {
 		bounds=this.adjustBounds(bounds);
@@ -116,7 +93,7 @@ Signalement.mainmap = (function () {
 				type: l.format,
 				tileOrigin: new OpenLayers.LonLat(l.tileorigin.split(",")[0],l.tileorigin.split(",")[1]),
 				serviceVersion: l.serviceversion,
-                isBaseLayer : true,
+                isBaseLayer : false,
 				maxResolution: parseFloat(l.maxresolution),
 				getURL: _noServiceVersionGetUrl
 			}
@@ -144,6 +121,27 @@ Signalement.mainmap = (function () {
 		map.addLayer(osmLayer);
 	};
     
+    
+    var _addRenduBANO = function (l) {
+		var osmLayer = new OpenLayers.Layer.OSM(l.label,
+            [l.url["a"],l.url["b"],l.url["c"]],
+			
+            {attribution:  l.attributiontext +"  <a href='" +l.attributionurl +"'>" +l.attributionurl +"</a>",
+                isBaseLayer: l.baselayer                            
+            }
+        ); 
+		osmLayer.numZoomLevels = l.maxzoom;  
+		osmLayer.options.numZoomLevels = l.maxzoom;  
+        osmLayer.tp = {name:l.label,
+                    url:l.url["a"],
+                    desc:l.description,
+                    metadata: l.metadataurl
+        };        
+		osmLayer.setVisibility(l.visible == true);
+		map.addLayer(osmLayer);
+		
+	};
+    
    
 
     return {
@@ -164,7 +162,7 @@ Signalement.mainmap = (function () {
             config = mapconfig;
             OpenLayers.DOTS_PER_INCH = 90.71428571428572;
             var mp = new OpenLayers.Control.MousePosition();
-            mp.displayProjection = new OpenLayers.Projection("EPSG:3857");
+            mp.displayProjection = new OpenLayers.Projection("EPSG:3948");
               //Définition des options à appliquer à la carte principale et à la carte
               //de localisation
               var options = {
@@ -182,7 +180,7 @@ Signalement.mainmap = (function () {
                 units: "m",    
                 numZoomLevels: 21,
                 maxResolution: 156543.0339,               
-                maxExtent: new OpenLayers.Bounds(-1364427.9521313,5662455.0545776,978825.58665287,6738688.412683),
+                maxExtent: new OpenLayers.Bounds(-2313787,4146632,3067379,85494405), //extent de l'alsace
                 allOverlays: false,
                 theme: null,                
                 controls:   [
@@ -194,7 +192,17 @@ Signalement.mainmap = (function () {
                       new OpenLayers.Control.OverviewMap({mapOptions: options},{layers: new OpenLayers.Layer.OSM()})
                       ]
               });
-            map.addLayer(new OpenLayers.Layer.OSM());   
+			  osm_base = new OpenLayers.Layer.OSM();
+			  osm_base.options.numZoomLevels = 20;
+			  osm_base.numZoomLevels = 20;
+			  osm_base.tp = {
+			  name:'OpenStreetMap',
+			url:'http://tile.openstreetmap.org/${z}/${x}/${y}.png',
+			desc:'Fond de plan OpenStreetMap',
+			metadata: 'https://www.openstreetmap.org/#map=8/48.254/7.537'
+			};
+			
+map.addLayer(osm_base);  
                        
              //var wmtsLayers = new Array();
                   var layerscount = config.baselayers.length;
@@ -208,13 +216,16 @@ Signalement.mainmap = (function () {
 							case "tms":
 								_addTMSLayer(bl);
 								break;
-                            case "osm":
+                            				case "osm":
 								_addOSMLayer(bl);
+								break;
+							case "rendu bano":
+								_addRenduBANO(bl);
 								break;
 						}
 					}
-                  //specific for georest.brest.fr (temporary)
-                  _addGeorest();
+ 
+ 
                   //Configuration des couches wms
                   var wmsLayers = new Array();
                   var wmscount = config.wmslayers.length;
@@ -250,7 +261,7 @@ Signalement.mainmap = (function () {
         },
          getMapProperties: function () {
             if (map) {
-                var url = "http://" + window.location.host + window.location.pathname + "?";
+                var url = "https://" + window.location.host + window.location.pathname + "?";
                 
                 var params = "extent=" + map.getExtent() + "&baselayer=" + encodeURIComponent(map.baseLayer.name);//+"&zoom=" + map.getZoom();
                 
