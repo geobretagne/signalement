@@ -106,9 +106,13 @@ Signalement.rss = (function () {
     var genRss = function () {
       var rssurl = "";
       var baseurl = rssUrl;
-      var filtre = Ext.getCmp("cqlfilterA").getValue(); 
-     var filtre2=Ext.getCmp("cqlfilterB").getValue();
-      rssurl = baseurl + "&cql_filter=" + filtre+("&pj=")+filtre2;
+
+      var filtre =  Ext.getCmp("cqlfilterA").getValue();   
+	  var filtre2 = Ext.getCmp("cqlfilterB").getValue();	  
+      
+	  if (filtre2 == '0') {rssurl = baseurl + "cql_filter=" + filtre;}
+	  else {rssurl = baseurl + "cql_filter=" + filtre +("+AND+")+filtre2;}
+      
       return rssurl;
     
     };
@@ -159,7 +163,7 @@ Signalement.rss = (function () {
             initLoader();
         }
         mon_loader2.show();
-        var wfsurl = "http://geobretagne.fr/geoserver/geob_loc/wfs";    
+        var wfsurl = "https://www.cigalsace.org/geoserver/wfs";    
         var postRequest = '<wfs:GetFeature service="WFS" version="1.1.0"'
         + ' outputFormat="json"'
         + ' xmlns:topp="http://www.openplans.org/topp"'
@@ -169,9 +173,9 @@ Signalement.rss = (function () {
         + ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
         + ' xsi:schemaLocation="http://www.opengis.net/wfs'
         + ' http://schemas.opengis.net/wfs/1.1.0/WFS-basic.xsd">'
-        + ' <wfs:Query srsName="EPSG:3857" typeName="geob_loc:COMMUNE">'
-        + ' <ogc:PropertyName>INSE</ogc:PropertyName> '
-        + ' <ogc:PropertyName>COMMUNE</ogc:PropertyName>'
+        + ' <wfs:Query srsName="EPSG:3857" typeName="CRA:CRA_COMMUNES_SHP_C48">'
+        + ' <ogc:PropertyName>id_commune</ogc:PropertyName> '
+        + ' <ogc:PropertyName>lib_commun</ogc:PropertyName>'
         +  ' <Filter>'
         +    ' <Intersects>'
         +    ' <PropertyName>the_geom</PropertyName>'       
@@ -200,10 +204,10 @@ Signalement.rss = (function () {
         var store = new Ext.data.JsonStore({
                     fields: [{
                         name: 'insee',
-                        mapping: 'properties.INSE'
+                        mapping: 'properties.id_commune'
                     }, {
                         name: 'commune',
-                        mapping: 'properties.COMMUNE'
+                        mapping: 'properties.lib_commun'
                     }]
                 });
         store.loadData(data);
@@ -247,8 +251,8 @@ Signalement.rss = (function () {
               var communesliste = "";
               for ( var i=0; i < obj.features.length; i++ )
               {
-                inseeliste += obj.features[i].properties.INSE;
-                communesliste += obj.features[i].properties.COMMUNE;
+                inseeliste += obj.features[i].properties.id_commune;
+                communesliste += obj.features[i].properties.lib_commun;
                 if (i != obj.features.length -1)
                 {
                   inseeliste += ",";
@@ -293,7 +297,7 @@ Signalement.rss = (function () {
                 {featureAdded:function(){
                   switch(get_radio_value(Ext.getCmp("rssradio"))){
                         case 1:
-                        Ext.getCmp("cqlfilterA").setValue(rssFiltreWKT('geom'));
+                        Ext.getCmp("cqlfilterA").setValue(rssFiltreWKT('the_geom'));
                         break;
                         case 2:
                         var filtregeo = rssFiltreGML();            
@@ -338,30 +342,34 @@ Signalement.rss = (function () {
                 frame:true,
                 id: 'rssForm',    
                 padding: 10,
+				height:600,
                 layout: 'absolute',
                 iconCls:'smallrss',
                 items: [  
                   {
                     xtype:'panel',
                     html:rssHtml[0],
-                    height:400,            
+                    height:80,            
                     id:"rssinstructions"
                   },      
                   {
                     id: "rssradio",
                     xtype:'radiogroup',
                     x: 5,
-                    y: 55,
+                    y: 100,
                     fieldLabel: 'Filtrer',
                      columns    : 1,
                        items: [
                          {boxLabel: 'tous les enregistrements', name: 'rssoption', inputValue: 0, checked:true},
                          {boxLabel: 'par polygone', name: 'rssoption', inputValue: 1},
                          {boxLabel: 'par communes intersectées', name: 'rssoption', inputValue: 2},
-                         {boxLabel: 'par emprise départementale (22)', name: 'rssoption', inputValue: 3},
-                         {boxLabel: 'par emprise départementale (29)', name: 'rssoption', inputValue: 4},
-                         {boxLabel: 'par emprise départementale (35)', name: 'rssoption', inputValue: 5},
-                         {boxLabel: 'par emprise départementale (56)', name: 'rssoption', inputValue: 6}
+                         {boxLabel: 'par emprise départementale (68)', name: 'rssoption', inputValue: 3},
+                         {boxLabel: 'par emprise départementale (67)', name: 'rssoption', inputValue: 4},
+                         {boxLabel: 'par emprise CC3F', name: 'rssoption', inputValue: 5},
+                         {boxLabel: 'par emprise Kochersberg', name: 'rssoption', inputValue: 6},
+                         {boxLabel: 'par emprise M2A', name: 'rssoption', inputValue: 7},
+                         {boxLabel: 'par emprise CAC', name: 'rssoption', inputValue: 8},
+                         {boxLabel: 'par emprise Eurométropole', name: 'rssoption', inputValue: 9}
                       ],
                       listeners: {
                         change: function(radiogroup, radio) {  
@@ -384,22 +392,37 @@ Signalement.rss = (function () {
                               drawPolyCtrl.activate();
                               break;
                               case 3:            
-                              Ext.getCmp("cqlfilterA").setValue("depco+BETWEEN+22000+and+22999");
+                              Ext.getCmp("cqlfilterA").setValue("depco+BETWEEN+68000+and+68999");
                               Ext.getCmp("rssbtngeo").setVisible(false);            
                               drawPolyCtrl.deactivate();            
                               break;
                               case 4:            
-                              Ext.getCmp("cqlfilterA").setValue("depco+BETWEEN+29000+and+29999");
+                              Ext.getCmp("cqlfilterA").setValue("depco+BETWEEN+67000+and+67999");
                               Ext.getCmp("rssbtngeo").setVisible(false);            
                               drawPolyCtrl.deactivate();            
                               break;
                              case 5:            
-                              Ext.getCmp("cqlfilterA").setValue("depco+BETWEEN+35000+and+35999");
+                              Ext.getCmp("cqlfilterA").setValue("depco+IN+(68021,68042,68061,68126,68135,68149,68163,68286,68297,68349)");
                               Ext.getCmp("rssbtngeo").setVisible(false);            
                               drawPolyCtrl.deactivate();            
                               break;
                              case 6:            
-                              Ext.getCmp("cqlfilterA").setValue("depco+BETWEEN+56000+and+56999");
+                              Ext.getCmp("cqlfilterA").setValue("depco+IN+(67181,67138,67406,67374,67102,67214,67109,67375,67495,67532,67226,67163,67228,67548,67150,67542,67485,67236,67034,67452,67253,67173,67382,67097)");
+                              Ext.getCmp("rssbtngeo").setVisible(false);            
+                              drawPolyCtrl.deactivate();            
+                              break;
+                             case 7:            
+                              Ext.getCmp("cqlfilterA").setValue("depco+IN+(68015,68022,68032,68043,68055,68056,68070,68072,68084,68088,68093,68101,68118,68129,68154,68166,68195,68218,68224,68256,68258,68267,68270,68271,68278,68289,68300,68321,68323,68343,68375,68376,68384,68386)");
+                              Ext.getCmp("rssbtngeo").setVisible(false);            
+                              drawPolyCtrl.deactivate();            
+                              break;
+                             case 8:            
+                              Ext.getCmp("cqlfilterA").setValue("depco+IN+(68066,68134,68145,68146,68155,68157,68237,68295,68331,68338,68354,68365,68374,68385)");
+                              Ext.getCmp("rssbtngeo").setVisible(false);            
+                              drawPolyCtrl.deactivate();            
+                              break;
+                             case 9:            
+                              Ext.getCmp("cqlfilterA").setValue("depco+IN+(67043,67049,67118,67119,67124,67131,67137,67152,67204,67212,67218,67256,67267,67268,67296,67309,67326,67343,67350,67365,67378,67389,67447,67471,67482,67506,67519,67551)");
                               Ext.getCmp("rssbtngeo").setVisible(false);            
                               drawPolyCtrl.deactivate();            
                               break; 
@@ -413,7 +436,7 @@ Signalement.rss = (function () {
                     id: "rssradio2",
                     xtype:'radiogroup',
                     x: 5,
-                    y: 250,
+                    y: 350,
                     fieldLabel: 'Filtrer par pièce jointe ',
                      columns    : 1,
                        items: [
@@ -432,11 +455,11 @@ Signalement.rss = (function () {
                                  
                               break; 
                               case 1:
-                              Ext.getCmp("cqlfilterB").setValue("1");  
+                              Ext.getCmp("cqlfilterB").setValue("(strSubstring(url_1,0,4)+LIKE+'http'+OR+strSubstring(url_2,0,4)+LIKE+'http')");  
                                                    
                               break;
                               case 2:
-                              Ext.getCmp("cqlfilterB").setValue("2");
+                              Ext.getCmp("cqlfilterB").setValue("strSubstring(url_1,0,4)+LIKE+'http'+AND+strSubstring(url_2,0,4)+LIKE+'http'");
                                     
                          
                               break;
@@ -452,7 +475,7 @@ Signalement.rss = (function () {
                   {
                     xtype:'textfield',
                     x: 5,
-                    y: 175,    
+                    y: 210,    
                     anchor:'100%',
                     value:"depco IS NOT NULL",
                     hidden : true,
@@ -462,7 +485,7 @@ Signalement.rss = (function () {
                     {
                     xtype:'textfield',
                     x: 5,
-                    y: 175,    
+                    y: 210,    
                     anchor:'100%',
                     value:"0",
                     hidden : true,
@@ -472,7 +495,7 @@ Signalement.rss = (function () {
                   {
                     xtype:'textarea',
                     x: 5,
-                    y: 400,                     
+                    y: 435,                     
                     anchor:'100%',
                     hidden : true,
                     allowBlank:true,    
@@ -481,7 +504,7 @@ Signalement.rss = (function () {
                     {
                     xtype:'panel',
                     x: 5,
-                    y: 230,
+                    y: 330,
                     html:'<b>Nombre de pièces jointes :</b>',
                     height:15,            
                     id:"rsshelp33"
@@ -489,7 +512,7 @@ Signalement.rss = (function () {
                   {
                     xtype:'panel',
                     x: 5,
-                    y: 330,
+                    y: 500,
                     html:'<a href="http://fr.wikipedia.org/wiki/RSS" target="_blank">Comment utiliser un flux RSS</a>',
                     height:100,            
                     id:"rsshelp"
@@ -500,7 +523,7 @@ Signalement.rss = (function () {
                       id: "rssbtngeo",
                       hidden:true,
                       iconCls: "polygon",
-                      tooltip: "Dessiner un polygone afin de filtrer le flux rss sur l'emprise sélectionnée",                  
+                      tooltip: "Dessiner un polygone afin de filtrer le flux RSS sur l'emprise sélectionnée",                  
                       handler : function(){  
                        Ext.getCmp("cqlfilterA").setValue(null);
                        drawPolyCtrl.activate();
@@ -510,7 +533,7 @@ Signalement.rss = (function () {
                       id: "rssbtn",
                       iconCls: "smallrss",          
                       formBind:true,
-                      text    : "s'abonner",
+                      text    : "S'abonner",
                       handler : callrss
                     },
                      {
@@ -519,7 +542,7 @@ Signalement.rss = (function () {
                       enableToggle: true,                      
                       formBind:true,
                       tooltip: "Afficher le lien permanent du flux généré",
-                      text    : "Afficher",
+                      text    : "Afficher l'URL",
                       toggleHandler : showrss
                     }
                     
