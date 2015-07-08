@@ -419,7 +419,7 @@ Signalement.remotefilter = (function () {
             
             
 
-            var filterdateForm = new Ext.form.FormPanel({
+            var filterdateForm = new Ext.Panel({
                 title: '1) Filter par date',
                 id: 'filterdateForm',
                 componentCls: 'x-panel-header-rose',
