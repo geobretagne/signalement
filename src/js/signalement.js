@@ -67,7 +67,7 @@ Signalement.signalement = (function () {
 
     // Style appliqué la couche signalements   
     var iconStyleDefault = new OpenLayers.Style({
-        externalGraphic: "src/img/add.png",
+        externalGraphic: "src/img/prive.png",
         graphicWidth: 20,
         graphicHeight: 20
     });
@@ -84,7 +84,7 @@ Signalement.signalement = (function () {
     });
 
     var iconStyleImport = new OpenLayers.Style({
-        externalGraphic: "src/img/addselect.png",
+        externalGraphic: "src/img/prive.png",
         graphicWidth: 25,
         graphicHeight: 25
     });
@@ -98,11 +98,12 @@ Signalement.signalement = (function () {
     });
     
     var oRules = {
-                'public': {externalGraphic: "src/img/add.png"},                
-                'privé': {externalGraphic: "src/img/prive.png"}
+                'voie': {externalGraphic: "src/img/voie.png"},   //legende             
+                'adresse': {externalGraphic: "src/img/adresse.png"},   //legende
+                'alerte': {externalGraphic: "src/img/alerte.png"}   //legende
     };
     
-    normalStyleMap.addUniqueValueRules("default", "contributeur", oRules);
+    normalStyleMap.addUniqueValueRules("default", "type_ref", oRules);
 
 	//Cluster
 	var cluster_default_style = new OpenLayers.Style({
@@ -131,16 +132,19 @@ Signalement.signalement = (function () {
                             }
                             else {                                
                                 var g = "";
-                                switch(feature.attributes.contributeur)
+                                switch(feature.attributes.type_ref)
                                 {
-                                case "public":
-                                  g = "src/img/add.png";
+                                case "adresse":
+                                  g = "src/img/adresse.png"; //legende
                                   break;
-                                case "privé":
-                                  g = "src/img/prive.png";
+                                case "voie":
+                                  g = "src/img/voie.png";  //legende
+                                  break;
+                                case "alerte":
+                                  g = "src/img/alerte.png";  //legende
                                   break;
                                 default:
-                                  g = "src/img/add.png";
+                                  g = "src/img/adresse.png";
                                 }
                                 return g;
                             }
@@ -352,6 +356,7 @@ Signalement.signalement = (function () {
                 }
                 modifyPtCtrl.selectControl.unselect(oFeature);
             }
+layer.refresh({force:true});
         };
 
     /**
@@ -368,13 +373,7 @@ Signalement.signalement = (function () {
      */
     var parseFormAttributesToFeature = function (
         oFeature, aszAttributes, signalForm) {
-            //Fix URL_1 & URL2 no presents in feature.attributes du to null value
-            if (!oFeature.attributes.hasOwnProperty('url_1')) {
-                oFeature.attributes['url_1'] = "";
-            }
-            if (!oFeature.attributes.hasOwnProperty('url_2')) {
-                oFeature.attributes['url_2'] = "";
-            }
+            
             var szAttr, szValue, oDate = new Date(),
                 aoAttr = oFeature.attributes,
                 aoItems = signalForm.items,
@@ -415,10 +414,6 @@ Signalement.signalement = (function () {
             case "mel":
                 oValue = item.getValue();
                 Ext.util.Cookies.set("mel", oValue);
-                break;
-            case "url_1":
-            case "url_2":
-                oValue= item.items.items[0].getValue();
                 break;
             default:
                 oValue = item.getValue();
@@ -592,15 +587,15 @@ Signalement.signalement = (function () {
                 initLoader();
             }
             mon_loader.show();
-            var wfsurl = "http://ows.region-bretagne.fr/geoserver/rb/wfs?";            
+            var wfsurl = "https://www.cigalsace.org/geoserver/wfs?";            
             var post = '<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0"' + ' outputFormat="json"'+ ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
-            '<wfs:Query typeName="rb:communes_osm" ' +
-            'srsName="EPSG:3857" >' +
-            ' <PropertyName>insee_comm</PropertyName> ' +
-            ' <PropertyName>nom_comm</PropertyName> ' +
+            '<wfs:Query typeName="CRA:CRA_COMMUNES_SHP_C48" ' +
+            'srsName="EPSG:3857" xmlns:feature="http://www.cigalsace.org/ns/ign">' +
+            ' <PropertyName>id_commune</PropertyName> ' +
+            ' <PropertyName>lib_commun</PropertyName> ' +
             '<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">' +            
             '<ogc:Contains>' +
-                '<ogc:PropertyName>geom</ogc:PropertyName>' +
+                '<ogc:PropertyName>the_geom</ogc:PropertyName>' +
                 '<gml:MultiPoint srsName="http://www.opengis.net/gml/srs/epsg.xml#3857" xmlns:gml="http://www.opengis.net/gml">' +
                     '<gml:pointMember>' +
                         '<gml:Point>' +
@@ -625,9 +620,10 @@ Signalement.signalement = (function () {
     var getCommuneSuccess = function (response) {
 
             var obj = eval("(" + response.responseText + ")");
-            if (obj.features.length > 0) {                
-                Ext.getCmp('libco').setValue(obj.features[0].properties.nom_comm.toUpperCase());
-                Ext.getCmp('depco').setValue(obj.features[0].properties.insee_comm);
+            if (obj.features.length > 0) {   
+      OpenLayers.Console.log("Commune", obj.features[0].properties.lib_commun);
+                Ext.getCmp('libco').setValue(obj.features[0].properties.lib_commun.toUpperCase());
+                Ext.getCmp('depco').setValue(obj.features[0].properties.id_commune);
             } else {
                 Signalement.main.showMsg("Erreur", "Aucune commune n'a été trouvée à cet emplacement");
             }
@@ -647,7 +643,7 @@ Signalement.signalement = (function () {
                 popup.destroy();
             }
             
-			var htmlContent ="";
+	var htmlContent ="";
             var ident="";
             // test cluster
             if (e.cluster) {
@@ -655,7 +651,20 @@ Signalement.signalement = (function () {
                 htmlContent = "Pour afficher les informations relatives à ces signalements, veuillez zoomer davantage.";
             }
 			else
-			{                                 
+			{ 
+	var traitepar = '';
+	//listing de tous les traitements des partenaires
+	if (e.attributes.t_cus == 'true'){traitepar = traitepar + 'CUS' + ', '};
+	if (e.attributes.t_cac == 'true'){traitepar = traitepar + 'CAC' + ', '};
+	if (e.attributes.t_m2a == 'true'){traitepar = traitepar + 'M2A' + ', '};
+	if (e.attributes.t_sdis67 == 'true'){traitepar = traitepar + 'SDIS67' + ', '};
+	if (e.attributes.t_sdis68 == 'true'){traitepar = traitepar + 'SDIS68' + ', '};
+	if (e.attributes.t_cocoko == 'true'){traitepar = traitepar + 'ComComKoch' + ', '};
+	if (e.attributes.t_here == 'true'){traitepar = traitepar + 'Here' + ', '};
+	if (e.attributes.t_tomtom == 'true'){traitepar = traitepar + 'Tomtom' + ', '};
+	
+	if (traitepar == ''){traitepar = '/'};		
+				
                 ident = "Signalement : " + e.fid.split(".")[1]
                 htmlContent = "commune : <b>" + e.attributes.libco + "</b><br/>" +
                     "référentiel : <b>" + e.attributes.type_ref + "</b><br/>" + 
@@ -663,7 +672,8 @@ Signalement.signalement = (function () {
                     "commentaires : <b>" + e.attributes.comment_ref + "</b><br/>" + 
                     "contributeur : <b>" + e.attributes.contributeur + "</b><br/>" + 
                     "mail : <b>" + e.attributes.mel + "</b><br/>" + "acte : <b>" + e.attributes.acte_ref + "</b><br/>" + 
-                    "date : <b>" + new Date(e.attributes.date_saisie.split('Z')[0]).format('d/m/Y') + "</b><br/>";                    
+                    "date : <b>" + new Date(e.attributes.date_saisie.split('Z')[0]).format('d/m/Y') + "</b><br/>" +
+                    "Traité par : <b>" + traitepar + "</b><br/>";                    
 
                 if (e.attributes.url_1) {
                     if (e.attributes.url_1.match('http://')) {
@@ -675,9 +685,6 @@ Signalement.signalement = (function () {
                         htmlContent += "fichier 2 : <a href='" + e.attributes.url_2 + "' target='_blank'>Lien</a><br/>";
                     }
                  }                 
-                if (e.attributes.traitement) {                    
-                    htmlContent += "pris en compte par : <b>" + e.attributes.traitement + "</b><br/>";                   
-                 }
             }
 			
 			//****************************
@@ -700,7 +707,7 @@ Signalement.signalement = (function () {
         };
 
     var desactivatePopup = function () {
-            selectFeatureCtrl.deactivate();
+            selectFeatureCtrl.desactivate();
         };
 
     var createUploadForm = function (id) {
@@ -711,7 +718,7 @@ Signalement.signalement = (function () {
                 height: 150,
                 border: false,
                 plain: true,
-                region: 'center',
+                region: 'east',
                 items: createfileUploadForm(id)
             });
             uploadFormWindow.render(Ext.getBody());
@@ -740,10 +747,10 @@ Signalement.signalement = (function () {
                     emptyText: 'Sélectionnez un document',
                     fieldLabel: 'Document',
                     name: 'lefichier',
-                    buttonText: '',
-                    buttonCfg: {
-                        iconCls: 'upload-icon'
-                    }
+                    buttonText: 'Ouvrir',
+                    //buttonCfg: {
+                    //    iconCls: 'upload-icon'
+                    //}
                 }],
                 buttons: [{
                     text: 'Transfert',
@@ -751,7 +758,7 @@ Signalement.signalement = (function () {
                         if (fileUploadForm.getForm().isValid()) {
                             fileUploadForm.getForm().submit({
                                 //url: '../proxy/?url=http://kartenn.region-bretagne.fr/signalement/ws/upload.php',
-                                url: phplocation + 'upload.php',
+                                url: 'https://www.cigalsace.org/signalement/ws/upload.php',
                                 waitMsg: 'Transfert du document...',
                                 success: function (frm, o) {
                                     Ext.getCmp(fieldTarget).setValue(o.result.file);
@@ -763,6 +770,7 @@ Signalement.signalement = (function () {
                                 }
                             });
                         }
+Ext.MessageBox.hide(); //pour cacher la waitbar
                     }
                 }, {
                     text: 'Annuler',
@@ -826,6 +834,11 @@ Signalement.signalement = (function () {
                 'box': true,
                 title: "Supprimer un signalement"
             });
+            // Outil EVOLUTION   
+            evolutionCtrl = new OpenLayers.Control.DeleteFeature(wfsLayer, {
+                'box': true,
+                title: "Charger les evolutions"
+            });
             // Outil Sélection d'entité
             /*selectFeatureCtrl = new OpenLayers.Control.SelectFeature(wfsLayer);
         selectFeatureCtrl.hover = true;
@@ -858,7 +871,7 @@ Signalement.signalement = (function () {
                 id: "drawptaction",
                 toggleGroup: "tools",
                 allowDepress: false,
-                tooltip: "Créer on nouveau signalement",
+                tooltip: "Créer un nouveau signalement",
                 control: drawPtCtrl
             });
 
@@ -882,15 +895,83 @@ Signalement.signalement = (function () {
                 tooltip: "Supprimer un signalement",
                 control: deletePtCtrl
             });
-            toolbar.addItem(new Ext.Toolbar.Spacer());
-            toolbar.addItem(new Ext.Toolbar.Separator());
-            toolbar.addItem(new Ext.Toolbar.Spacer());
-            toolbar.addItem(selectFeatureCtrlAction);
-            toolbar.addItem(drawPtCtrlAction);
-            toolbar.addItem(modifyPtCtrlAction);
-            toolbar.addItem(deletePtCtrlAction);
-            toolbar.addItem(new Ext.Toolbar.Separator());
+            
+            evolutionAction = new Ext.Button(
+			{
+                iconCls: "banevolution",
+				allowDepress: false,
+				handler: function()
+				{
+					// création de la waitbar
+					Ext.MessageBox.wait("Publication des signalements issus de la BAN...","En cours...");
+					// création de la requête AJAX
+					Ext.Ajax.request(
+					{
+					url: "ws/evolution_v2.php?epsg=EPSG:2154", //étape 0
+					//params: {epsg: "EPSG:2154"},
+					success: function(response,opts)
+					{
+		var reponse = Ext.decode(response.responseText);
+		publication(reponse.import1);//etape1
+		setTimeout(function(){Signalement.main.showMsg("Succès !", reponse.message);layer.refresh({force: true});Ext.MessageBox.hide();},2000);// etape 2 => 2 secondes accordées à étape 1
+					},
+					failure: function(){Signalement.main.showMsg("Erreur...", 'Le chargement de la table "evolution" a échoué !');}
+					});
+				}
+            });
+			
+			
+//...........Fonctions de lecture du fichier txt et publication des nouveaux signalements............//
+function lire(fichier)
+{
+if(window.XMLHttpRequest) obj = new XMLHttpRequest(); //Pour Firefox, Opera,...
+else if(window.ActiveXObject) obj = new ActiveXObject("Microsoft.XMLHTTP"); //Pour Internet Explorer 
+else return(false);
+if (obj.overrideMimeType) obj.overrideMimeType("text/xml"); //Évite un bug de Safari
+obj.open("GET", fichier, false);
+obj.send(null);
+if(obj.readyState == 4) return(obj.responseText);
+else return(false);
+}
+//............................	
+function publication(lesinsert) 
+{
+var lexml = 'https://www.cigalsace.org/signalement/xml_out/'+lesinsert;
+var contenu = lire(lexml);		  
 
+
+var requetehttppost = new XMLHttpRequest();
+var url = "https://www.cigalsace.org/geoserver/cigal_edit/wfs";
+var params = contenu; 
+
+
+requetehttppost.open("POST", url, true);
+requetehttppost.setRequestHeader("Content-type", " application/xml; charset=UTF-8");
+requetehttppost.setRequestHeader("Referer", "https://www.cigalsace.org/signalement/");
+requetehttppost.setRequestHeader("Accept-Language", "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3");
+requetehttppost.setRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+requetehttppost.setRequestHeader("Host", "www.cigalsace.org");
+
+requetehttppost.send(params);
+}
+//..............................................................................//
+			
+            
+		toolbar.addItem(new Ext.Toolbar.Spacer());
+		toolbar.addItem(new Ext.Toolbar.Separator());
+		toolbar.addItem(new Ext.Toolbar.Spacer());
+		toolbar.addItem(selectFeatureCtrlAction);
+		toolbar.addItem(drawPtCtrlAction);
+		toolbar.addItem(modifyPtCtrlAction);
+		//toolbar.addItem(deletePtCtrlAction);
+		toolbar.addItem(new Ext.Toolbar.Spacer());
+		toolbar.addItem(new Ext.Toolbar.Separator());
+		toolbar.addItem(new Ext.Toolbar.Spacer());
+		toolbar.addItem(evolutionAction);
+		toolbar.addItem(new Ext.Toolbar.Spacer());
+		toolbar.addItem(new Ext.Toolbar.Separator());
+		toolbar.addItem(new Ext.Toolbar.Spacer());
+			
 
 
             // Crꢴion des listeners d'ꥩtion de la couche WFS
@@ -918,7 +999,8 @@ Signalement.signalement = (function () {
 
             var referentielData = [
                 ['voie', 'voie'],
-                ['adresse', 'adresse']
+                ['adresse', 'adresse'],
+                ['alerte', 'alerte']
             ];
             var natureData = [
                 ['creation', 'création'],
@@ -927,7 +1009,7 @@ Signalement.signalement = (function () {
             ];
             var naturemodData = [
                 ['sens', 'sens de la voie'],
-                ['tracé', 'tracé'],
+                ['geometrie', 'géometrie'],
                 ['dénom.', 'dénomination voie'],
                 ['nb. voies', 'nombre de voies'],
                 ['adresse', 'adresse ou lieu-dit'],
@@ -940,8 +1022,13 @@ Signalement.signalement = (function () {
             ];
 
             var contributeurData = [
-                ['public', 'public'],
-                ['privé', 'privé']
+                ['privé', 'privé'],
+                ['CUS', 'CUS'],
+                ['CAC', 'CAC'],
+                ['M2A', 'M2A'],
+                ['SDIS67', 'SDIS67'],
+                ['SDIS68', 'SDIS68'],
+                ['COCOKO', 'Kochersberg']
             ];
             
             var referentielStore = new Ext.data.SimpleStore({
