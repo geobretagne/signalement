@@ -27,7 +27,8 @@
      $titles = array();
 	 $file = "../imports".DIRECTORY_SEPARATOR.$file; //fichier CSV en entrée
 	
-     $handle = @fopen($file, 'r');
+     if($handle = @fopen($file, 'r'))
+     {
 
 	 // création des balises FEATURE
      while (($data = @fgetcsv($handle, 2000, ';')) !== FALSE){
@@ -77,7 +78,7 @@
      }
 	  
      fclose($handle);
-
+}
      return $reponse; // le texte xml à écrire dans un fichier texte de stockage pour une future requête WFS-T
 	}
 	
@@ -101,7 +102,7 @@ $post = '<wfs:Transaction xmlns:wfs="http://www.opengis.net/wfs" service="WFS" v
 	
 	//On récupère le texte (language XML) dans un fichier au format .txt placé dans le dossier '.\xml_out'
 	if($texteXML==""){
-		echo "\n\n"."Il n'y a aucun fichier CSV a transformer !"."\n"."Verifiez que le dossier 'imports' contient bien le fichier CSV.";
+		$message = "\n\n"."Il n'y a aucun fichier CSV a transformer !"."\n"."Verifiez que le dossier 'imports' contient bien le fichier CSV.";
 	} else {
 		//On enlève les blancs (espace, tabulations, etc)
 		$file = basename($lefichierimporte,".csv");
@@ -109,13 +110,13 @@ $post = '<wfs:Transaction xmlns:wfs="http://www.opengis.net/wfs" service="WFS" v
 		$fichierXML="../xml_out".DIRECTORY_SEPARATOR.$file.".txt"; //truc
 		
 		if (!$handle = fopen($fichierXML, 'w')){
-			echo "\n\n"."Impossible d'ouvrir le fichier ($fichierXML)";
+			$message = "\n\n"."Impossible d'ouvrir le fichier ($fichierXML)";
 			exit;
 		}
 	
 		//On écrit le contenu dans le fichier .xml
 		if(fwrite($handle,$post) === FALSE){
-			echo "\n\n"."Impossible d'écrire le fichier ";
+			$message = "\n\n"."Impossible d'écrire le fichier ";
 			exit;
 		}
 			
