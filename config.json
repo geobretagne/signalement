@@ -4,58 +4,60 @@
             "url": "../proxy/?url="
         },
         "geocode": {
-            "service": "ign"
+            "service": "etalab"
         },
         "phplocation": {
-            "url": "../proxy/?url=http://kartenn.region-bretagne.fr/signalement/ws/"
+            "url": "../proxy/?url=https://www.cigalsace.org/signalement/ws"
         },
         "helpurl": {
-            "url": "https://docs.google.com/document/d/1BlfXeqN7TwmXzf1HdQFHsKtThyoVbQw2LFQuneMwZtc/edit?pli=1"
+            "url": "https://www.cigalsace.org/portail/fr/page/721/manuel-dutilisation-signadresse"
         },
         "login": {
-            "url": "https://geobretagne.fr/cas/login?service:http://kartenn.region-bretagne.fr/dev-signalement/ws/head.php&amp;renew:true"
+            "url": "https://www.cigalsace.org/cas/login?service:https://www.cigalsace.org/signalement/"
         },
         "logout": {
-            "url": "https://geobretagne.fr/cas/logout?"
+            "url": "https://www.cigalsace.org/cas/logout?"
         },
         "deletecontrol": {
             "enable": false
         },
         "workinglayer": {
             "label": "Signalements",
-			"cluster": "true",
-            "featureprefix": "edit_rb",
+	    "cluster": "true",
+            "featureprefix": "cigal_edit",
             "featuretype": "signalement_adresse",
-            "geometryname": "geom",
-            "wfsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wfs?",
-            "wmsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms?",
-            "metadataurl": "http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=58e7b791-8495-47df-819f-0660fb8d8645",            
-            "description": "La couche Signalement voies adresses en Bretagne recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Bretagne<p><img src='src/img/add.png'</img>contribution publique</p><p><img src='src/img/prive.png'</img>contribution privée</p>",
-            "cswurl": "http://geobretagne.fr/geonetwork/srv/fr/csw?",
-            "kmlurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
-            "rssurl": "http://kartenn.region-bretagne.fr/signalement/ws/rss.php?"
+            "geometryname": "the_geom",
+            "wfsurl": "https://www.cigalsace.org/geoserver/cigal_edit/wfs?",
+            "wmsurl": "https://www.cigalsace.org/geoserver/cigal_edit/wms?",
+            "metadataurl": "https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=",            
+            "description": "La couche Signalement voies adresses en Alsace recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Alsace<p><img src='src/img/add.png'</img>Adresse</p><p><img src='src/img/voie.png'</img>Voie</p><p><img src='src/img/alerte.png'</img>Alerte</p>", 
+            "cswurl": "https://www.cigalsace.org/geonetwork/srv/fr/csw?",
+            "kmlurl": "https://www.cigalsace.org/geoserver/wms/kml?layers=cigal_edit:signalement_adresse",
+            "rssurl": "https://www.cigalsace.org/signalement/ws/rss.php?"
         },
         "baselayers": [
             {
                 "baselayer": {
-					"type": "wmts",
-                    "label": "OpenStreetMap style Google",
-                    "url": "http://osm.geobretagne.fr/gwc01/service/wmts",
-                    "layername": "osm:google",
-                    "matrixset": "EPSG:3857",
+					"type": "rendu bano",
+                    "label": "Rendu BANO",
+                    "url": {"a":"http://a.layers.openstreetmap.fr/bano/${z}/${x}/${y}.png","b":"http://b.layers.openstreetmap.fr/bano/${z}/${x}/${y}.png","c":"http://c.layers.openstreetmap.fr/bano/${z}/${x}/${y}.png"},
+                    "layername": "bano",
+                    "maxzoom": "21",
                     "style": "_null",
-                    "format": "image/png",
-                    "description": "Couche osm mise à jour mensuellement",
-                    "metadataurl":"http://www.openstreetmap.org/copyright",                    
+                    "format": "png",
+                    "description": "Adresses de la BAN ODbL. Legende : <p></p><p><img src='src/img/legende_rendu_bano.png'</img></p>",
+                    "metadataurl":"http://wiki.openstreetmap.org/wiki/WikiProject_France/WikiProject_Base_Adresses_Nationale_Ouverte_%28BANO%29#Rendu_BANO",                    
                     "attributiontext": "© les contributeurs d’OpenStreetMap",
-                    "attributionurl": "http://openstreetmap.org"
+                    "attributionurl": "http://openstreetmap.org",
+                    "visible": false,
+		    "baselayer": false
                 }
             },
             {
                 "baselayer": {
-					"type": "wmts",
+		    "type": "wmts",
                     "label": "Scan express",
-                    "url": "http://wxs.ign.fr/x1uy9hv7ojndca8335mhgv38/geoportail/wmts",
+                    "url": "https://wxs.ign.fr/8rrocudg7364630fr8yb620s/geoportail/wmts",
                     "layername": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD",
                     "matrixset": "PM",
                     "style": "normal",
@@ -65,115 +67,69 @@
                     "attributiontext": "IGNF",
                     "attributionurl": "http://www.ign.fr"
                 }
-            },             
-            {
-                "baselayer": {
-					"type": "wmts",
-                    "label": "Photographie aérienne composite de GéoBretagne",
-                    "url": "http://tile.geobretagne.fr/gwc02/service/wmts",
-                    "layername": "satellite",
-                    "matrixset": "EPSG:3857",
-                    "style": "_null",
-                    "format": "image/jpeg",
-                    "description": "Le fond photographique de GéoBretagne est un composé d' orthophotographies réalisées par plusieurs producteurs",
-                    "metadataurl":"http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
-                    "attributiontext": "Ortho composite",
-                    "attributionurl": "http://geobretagne.fr"
-                }
-            },            
-			{
-                "baselayer": {
-					"type": "tms",
-                    "label": "Fond de plan Rennes métropole",
-                    "url": "http://geo.rennesmetropole.fr/tms/4570/",
-                    "layername": "PVCI_3857",                    
-                    "tileorigin": "-218373.484375,6095908.0",                    
-                    "format": "png",
-					"serviceversion":"null",
-					"maxresolution": "2357.536343401",
-                    "description": "Descriptif Rennes Métropole",
-                    "metadataurl":"http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
-                    "attributiontext": "Fond de plan Rennes Métropole",
-                    "attributionurl": "http://rennes-metropole.fr"
-                }
             },
 			{
                 "baselayer": {
-					"type": "osm",
-                    "label": "Here",
-                    "url": "http://1.base.maps.cloud.api.here.com/maptile/2.1/maptile/newest/normal.day/${z}/${x}/${y}/256/png8?app_id=GRV98mmmhpOPJBD3EPeQ&app_code=VZy4OvINvVDqElvjlqgUJw",                    
-					"maxresolution": "2357.536343401",
-                    "description": "Fond de plan Here",
-                    "metadataurl":"http://here.com/terms",                    
-                    "attributiontext": "©1987 - 2013 HERE, IGN",
-                    "attributionurl": "http://here.com/terms"
+			"type": "osm",
+			"label": "Here",
+			"url": "http://1.base.maps.cloud.api.here.com/maptile/2.1/maptile/newest/normal.day/${z}/${x}/${y}/256/png8?app_id=GRV98mmmhpOPJBD3EPeQ&app_code=VZy4OvINvVDqElvjlqgUJw",
+			"maxresolution": "2357.536343401",
+			"description": "Fond de plan Here",
+			"metadataurl":"http://here.com/terms",
+			"attributiontext": "©1987 - 2013 HERE, IGN",
+			"attributionurl": "http://here.com/terms"
                 }
             }
         ],
         "wmslayers": [
-            {
-                "wmslayer": {
-                    "label": "Limites administratives",
-                    "url": "http://geobretagne.fr/geoserver/ign/wms?",
-                    "layer": "bdtopo_commune",
-                    "description": "Extrait de la BDCARTO ® - Base de données cartographique de l'IGN au 1/100 000. et de la BDTOPO ® (zoom >= 14)",
-                    "metadataurl":"http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=b08e6cb1-236c-49b7-88f9-42b500d274d5",
-                    "metadataurl2":"http://professionnels.ign.fr/bdtopo",
-                    "style": "",
-                    "visible": "false",
-                    "singletile": false,
-                    "version": "1.3.0",
-                    "baselayer": false
+		 {
+				"wmslayer": {
+				"label": "Fond cadastral",
+				"url": "https://www.cigalsace.org/geoserver/CG67/wms?",
+				"layer": "CG67_PCI_geo_parcelle",
+				"description": "Disponible pour le 67 hors CUS. Le plan du cadastre est un document administratif qui propose l’unique plan parcellaire à grande échelle couvrant le territoire national. (zoom >= 14)",
+				"metadataurl":"https://www.cigalsace.org/geonetwork/apps/georchestra/?uuid=FR-226-700-011-080",
+				"style": "",
+				"visible": "false",
+				"singletile": false,
+				"version": "1.3.0",
+				"baselayer": false
+							}
+		},
+        {
+			    "wmslayer": {
+				"label": "Limites administratives",
+				"url": "https://www.cigalsace.org/geoserver/CRA/wms?",
+				"layer": "CRA_COMMUNES_SHP_C48",
+				"description": "Communes alsaciennes ® Région Alsace",
+				"metadataurl":"https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=",
+				"style": "",
+				"visible": "false",
+				"singletile": false,
+				"version": "1.3.0",
+				"baselayer": false
                 }
-            },
-            {
+        },
+			  {
                 "wmslayer": {
-                    "label": "Fond cadastral",
-                    "url": "http://geobretagne.fr/geoserver/cadastre/wms?",
-                    "layer": "CP.CadastralZoning,CP.CadastralParcel",
-                    "description": "Le plan du cadastre est un document administratif qui propose l’unique plan parcellaire à grande échelle couvrant le territoire national. (zoom >= 14)",
-                    "metadataurl":"http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=0ca82e1d-b487-4879-8185-56b7c4e1a948",                    
-                    "style": "",
-                    "visible": "false",
-                    "singletile": false,
-                    "version": "1.3.0",
-                    "baselayer": false
+				"label": "Photo aérienne (CUS CAC M2A CIGAL)",
+				"url": "https://www.cigalsace.org/geoserver/wms?",
+				"layer": "CIGAL_RASTER_COMPOSITE",
+				"description": "Couche composite des données satellites TrueMarble 250m à petite échelle, planet observer 15m à moyenne échelle et orthophotographie 20cm à grande échelle",
+				"metadataurl":"https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=",
+				"metadataurl2":"https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=",
+				"style": "",
+				"visible": "false",
+				"singletile": false,
+				"version": "1.3.0",
+				"baselayer": true
                 }
-            },
-            {
-                "wmslayer": {
-                    "label": "BANO",
-                    "url": "http://geobretagne.fr/geoserver/osm/ows?",
-                    "layer": "bano",
-                    "description": "La Base Adresses Nationale Ouverte (BANO) est une initiative d'OpenStreetMap France. Elle a pour objet la constitution d'une base la plus complète possible de points d'adresse à l'échelle de la France. (zoom >= 13)",
-                    "metadataurl":"http://wiki.openstreetmap.org/wiki/WikiProject_France/WikiProject_Base_Adresses_Nationale_Ouverte_(BANO)",                    
-                    "style": "",
-                    "visible": "false",
-                    "singletile": false,
-                    "version": "1.3.0",
-                    "baselayer": false
-                }
-            },            
-            {
-                "wmslayer": {
-                    "label": "Fond de plan Lorient Agglomération",
-                    "url": "http://geoservices.lorient-agglo.fr/wms?",
-                    "layer": "plan_ville",
-                    "description": "Plan de ville Lorient Agglomération",
-                    "metadataurl":"http://google.fr",
-                    "style": "",
-                    "visible": "false",
-                    "singletile": true,
-                    "version": "1.3.0",
-                    "baselayer": true
-                }
-            }
-        ],
+            }],
         "htmltexts": [
             {
                 "htmltext": {
                     "id": "0",
-                    "value": "S'abonner à tous les signalements. Le flux RSS généré comprendra tous les signalements enregistrés.Cliquez sur s'abonner."
+                    "value": "S'abonner à tous les signalements. Le flux RSS généré comprendra tous les signalements enregistrés. Cliquez sur s'abonner."
                 }
             },
             {
@@ -191,30 +147,48 @@
             {
                 "htmltext": {
                     "id": "3",
-                    "value": "Sélection d'un flux sur l'emprise départementale des Côtes d'Armor.Cliquez sur s'abonner."
+                    "value": "Sélection d'un flux sur l'emprise départementale du Haut-Rhin. Cliquez sur s'abonner."
                 }
             },            
             {
                 "htmltext": {
                     "id": "4",
-                    "value": "Sélection d'un flux sur l'emprise départementale du Finistère.Cliquez sur s'abonner."
+                    "value": "Sélection d'un flux sur l'emprise départementale du Bas-Rhin. Cliquez sur s'abonner."
                 }
             },
             {
                 "htmltext": {
                     "id": "5",
-                    "value": "Sélection d'un flux sur l'emprise départementale d'Ille et Vilaine.Cliquez sur s'abonner."
+                    "value": "Sélection d'un flux sur l'emprise de la Communauté de Commune des trois frontières. Cliquez sur s'abonner."
                 }
             },
             {
                 "htmltext": {
                     "id": "6",
-                    "value": "Sélection d'un flux sur l'emprise départementale du Morbihan.Cliquez sur s'abonner."
+                    "value": "Sélection d'un flux sur l'emprise de la Communauté de Commune Kochersberg. Cliquez sur s'abonner."
                 }
             },
             {
                 "htmltext": {
                     "id": "7",
+                    "value": "Sélection d'un flux sur l'emprise M2A. Cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "8",
+                    "value": "Sélection d'un flux sur l'emprise CAC. Cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "9",
+                    "value": "Sélection d'un flux sur l'emprise Eurométropole Strasbourg. Cliquez sur s'abonner."
+                }
+            },
+            {
+                "htmltext": {
+                    "id": "10",
                     "value": "<b>*Avertissement</b></br>En enregistrant ce signalement, j'accepte qu'il soit libre de droit, librement réutilisable, conservé durant 2 ans et que mon adresse mail soit communiquée à tous les utilisateurs."
                 }
             }

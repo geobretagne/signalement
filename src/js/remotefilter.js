@@ -26,6 +26,23 @@ Signalement.remotefilter = (function () {
 
     var toolbar = null;
 
+    var filtre_type = new OpenLayers.Filter.Logical({
+        type: OpenLayers.Filter.Logical.OR,
+        filters: []
+    });
+	var filtre_contributeur = new OpenLayers.Filter.Logical({
+        type: OpenLayers.Filter.Logical.OR,
+        filters: []
+    });
+	var filtre_autre = new OpenLayers.Filter.Logical({
+        type: OpenLayers.Filter.Logical.OR,
+        filters: []
+    });
+	var filtre_nature = new OpenLayers.Filter.Logical({
+        type: OpenLayers.Filter.Logical.OR,
+        filters: []
+    });
+
     var filter = new OpenLayers.Filter.Logical({
         type: OpenLayers.Filter.Logical.AND,
         filters: []
@@ -136,7 +153,8 @@ Signalement.remotefilter = (function () {
             });
 
             filter.filters.push(datefilter);
-
+			layer.filter = filter;
+            layer.refresh();
 
             Ext.apply(Ext.form.VTypes, {
                 daterange: function (val, field) {
@@ -218,24 +236,15 @@ Signalement.remotefilter = (function () {
             });
 
 
-            filterList = {
+            filterList_autre = {
                 xtype: 'fieldset',
                 title: 'Autres filtres',
                 autoHeight: true,
                 defaultType: 'checkbox',
                 items: [{
                     fieldLabel: '',
-                    boxLabel: 'Contributeurs publics',
-                    id: 'filtre_public',
-                    filter: new OpenLayers.Filter.Comparison({
-                        type: OpenLayers.Filter.Comparison.EQUAL_TO,
-                        property: "contributeur",
-                        value: "public"
-                    })
-                }, {
-                    fieldLabel: '',
                     labelSeparator: '',
-                    boxLabel: 'Pièce jointe',
+                    boxLabel: 'Comporte au moins une pièce jointe',
                     id: 'filtre_pj',
                     filter: new OpenLayers.Filter.Logical({
                         type: OpenLayers.Filter.Logical.OR,
@@ -243,53 +252,299 @@ Signalement.remotefilter = (function () {
                             new OpenLayers.Filter.Comparison({
                                 type: OpenLayers.Filter.Comparison.LIKE,
                                 property: "url_1",
-                                value: "http://*"
+                                value: "http*"
                             }),
                             new OpenLayers.Filter.Comparison({
                                 type: OpenLayers.Filter.Comparison.LIKE,
                                 property: "url_2",
-                                value: "http://*"
+                                value: "http*"
                             })
                         ]
                     })
                 }]
             };
+            
+            //...filtre voie / adresse / alerte ...
+			filterList_type = {
+                xtype: 'fieldset',
+                title: 'Par type de référentiel',
+                autoHeight: true,
+                defaultType: 'checkbox',
+                items: [{
+                    fieldLabel: '',
+                    boxLabel: 'Adresses',
+                    id: 'filtre_adresse',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "type_ref",
+                        value: "adresse"
+                    })
+                },{
+                    fieldLabel: '',
+                    boxLabel: 'Voies',
+                    id: 'filtre_voie',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "type_ref",
+                        value: "voie"
+                    })
+                },{
+                    fieldLabel: '',
+                    boxLabel: 'Alertes',
+                    id: 'filtre_alerte',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "type_ref",
+                        value: "alerte"
+                    })
+                }]
+			};
+			
+			//... filtre creation / modification ...
+			filterList_nature = {
+                xtype: 'fieldset',
+                title: 'Par nature des signalements',
+                autoHeight: true,
+                defaultType: 'checkbox',
+                items: [{
+                    fieldLabel: '',
+                    boxLabel: 'Création',
+                    id: 'filtre_creation',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "nature_ref",
+                        value: "creation"
+                    })
+                },{
+                    fieldLabel: '',
+                    boxLabel: 'Modification',
+                    id: 'filtre_modification',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "nature_ref",
+                        value: "modification"
+                    })
+                },{
+                    fieldLabel: '',
+                    boxLabel: 'Suppression',
+                    id: 'filtre_suppression',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "nature_ref",
+                        value: "suppression"
+                    })
+                }]
+			};
+			
+			//...filtre prive / Eurométropole Strasbourg / CAC / M2A / SDIS68 / SDIS67...
+            filterList_contributeur = {
+                xtype: 'fieldset',
+                title: 'Par contributeur',   //présentation
+                autoHeight: true,
+                defaultType: 'checkbox',
+                items: [{
+                    fieldLabel: '',
+                    boxLabel: 'Eurométropole Strasbourg',
+                    id: 'filtre_cus',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "contributeur", //présentation
+                        value: "CUS" //présentation
+					})
+				}, {
+                    fieldLabel: '',
+                    boxLabel: 'CAC',
+                    id: 'filtre_cac',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "contributeur", //présentation
+                        value: "CAC" //présentation
+					})
+                }, {
+                    fieldLabel: '',
+                    boxLabel: 'M2A',
+                    id: 'filtre_m2a',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                       property: "contributeur", //présentation
+                        value: "M2A" //présentation
+					})
+				}, {
+                    fieldLabel: '',
+                    boxLabel: 'SDIS67',
+                    id: 'filtre_sdis67',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "contributeur", //présentation
+                        value: "SDIS67" //présentation
+					})
+                }, {
+                    fieldLabel: '',
+                    boxLabel: 'SDIS68',
+                    id: 'filtre_sdis68',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "contributeur", //présentation
+                        value: "SDIS68" //présentation
+					})
+                }, {
+                    fieldLabel: '',
+                    boxLabel: 'Kochersberg',
+                    id: 'filtre_cocoko',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "contributeur", //présentation
+                        value: "KOCHERSBERG" //présentation
+					})
+                }, {
+                    fieldLabel: '',
+                    boxLabel: 'Webpart',
+                    id: 'filtre_webpart',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "contributeur", //présentation
+                        value: "WEBPART" //présentation
+					})
+                }, {
+                    fieldLabel: '',
+                    boxLabel: 'Privé',
+                    id: 'filtre_prive',
+                    filter: new OpenLayers.Filter.Comparison({
+                        type: OpenLayers.Filter.Comparison.LIKE,
+                        property: "contributeur", //présentation
+                        value: "prive" //présentation
+					})
+                }]
+            };
+            
+            
 
-            var filterForm = new Ext.form.FormPanel({
-                title: 'Filtrer les signalements',
-                id: 'filterForm',
+            var filterdateForm = new Ext.Panel({
+                title: '1) Filter par date',
+                id: 'filterdateForm',
+                componentCls: 'x-panel-header-rose',
                 frame: true,
-                padding: "20 10 15 10",
-                iconCls: 'filter',
                 items: [{
                         xtype: 'panel',
-                        padding: "10 10 10 10",
-                        html: "<b>Filtrage des signalements en jouant sur l'intervalle de temps ci dessous</b>",
-                        //height:100                 
+                        html: "Jouer sur l'<b>intervalle de temps</b> ci dessous"
                     },
                     datefield1,
                     datefield2,
                     slider,
-                    filterList,
-                    progressBar
+                    ],
+                collapsible: true,
+				collapsed: false,
+				animCollapse: true,
+				split: false
+            });
+            
+            var filterautreForm = new Ext.Panel({
+				title: '2) Autres filtres',
+                id: 'filterautreForm',
+                frame: true,
+                items: [{
+                        xtype: 'panel',
+                        html: "Jouez sur les <b>attributs</b> ci dessous. <i>Vider les cases d'une catégorie ignore le filtrage de cette catégorie.</i>",
+                        //height:100                 
+                    },
+                    filterList_type,
+					filterList_nature,
+                    filterList_contributeur,
+                    filterList_autre],
+				collapsible: true,
+				collapsed: true,
+				animCollapse: true,
+				split: false
+            });	
+            
+            var filterForm = new Ext.form.FormPanel({
+                title: 'Filtrer les signalements',
+                id: 'filterForm',
+                frame: true,
+                iconCls: 'filter',
+				collapsible: true,
+                items: [filterdateForm,
+					filterautreForm,					
+                    progressBar					
                 ],
                 buttons: [{
                         iconCls: "save",
                         text: "Appliquer",
                         tooltip: "Appliquer le filtre",
                         handler: function () {
+                            filtre_type.filters = [];
+                            filtre_nature.filters = [];
+                            filtre_contributeur.filters = [];
+                            filtre_autre.filters = [];
                             filter.filters = [];
-                            Ext.each(filterList.items, function (rec) {
+                            Ext.each(filterList_type.items, function (rec) {
                                 var item = Ext.getCmp(rec.id);
                                 if (item.checked) {
-                                    filter.filters.push(item.filter);
+                                    filtre_type.filters.push(item.filter);
+                                }
+                            });
+                            //... filtre public/prive...
+							Ext.each(filterList_contributeur.items, function (rec) {
+                                var item = Ext.getCmp(rec.id);
+                                if (item.checked) {
+                                    filtre_contributeur.filters.push(item.filter);
+                                    // filter.filters.push(item.filter);
+                                }
+                            });
+							//...filtre autre...
+							Ext.each(filterList_autre.items, function (rec) {
+                                var item = Ext.getCmp(rec.id);
+                                if (item.checked) {
+                                    filtre_autre.filters.push(item.filter);
+                                    // filter.filters.push(item.filter);
+                                }
+                            });
+							//...filtre creation/modification...
+							Ext.each(filterList_nature.items, function (rec) {
+                                var item = Ext.getCmp(rec.id);
+                                if (item.checked) {
+                                    filtre_nature.filters.push(item.filter);
+                                    // filter.filters.push(item.filter);
                                 }
                             });
                             filter.filters.push(datefilter);
+                            if(filtre_type.filters.length !==0)  {filter.filters.push(filtre_type);};
+                            if(filtre_contributeur.filters.length !==0)  {filter.filters.push(filtre_contributeur);};
+                            if(filtre_autre.filters.length !==0)  {filter.filters.push(filtre_autre);};
+                            if(filtre_nature.filters.length !==0)  {filter.filters.push(filtre_nature);};
                             layer.filter = filter;
-                            layer.refresh()
+
+                            layer.refresh();						
                         }
-                    }
+                    },
+					{
+						text: "Décocher tout",
+                        tooltip: "Décocher toutes les checkbox",
+                        handler: function () {
+							var etat = false;
+                        Ext.each(filterList_nature.items, function (rec) {
+                                var item = Ext.getCmp(rec.id);
+                                item.setValue(etat);
+                                }
+                            );
+    					Ext.each(filterList_contributeur.items, function (rec) {
+                                var item = Ext.getCmp(rec.id);
+                                item.setValue(etat);
+                                }
+                            );
+    					Ext.each(filterList_type.items, function (rec) {
+                                var item = Ext.getCmp(rec.id);
+                                item.setValue(etat);
+                                }
+                            );
+    					Ext.each(filterList_autre.items, function (rec) {
+                                var item = Ext.getCmp(rec.id);
+                                item.setValue(etat);
+                                }
+                            );
+    						
+                        }
+					}
 
                 ]
             });

@@ -54,9 +54,9 @@ Signalement.treelayer = (function () {
                 height: 250,
                 html: detailsText
             });
-            var tpl = new Ext.Template('<h2 class="title">{name}</h2>', '<p><b>lien ogc</b>: {url}</p>', '<p><b>Description</b>: {desc}</p>', '<p><a href="{metadata}" target="_blank">Afficher les métadonnées</a></p>');
-            var tpl2 = new Ext.Template('<h2 class="title">{name}</h2>', '<p><b>lien ogc</b>: {url}</p>', '<p><b>Description</b>: {desc}</p>', '<p><a href="{metadata}" target="_blank">Afficher les métadonnées</a></p>', '<p><a href="{metadata2}" target="_blank">Afficher les métadonnées</a></p>');   
-                
+            var tpl = new Ext.Template('<h2 class="title">{name}</h2>', '<p><b>Lien </b>: {url}</p>', '<p><a href="{metadata}" target="_blank">Afficher les métadonnées</a></p>', '<p><b>Description</b>: {desc}</p>');
+            var tpl2 = new Ext.Template('<h2 class="title">{name}</h2>', '<p><b>Lien </b>: {url}</p>', '<p><b>Description</b>: {desc}</p>', '<p><a href="{metadata}" target="_blank">Afficher les métadonnées</a></p>', '<p><a href="{metadata2}" target="_blank">Afficher les métadonnées</a></p>');   
+    
             tpl.compile();
             tpl2.compile();
             // create our own layer node UI class, using the TreeNodeUIEventMixin
@@ -80,19 +80,20 @@ Signalement.treelayer = (function () {
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: "BANO",
-                    qtip: "Base Adresses Nationale Ouverte"
+                    layer: "Fond cadastral",
+                    qtip: "Fond cadastral"
                     //,icon       : 'src/img/world.png'                
                 },
                 {
                     nodeType: 'gx_layer',
-                    layer: "Fond cadastral",
-                    qtip: "Parcelles du cadastre"
-                    //,icon       : 'src/img/world.png'                
-                }]
+                    layer: "Rendu BANO",
+                    qtip: "Rendu BANO"
+                    // ,icon       : 'src/img/world.png'                
+                }
+                ]
             }, {
                 nodeType: 'gx_baselayercontainer',
-                text: 'fonds cartographiques',
+                text: 'Fonds cartographiques',
                 expanded: true,
                 allowDrag: false,
                 allowDrop: false,

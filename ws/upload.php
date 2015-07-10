@@ -2,15 +2,15 @@
 <?php
 $dossier = 'docs/';
 $fichier = basename($_FILES['lefichier']['name']);
-$taille_maxi = 4000000;
+$taille_maxi = 40000000;
 $taille = filesize($_FILES['lefichier']['tmp_name']);
-$extensions = array('.odt', '.doc', '.jpg', '.jpeg', '.pdf');
+$extensions = array('.odt', '.doc', '.docx', '.jpg', '.jpeg', '.pdf','.dxf','.dwg');
 $extension = strrchr($_FILES['lefichier']['name'], '.'); 
 $nomDestination = "f".date("YmdHis").$extension;
-//Début des vérifications de sécurité...
+//DÃ©but des vÃ©rifications de sÃ©curitÃ©...
 if(!in_array($extension, $extensions)) //Si l'extension n'est pas dans le tableau
 {
-     $erreur = 'Vous devez uploader un fichier de type odt, doc, jpg, jpeg, ou pdf...';
+     $erreur = 'Seules extensions autorisÃ©es : odt, doc, docx, jpg, jpeg, pdf, dxf, dwg';
 }
 if($taille>$taille_maxi)
 {
@@ -20,10 +20,10 @@ if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 {
      //On formate le nom du fichier ici...
      $fichier = strtr($fichier, 
-          'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜİàáâãäåçèéêëìíîïğòóôõöùúûüıÿ', 
+          'Ã€ÃÃ‚ÃƒÃ„Ã…Ã‡ÃˆÃ‰ÃŠÃ‹ÃŒÃÃÃÃ’Ã“Ã”Ã•Ã–Ã™ÃšÃ›ÃœÃÃ Ã¡Ã¢Ã£Ã¤Ã¥Ã§Ã¨Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã°Ã²Ã³Ã´ÃµÃ¶Ã¹ÃºÃ»Ã¼Ã½Ã¿', 
           'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
      $fichier = preg_replace('/([^.a-z0-9]+)/i', '-', $fichier);
-     if(move_uploaded_file($_FILES['lefichier']['tmp_name'], '../'.$dossier . $nomDestination)) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
+     if(move_uploaded_file($_FILES['lefichier']['tmp_name'], '../'.$dossier . $nomDestination)) //Si la fonction renvoie TRUE, c'est que Ã§a a fonctionnÃ©...
      {
           $myurl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 		  $rep = dirname(dirname($myurl)).'/';

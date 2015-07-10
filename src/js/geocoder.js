@@ -65,8 +65,8 @@ Signalement.geocoder = (function () {
             //var apiKey = "xsjb3kmbejbpxp04tysclyrc"; // test.geobretagne.fr  
             //var apiKey = "tyujsdxmzox31ituc2uw0qwl"; // geoportail
             //var apiKey = "e7ahlktjm9cdexiaazosg6bw"; // localhost
-            //var openLSGeocodeUrl = "http://gpp3-wxs.ign.fr/" + apiKey + "/geoportail/ols?";
-            var openLSGeocodeUrl = "http://geobretagne.fr/openls?";
+            var openLSGeocodeUrl = "http://gpp3-wxs.ign.fr/8rrocudg7364630fr8yb620s/geoportail/ols?";
+            //var openLSGeocodeUrl = "http://geobretagne.fr/openls?";
             
             if (address[0] && address[1]) {
                 countryCode="StreetAddress";
@@ -94,10 +94,6 @@ Signalement.geocoder = (function () {
                         '<freeFormAddress>',
                         freeFormAddress,
                         '</freeFormAddress>\n',
-                        '<gml:envelope>\n',
-                        '<gml:pos>47 -5</gml:pos>\n',
-                        '<gml:pos>49 -1</gml:pos>\n',
-                        '</gml:envelope>\n',
                         '</Address>\n',
                         '</GeocodeRequest>\n',
                         '</Request>\n',
@@ -180,6 +176,22 @@ Signalement.geocoder = (function () {
             success: getGoogleSuccess
         });
     };
+    // Geocodage  ETALAB adresse.data.gouv.fr
+	
+	var codeAddressEtalab = function (value) {
+        markers.clearMarkers();
+        var address = value;
+        var request = OpenLayers.Request.issue({
+            method: 'GET',
+            params: {
+                q: address,
+				limit: "5"
+            },
+            url: 'http://api-adresse.data.gouv.fr/search/?',
+            failure: getLocationFailure,
+            success: getEtalabSuccess
+        });
+    };
 
     var getNominatimSuccess = function (response) {
         var obj = JSON.parse(response.responseText);
@@ -203,6 +215,18 @@ Signalement.geocoder = (function () {
         }
 
     };
+    
+    var getEtalabSuccess = function (response) {
+        var obj = JSON.parse(response.responseText);
+        if (obj.features) {
+            var EtalabResult = obj.features[0].geometry.coordinates;
+            var msg = obj.features[0].properties.label;
+            showLocationResult(msg, EtalabResult[0], EtalabResult[1], 17);
+        } else {
+            Signalement.main.showMsg("Localisation Etalab", "Aucun résultat trouvé.");
+        }
+
+    };
     // COMMON GEOCODAGE
 
     var codeAddress = function (service, value) {
@@ -215,6 +239,9 @@ Signalement.geocoder = (function () {
             break;
         case "nominatim":
             codeAddressNominatim(value);
+            break;
+        case "etalab":
+            codeAddressEtalab(value);
             break;
         }
     };
@@ -230,6 +257,9 @@ Signalement.geocoder = (function () {
             break;
         case "nominatim":
             src = "src/img/nominatim.gif";
+            break;
+		case "etalab":
+            src = "src/img/etalab.png";
             break;
         }
         return src;
@@ -254,7 +284,7 @@ Signalement.geocoder = (function () {
     };
 
     var showInformation = function () {
-        Signalement.main.showMsg('localisation', infogeocoder.formatted_address);
+        Signalement.main.showMsg('Localisation', infogeocoder.formatted_address);
 
     };
 
@@ -285,9 +315,9 @@ Signalement.geocoder = (function () {
             });
             map.addLayers([markers]);
             loctext = new Ext.form.TextField({
-                emptyText: 'ex. janvier, rennes',
+                emptyText: 'ex. 2 rue des taillis, Mulhouse',
                 id: 'loctext',
-                width: 300,
+                width: 250,
                 listeners: {
                     specialkey: function (f, e) {
                         if (f.getValue() && e.getKey() == e.ENTER) {
@@ -306,9 +336,10 @@ Signalement.geocoder = (function () {
             });
 
             var geocodeServiceData = [
-                ['ign', 'BD Adresse IGN', 'geoportail.gif'],
+                ['ign', 'IGN', 'geoportail.gif'],
                 ['nominatim', 'OpenStreetMap', 'nominatim.gif'],
-                ['google', 'Google Maps', 'google.png']
+                ['google', 'Google Maps', 'google.png'],
+				['etalab', 'Etalab', 'etalab.png']
             ];
 
             var geocodeServiceStore = new Ext.data.SimpleStore({
