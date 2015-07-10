@@ -30,7 +30,7 @@
             "wfsurl": "https://www.cigalsace.org/geoserver/cigal_edit/wfs?",
             "wmsurl": "https://www.cigalsace.org/geoserver/cigal_edit/wms?",
             "metadataurl": "https://www.cigalsace.org/geonetwork/srv/fr/metadata.show?uuid=",            
-            "description": "La couche Signalement voies adresses en Alsace recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Alsace<p><img src='src/img/add.png'</img>Adresse</p><p><img src='src/img/voie.png'</img>Voie</p><p><img src='src/img/projet.png'</img>Projet</p>", 
+            "description": "La couche Signalement voies adresses en Alsace recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Alsace<p><img src='src/img/add.png'</img>Adresse</p><p><img src='src/img/voie.png'</img>Voie</p><p><img src='src/img/alerte.png'</img>Alerte</p>", 
             "cswurl": "https://www.cigalsace.org/geonetwork/srv/fr/csw?",
             "kmlurl": "https://www.cigalsace.org/geoserver/wms/kml?layers=cigal_edit:signalement_adresse",
             "rssurl": "https://www.cigalsace.org/signalement/ws/rss.php?"
