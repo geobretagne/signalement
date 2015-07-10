@@ -758,7 +758,7 @@ layer.refresh({force:true});
                         if (fileUploadForm.getForm().isValid()) {
                             fileUploadForm.getForm().submit({
                                 //url: '../proxy/?url=http://kartenn.region-bretagne.fr/signalement/ws/upload.php',
-                                url: 'https://www.cigalsace.org/signalement/ws/upload.php',
+                                url: 'ws/upload.php',
                                 waitMsg: 'Transfert du document...',
                                 success: function (frm, o) {
                                     Ext.getCmp(fieldTarget).setValue(o.result.file);
