@@ -7,11 +7,10 @@ $taille_maxi = 400000000;
 $taille = filesize($_FILES['lefichiercsv']['tmp_name']);
 $extensions = array('.csv', '.txt');
 $extension = strrchr($_FILES['lefichiercsv']['name'], '.'); //.csv
-$nomDestination = "import".date("YmdHis").$extension;
 
 $nomDestination = "import_".date("Y")."_".date("m")."_".date("d")."_".date("H")."h".date("i")."m".date("s")."_";
 $fichier_nom = basename($fichier,$extension);  // signalement_bidon
-$lefichierimporte = $nomDestination.$fichier_nom; // import_2015_05_28_15h45m56s_signalements_cus
+$lefichierimporte = $nomDestination.$fichier_nom; 
 
 
 
@@ -34,7 +33,8 @@ if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 		 if(move_uploaded_file($_FILES['lefichiercsv']['tmp_name'], "../imports/".$lefichierimporte.".csv")) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
 		 {
 		//Traitement du csv pour transformation en xml dans le repertoire xml_out
-		require('./csv2xml.php');  
+		$epsg=$_GET["epsg"];
+		require('./csv2xml.php');
 		//fin du traitement 
 		
 		$reussi = "Chargement du fichier réussi !";
