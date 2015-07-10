@@ -2,7 +2,7 @@
 <?php
 $dossier = 'docs/';
 $fichier = basename($_FILES['lefichier']['name']);
-$taille_maxi = 4000000;
+$taille_maxi = 40000000;
 $taille = filesize($_FILES['lefichier']['tmp_name']);
 $extensions = array('.odt', '.doc', '.docx', '.jpg', '.jpeg', '.pdf','.dxf','.dwg');
 $extension = strrchr($_FILES['lefichier']['name'], '.'); 
