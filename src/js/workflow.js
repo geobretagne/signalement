@@ -80,7 +80,7 @@ Signalement.workflow = (function () {
                     handler: function(){
                         if(workflowForm.getForm().isValid()){
                           workflowForm.getForm().submit({                           
-                                url: 'https://www.cigalsace.org/signalement/ws/workflow.php',
+                                url: 'ws/workflow.php',
                                 waitMsg: 'Transfert du fichier et traitement...',            
                                 success: function(frm, o){                                                    
 		publication(o.result.acteur,o.result.idsignal);
