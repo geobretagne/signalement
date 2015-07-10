@@ -71,7 +71,7 @@ Signalement.main = (function () {
             strategies: strategies,
             filter: wfsfilter,
             protocol: new OpenLayers.Protocol.WFS({
-                "https://www.cigalsace.org/geoserver/cigal_edit/wfs?",
+                url: "https://www.cigalsace.org/geoserver/cigal_edit/wfs?",
                 version: "1.1.0",
                 featureType: "signalement_adresse",
                 featurePrefix: "cigal_edit",
