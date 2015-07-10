@@ -125,7 +125,7 @@ var epsgData = [
                     //buttonCfg: {
                        // iconCls: 'upload-icon'
                     //}
-                }],
+                },epsgCombo],
                 buttons: [{
                     text: 'Transférer',
                     handler: function(){
