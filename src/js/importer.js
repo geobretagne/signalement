@@ -131,7 +131,7 @@ var epsgData = [
                     handler: function(){
                         if(csvUploadForm.getForm().isValid() && epsgCombo!==""){
                           csvUploadForm.getForm().submit({
-                           url: 'https://www.cigalsace.org/signalement/ws/import.php?epsg='+epsgCombo.value,  //etape0
+                           url: 'ws/import.php?epsg='+epsgCombo.value,  //etape0
                               waitMsg: 'Publication de vos signalements', 
                               waitTitle: 'En cours',
                               success: function(frm, o){
