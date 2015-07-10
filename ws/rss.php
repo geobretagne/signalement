@@ -80,7 +80,7 @@ while ($rech_title !== false) {
 // position de l'information date_saisie dans les balises <description>
 $rech_balise_date = 1;
 $j=1;
-$balise_date = '<li><strong><span class="atr-name">date_saisie</span>:</strong> <span class="atr-value">';
+$balise_date = '<li><strong><span class="atr-name">Date de saisie</span> :</strong> <span class="atr-value">';
 while ($rech_balise_date !== false) {
     $rech_balise_date = stripos($rss, $balise_date,$rech_balise_date+1);
 	$mat_balise_date[$j] = $rech_balise_date;
