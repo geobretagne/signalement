@@ -181,8 +181,9 @@ Signalement.mainmap = (function () {
                 displayProjection: new OpenLayers.Projection("EPSG:3857"),
                 units: "m",    
                 numZoomLevels: 21,
-                maxResolution: 156543.0339,               
-                maxExtent: new OpenLayers.Bounds(-1364427.9521313,5662455.0545776,978825.58665287,6738688.412683),
+                maxResolution: 156543.0339,
+                maxExtent: new OpenLayers.Bounds(-590885.22599299,5970037.6563543,-5071.8412969475,6269670.8071905),
+                restrictedExtent: new OpenLayers.Bounds(-590885.22599299,5970037.6563543,-5071.8412969475,6269670.8071905),
                 allOverlays: false,
                 theme: null,                
                 controls:   [
