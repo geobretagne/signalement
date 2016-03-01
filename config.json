@@ -85,7 +85,7 @@
                 "baselayer": {
 					"type": "tms",
                     "label": "Fond de plan Rennes métropole",
-                    "url": "http://geo.rennesmetropole.fr/tms/4570/",
+                    "url": "http://geo.rennesmetropole.fr/tms/4580/",
                     "layername": "PVCI_3857",                    
                     "tileorigin": "-2.00375083428E7,-2.00375083428E7",                    
                     "format": "png",
