@@ -10,7 +10,7 @@ $extension = strrchr($_FILES['lefichiercsv']['name'], '.'); //.csv
 
 $nomDestination = "import_".date("Y")."_".date("m")."_".date("d")."_".date("H")."h".date("i")."m".date("s")."_";
 $fichier_nom = basename($fichier,$extension);  // signalement_bidon
-$lefichierimporte = $nomDestination.$fichier_nom; 
+$lefichierimporte = $nomDestination.$fichier_nom;
 
 
 
@@ -26,8 +26,8 @@ if($taille>$taille_maxi)
 if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 	{
 		 //On formate le nom du fichier ici...
-		 $fichier = strtr($fichier, 
-			  'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 
+		 $fichier = strtr($fichier,
+			  'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ',
 			  'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
 		 $fichier = preg_replace('/([^.a-z0-9]+)/i', '-', $fichier);
 		 if(move_uploaded_file($_FILES['lefichiercsv']['tmp_name'], "../imports/".$lefichierimporte.".csv")) //Si la fonction renvoie TRUE, c'est que ça a fonctionné...
@@ -35,11 +35,11 @@ if(!isset($erreur)) //S'il n'y a pas d'erreur, on upload
 		//Traitement du csv pour transformation en xml dans le repertoire xml_out
 		$epsg=$_GET["epsg"];
 		require('./csv2xml.php');
-		//fin du traitement 
-		
-		$reussi = "Chargement du fichier réussi !";
+		//fin du traitement
+
+		$reussi = "Chargement du fichier réussi, vérifiez de bien les retrouver dans la carte !";
 	 	}
-		 
+
 	}
 elseif(isset($erreur))
 	{
