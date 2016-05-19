@@ -1,5 +1,5 @@
 /*
- * 
+ *
  * This file is part of signalement
  *
  * signalement is distributed in the hope that it will be useful,
@@ -23,13 +23,13 @@ Signalement.workflow = (function () {
      * {OpenLayers.Map} The map instance.
      */
     var map = null;
-    
-    var layer = null;
-    
-    var phplocation = null;    
 
-  
-   
+    var layer = null;
+
+    var phplocation = null;
+
+
+
 
     return {
         /*
@@ -39,8 +39,8 @@ Signalement.workflow = (function () {
 
         /**
          * APIMethod: create
-         * 
-         * APIMethod: create         
+         *
+         * APIMethod: create
          * Parameters:
          * m - {OpenLayers.Map} The map instance.
          */
@@ -49,13 +49,13 @@ Signalement.workflow = (function () {
             map = m;
             layer = l;
             phplocation = phploc;
-            
-            var workflowForm = new Ext.FormPanel({        
+
+            var workflowForm = new Ext.FormPanel({
                 fileUpload: true,
                 width: 320,
                 frame: true,
                 iconCls:'workflow',
-                title: 'Signaler comme traité',                
+                title: 'Signaler comme traité',
                 bodyStyle: 'padding: 10px 10px 0 10px;',
                 labelWidth: 60,
                 defaults: {
@@ -79,24 +79,24 @@ Signalement.workflow = (function () {
                     text: 'Transférer',
                     handler: function(){
                         if(workflowForm.getForm().isValid()){
-                          workflowForm.getForm().submit({                           
+                          workflowForm.getForm().submit({
                                 url: 'ws/workflow.php',
-                                waitMsg: 'Transfert du fichier et traitement...',            
-                                success: function(frm, o){                                                    
+                                waitMsg: 'Transfert du fichier et traitement...',
+                                success: function(frm, o){
 		publication(o.result.acteur,o.result.idsignal);
 		Ext.MessageBox.hide();
 		setTimeout(function(){layer.refresh({force: true});Signalement.main.showMsg('Succès !', o.result.message);},3000);
                               },
-                    failure:function(workflowForm, o){              
+                    failure:function(workflowForm, o){
                               Signalement.main.showMsg('Erreur', o.result.message);Ext.MessageBox.hide();
                               }
                           });
 //fonction qui marque les signalements comme "traités".
 // acteur = organisme public qui a traité les signalements (CUS / CAC / ...)
 // idsignal = chaine de texte généré par le PHP workflow.php, qui contient les informations des signalements traités.
-function publication(acteur,idsignal) 
+function publication(acteur,idsignal)
 {
-//reconstitution du filtre par idsignal :  <ogc:FeatureId fid="signalement_adresse.2543"/>	
+//reconstitution du filtre par idsignal :  <ogc:FeatureId fid="signalement_adresse.2543"/>
 var idsignald = idsignal.replace(/DOWN/g,'<ogc:FeatureId fid="signalement_adresse.');
 var idsignalud = idsignald.replace(/UP/g,'"/>');
 
@@ -116,7 +116,6 @@ var url = "https://www.cigalsace.org/geoserver/cigal_edit/wfs";
 requetehttppost.open("POST", url, true);
 requetehttppost.setRequestHeader("Content-type", " application/xml; charset=UTF-8");
 requetehttppost.setRequestHeader("Referer", "https://www.cigalsace.org/signalement/");
-requetehttppost.setRequestHeader("Authorization", "Basic c2lnbmFsZW1lbnQ6c2lnbmFsZW1lbnQ="); //authentification signalement signalement codée en base64
 requetehttppost.setRequestHeader("Accept-Language", "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3");
 requetehttppost.setRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 requetehttppost.setRequestHeader("Host", "www.cigalsace.org");
@@ -125,7 +124,7 @@ requetehttppost.send(params);
 
 workflowForm.getForm().reset(); //efface le fichier Ouvert dans le formulaire
 }
-//..............................................................................//						  
+//..............................................................................//
 
                         }
                     }
@@ -139,8 +138,8 @@ workflowForm.getForm().reset(); //efface le fichier Ouvert dans le formulaire
                 }
             ]
         });
-            
-      
+
+
             return workflowForm;
         }
     }
