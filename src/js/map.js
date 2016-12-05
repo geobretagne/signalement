@@ -69,7 +69,8 @@ Signalement.mainmap = (function () {
     _addGeorest = function () {
         var layer = new OpenLayers.Layer.WMTS( {                    
                     name: "Fond de plan Pays de Brest",                    
-                    url:"http://georest.brest.fr/PlanVilleSignalement/MapServer/WMTS",
+                    //url:"http://georest.brest.fr/PlanVilleSignalement/MapServer/WMTS",
+                    url:"https://geo.brest-metropole.fr/arcgis/rest/services/public/PlanVilleSignalement/MapServer/WMTS",
                     layer: "public_PlanVilleSignalement",
                     matrixSet: "default028mm",                    
                     format: "image/png",
@@ -83,9 +84,9 @@ Signalement.mainmap = (function () {
                     minResolution: 0.1410231987130641
                     } );
         layer.tp = {name:"Fond de plan Pays de Brest",
-                                    url:"http://georest.brest.fr/PlanVilleSignalement/MapServer/WMTS",
+                                    url:"https://geo.brest-metropole.fr/arcgis/rest/services/public/PlanVilleSignalement/MapServer/WMTS",
                                     desc:"Fond de plan issu du SIG Pays de Brest",
-                                    metadata: "http://applications002.brest-metropole-oceane.fr/vipdu60/aspx/HTDU502.aspx?TYPE=LOT&ID=REF_Plan%20de%20ville"
+                                    metadata: "https://applications002.brest-metropole.fr/VIPDU60/aspx/HTDU502.aspx?TYPE=LOT&ID=REF_Plan%20de%20ville"
                         };
        map.addLayer(layer);
     };
