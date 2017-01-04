@@ -596,8 +596,8 @@ Signalement.signalement = (function () {
             var post = '<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0"' + ' outputFormat="json"'+ ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
             '<wfs:Query typeName="rb:communes_osm" ' +
             'srsName="EPSG:3857" >' +
-            ' <PropertyName>insee_comm</PropertyName> ' +
-            ' <PropertyName>nom_comm</PropertyName> ' +
+            ' <PropertyName>code_insee</PropertyName> ' +
+            ' <PropertyName>nom</PropertyName> ' +
             '<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">' +            
             '<ogc:Contains>' +
                 '<ogc:PropertyName>geom</ogc:PropertyName>' +
@@ -626,8 +626,8 @@ Signalement.signalement = (function () {
 
             var obj = eval("(" + response.responseText + ")");
             if (obj.features.length > 0) {                
-                Ext.getCmp('libco').setValue(obj.features[0].properties.nom_comm.toUpperCase());
-                Ext.getCmp('depco').setValue(obj.features[0].properties.insee_comm);
+                Ext.getCmp('libco').setValue(obj.features[0].properties.nom.toUpperCase());
+                Ext.getCmp('depco').setValue(obj.features[0].properties.code_insee);
             } else {
                 Signalement.main.showMsg("Erreur", "Aucune commune n'a été trouvée à cet emplacement");
             }
