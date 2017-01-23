@@ -170,8 +170,8 @@ Signalement.rss = (function () {
         + ' xsi:schemaLocation="http://www.opengis.net/wfs'
         + ' http://schemas.opengis.net/wfs/1.1.0/WFS-basic.xsd">'
         + ' <wfs:Query srsName="EPSG:3857" typeName="geob_loc:COMMUNE">'
-        + ' <ogc:PropertyName>INSEE</ogc:PropertyName> '
-        + ' <ogc:PropertyName>COMMUNE</ogc:PropertyName>'
+        + ' <ogc:PropertyName>CODE</ogc:PropertyName> '
+        + ' <ogc:PropertyName>LIBELLE</ogc:PropertyName>'
         +  ' <Filter>'
         +    ' <Intersects>'
         +    ' <PropertyName>the_geom</PropertyName>'       
@@ -200,10 +200,10 @@ Signalement.rss = (function () {
         var store = new Ext.data.JsonStore({
                     fields: [{
                         name: 'insee',
-                        mapping: 'properties.INSEE'
+                        mapping: 'properties.CODE'
                     }, {
                         name: 'commune',
-                        mapping: 'properties.COMMUNE'
+                        mapping: 'properties.LIBELLE'
                     }]
                 });
         store.loadData(data);
@@ -247,8 +247,8 @@ Signalement.rss = (function () {
               var communesliste = "";
               for ( var i=0; i < obj.features.length; i++ )
               {
-                inseeliste += obj.features[i].properties.INSEE;
-                communesliste += obj.features[i].properties.COMMUNE;
+                inseeliste += obj.features[i].properties.CODE;
+                communesliste += obj.features[i].properties.LIBELLE;
                 if (i != obj.features.length -1)
                 {
                   inseeliste += ",";
