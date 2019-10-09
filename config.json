@@ -83,16 +83,15 @@
             },
             {
                 "baselayer": {
-                "type": "tms",
+                    "type": "wmts",
                     "label": "Fond de plan Rennes métropole",
-                    "url": "http://geo.rennesmetropole.fr/tms/4580/",
-                    "layername": "PVCI_3857",
-                    "tileorigin": "-2.00375083428E7,-2.00375083428E7",
-                    "format": "png",
-                    "serviceversion":"null",
-                    "maxresolution": "156543.033928125",
-                    "description": "Descriptif Rennes Métropole",
-                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",
+                    "url": "https://public.sig.rennesmetropole.fr/geowebcache/service/wmts",
+                    "layername": "ref_fonds:pvci",
+                    "matrixset": "EPSG:3857",
+                    "style": "_null",
+                    "format": "image/png",
+                    "description": "Plan de Ville Communal et Intercommunal",
+                    "metadataurl":"https://public.sig.rennesmetropole.fr/geonetwork/srv/fre/catalog.search#/home",
                     "attributiontext": "Fond de plan Rennes Métropole",
                     "attributionurl": "http://rennes-metropole.fr"
                 }
