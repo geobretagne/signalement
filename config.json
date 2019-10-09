@@ -23,13 +23,13 @@
         },
         "workinglayer": {
             "label": "Signalements",
-			"cluster": "true",
+            "cluster": "true",
             "featureprefix": "edit_rb",
             "featuretype": "signalement_adresse",
             "geometryname": "geom",
             "wfsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wfs?",
             "wmsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms?",
-            "metadataurl": "https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=58e7b791-8495-47df-819f-0660fb8d8645",            
+            "metadataurl": "https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=58e7b791-8495-47df-819f-0660fb8d8645",
             "description": "La couche Signalement voies adresses en Bretagne recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Bretagne<p><img src='src/img/add.png'</img>contribution publique</p><p><img src='src/img/prive.png'</img>contribution privée</p>",
             "cswurl": "https://geobretagne.fr/geonetwork/srv/fr/csw?",
             "kmlurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
@@ -38,7 +38,7 @@
         "baselayers": [
             {
                 "baselayer": {
-					"type": "wmts",
+                    "type": "wmts",
                     "label": "OpenStreetMap style Google",
                     "url": "https://osm.geobretagne.fr/gwc01/service/wmts",
                     "layername": "osm:google",
@@ -46,14 +46,14 @@
                     "style": "_null",
                     "format": "image/png",
                     "description": "Couche osm mise à jour mensuellement",
-                    "metadataurl":"http://www.openstreetmap.org/copyright",                    
+                    "metadataurl":"http://www.openstreetmap.org/copyright",
                     "attributiontext": "© les contributeurs d’OpenStreetMap",
                     "attributionurl": "http://openstreetmap.org"
                 }
             },
             {
                 "baselayer": {
-					"type": "wmts",
+                    "type": "wmts",
                     "label": "Scan express",
                     "url": "../geoportail/wmts",
                     "layername": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD",
@@ -61,14 +61,14 @@
                     "style": "normal",
                     "format": "image/jpeg",
                     "description": "Cartographie topographique multi-échelles du territoire français issue des bases de données vecteur de l’IGN –réalisée selon un processus cartographique innovant fortement automatisé",
-                    "metadataurl":"http://gpp3-wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_SCAN-EXPRESS_1-0.xml",                    
+                    "metadataurl":"http://gpp3-wxs.ign.fr/geoportail/csw?service=CSW&version=2.0.2&request=GetRecordById&Id=IGNF_SCAN-EXPRESS_1-0.xml",
                     "attributiontext": "IGNF",
                     "attributionurl": "http://www.ign.fr"
                 }
-            },             
+            },
             {
                 "baselayer": {
-					"type": "wmts",
+                    "type": "wmts",
                     "label": "Photographie aérienne composite de GéoBretagne",
                     "url": "https://tile.geobretagne.fr/gwc02/service/wmts",
                     "layername": "satellite",
@@ -76,35 +76,35 @@
                     "style": "_null",
                     "format": "image/jpeg",
                     "description": "Le fond photographique de GéoBretagne est un composé d' orthophotographies réalisées par plusieurs producteurs",
-                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
+                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",
                     "attributiontext": "Ortho composite",
                     "attributionurl": "http://geobretagne.fr"
                 }
-            },            
-			{
+            },
+            {
                 "baselayer": {
-					"type": "tms",
+                "type": "tms",
                     "label": "Fond de plan Rennes métropole",
                     "url": "http://geo.rennesmetropole.fr/tms/4580/",
-                    "layername": "PVCI_3857",                    
-                    "tileorigin": "-2.00375083428E7,-2.00375083428E7",                    
+                    "layername": "PVCI_3857",
+                    "tileorigin": "-2.00375083428E7,-2.00375083428E7",
                     "format": "png",
-					"serviceversion":"null",
-					"maxresolution": "156543.033928125",
+                    "serviceversion":"null",
+                    "maxresolution": "156543.033928125",
                     "description": "Descriptif Rennes Métropole",
-                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
+                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",
                     "attributiontext": "Fond de plan Rennes Métropole",
                     "attributionurl": "http://rennes-metropole.fr"
                 }
             },
-			{
+            {
                 "baselayer": {
-					"type": "osm",
+                    "type": "osm",
                     "label": "Here",
-                    "url": "http://1.base.maps.api.here.com/maptile/2.1/maptile/newest/normal.day/${z}/${x}/${y}/256/png8?app_id=GRV98mmmhpOPJBD3EPeQ&app_code=VZy4OvINvVDqElvjlqgUJw",                    
-					"maxresolution": "2357.536343401",
+                    "url": "http://1.base.maps.api.here.com/maptile/2.1/maptile/newest/normal.day/${z}/${x}/${y}/256/png8?app_id=GRV98mmmhpOPJBD3EPeQ&app_code=VZy4OvINvVDqElvjlqgUJw",
+                    "maxresolution": "2357.536343401",
                     "description": "Fond de plan Here",
-                    "metadataurl":"http://here.com/terms",                    
+                    "metadataurl":"http://here.com/terms",
                     "attributiontext": "©1987 - 2013 HERE, IGN",
                     "attributionurl": "http://here.com/terms"
                 }
@@ -132,7 +132,7 @@
                     "url": "https://geobretagne.fr/geoserver/cadastre/wms?",
                     "layer": "CP.CadastralZoning,CP.CadastralParcel",
                     "description": "Le plan du cadastre est un document administratif qui propose l’unique plan parcellaire à grande échelle couvrant le territoire national. (zoom >= 14)",
-                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=0ca82e1d-b487-4879-8185-56b7c4e1a948",                    
+                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=0ca82e1d-b487-4879-8185-56b7c4e1a948",
                     "style": "",
                     "visible": "false",
                     "singletile": false,
@@ -146,14 +146,14 @@
                     "url": "https://geobretagne.fr/geoserver/osm/ows?",
                     "layer": "bano",
                     "description": "La Base Adresses Nationale Ouverte (BANO) est une initiative d'OpenStreetMap France. Elle a pour objet la constitution d'une base la plus complète possible de points d'adresse à l'échelle de la France. (zoom >= 13)",
-                    "metadataurl":"http://wiki.openstreetmap.org/wiki/WikiProject_France/WikiProject_Base_Adresses_Nationale_Ouverte_(BANO)",                    
+                    "metadataurl":"http://wiki.openstreetmap.org/wiki/WikiProject_France/WikiProject_Base_Adresses_Nationale_Ouverte_(BANO)",
                     "style": "",
                     "visible": "false",
                     "singletile": false,
                     "version": "1.3.0",
                     "baselayer": false
                 }
-            },            
+            },
             {
                 "wmslayer": {
                     "label": "Fond de plan Lorient Agglomération",
@@ -193,7 +193,7 @@
                     "id": "3",
                     "value": "Sélection d'un flux sur l'emprise départementale des Côtes d'Armor.Cliquez sur s'abonner."
                 }
-            },            
+            },
             {
                 "htmltext": {
                     "id": "4",
