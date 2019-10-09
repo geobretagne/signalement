@@ -159,7 +159,7 @@ Signalement.rss = (function () {
             initLoader();
         }
         mon_loader2.show();
-        var wfsurl = "http://geobretagne.fr/geoserver/geob_loc/wfs";    
+        var wfsurl = "https://geobretagne.fr/geoserver/geor_loc/wfs";    
         var postRequest = '<wfs:GetFeature service="WFS" version="1.1.0"'
         + ' outputFormat="json"'
         + ' xmlns:topp="http://www.openplans.org/topp"'
@@ -169,7 +169,7 @@ Signalement.rss = (function () {
         + ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
         + ' xsi:schemaLocation="http://www.opengis.net/wfs'
         + ' http://schemas.opengis.net/wfs/1.1.0/WFS-basic.xsd">'
-        + ' <wfs:Query srsName="EPSG:3857" typeName="geob_loc:COMMUNE">'
+        + ' <wfs:Query srsName="EPSG:3857" typeName="geor_loc:COMMUNE">'
         + ' <ogc:PropertyName>CODE</ogc:PropertyName> '
         + ' <ogc:PropertyName>LIBELLE</ogc:PropertyName>'
         +  ' <Filter>'
