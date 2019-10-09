@@ -29,9 +29,9 @@
             "geometryname": "geom",
             "wfsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wfs?",
             "wmsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms?",
-            "metadataurl": "http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=58e7b791-8495-47df-819f-0660fb8d8645",            
+            "metadataurl": "https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=58e7b791-8495-47df-819f-0660fb8d8645",            
             "description": "La couche Signalement voies adresses en Bretagne recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Bretagne<p><img src='src/img/add.png'</img>contribution publique</p><p><img src='src/img/prive.png'</img>contribution privée</p>",
-            "cswurl": "http://geobretagne.fr/geonetwork/srv/fr/csw?",
+            "cswurl": "https://geobretagne.fr/geonetwork/srv/fr/csw?",
             "kmlurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
             "rssurl": "http://kartenn.region-bretagne.fr/signalement/ws/rss.php?"
         },
@@ -40,7 +40,7 @@
                 "baselayer": {
 					"type": "wmts",
                     "label": "OpenStreetMap style Google",
-                    "url": "http://osm.geobretagne.fr/gwc01/service/wmts",
+                    "url": "https://osm.geobretagne.fr/gwc01/service/wmts",
                     "layername": "osm:google",
                     "matrixset": "EPSG:3857",
                     "style": "_null",
@@ -55,7 +55,7 @@
                 "baselayer": {
 					"type": "wmts",
                     "label": "Scan express",
-                    "url": "http://wxs.ign.fr/01gwgg3by2fpaxwxrfgvynqw/geoportail/wmts",
+                    "url": "../geoportail/wmts",
                     "layername": "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD",
                     "matrixset": "PM",
                     "style": "normal",
@@ -70,13 +70,13 @@
                 "baselayer": {
 					"type": "wmts",
                     "label": "Photographie aérienne composite de GéoBretagne",
-                    "url": "http://tile.geobretagne.fr/gwc02/service/wmts",
+                    "url": "https://tile.geobretagne.fr/gwc02/service/wmts",
                     "layername": "satellite",
                     "matrixset": "EPSG:3857",
                     "style": "_null",
                     "format": "image/jpeg",
                     "description": "Le fond photographique de GéoBretagne est un composé d' orthophotographies réalisées par plusieurs producteurs",
-                    "metadataurl":"http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
+                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
                     "attributiontext": "Ortho composite",
                     "attributionurl": "http://geobretagne.fr"
                 }
@@ -92,7 +92,7 @@
 					"serviceversion":"null",
 					"maxresolution": "156543.033928125",
                     "description": "Descriptif Rennes Métropole",
-                    "metadataurl":"http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
+                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",                    
                     "attributiontext": "Fond de plan Rennes Métropole",
                     "attributionurl": "http://rennes-metropole.fr"
                 }
@@ -114,10 +114,10 @@
             {
                 "wmslayer": {
                     "label": "Limites administratives",
-                    "url": "http://geobretagne.fr/geoserver/ign/wms?",
+                    "url": "https://geobretagne.fr/geoserver/ign/wms?",
                     "layer": "bdtopo_commune",
                     "description": "Extrait de la BDCARTO ® - Base de données cartographique de l'IGN au 1/100 000. et de la BDTOPO ® (zoom >= 14)",
-                    "metadataurl":"http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=b08e6cb1-236c-49b7-88f9-42b500d274d5",
+                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=b08e6cb1-236c-49b7-88f9-42b500d274d5",
                     "metadataurl2":"http://professionnels.ign.fr/bdtopo",
                     "style": "",
                     "visible": "false",
@@ -129,10 +129,10 @@
             {
                 "wmslayer": {
                     "label": "Fond cadastral",
-                    "url": "http://geobretagne.fr/geoserver/cadastre/wms?",
+                    "url": "https://geobretagne.fr/geoserver/cadastre/wms?",
                     "layer": "CP.CadastralZoning,CP.CadastralParcel",
                     "description": "Le plan du cadastre est un document administratif qui propose l’unique plan parcellaire à grande échelle couvrant le territoire national. (zoom >= 14)",
-                    "metadataurl":"http://geobretagne.fr/geonetwork/apps/georchestra/?uuid=0ca82e1d-b487-4879-8185-56b7c4e1a948",                    
+                    "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=0ca82e1d-b487-4879-8185-56b7c4e1a948",                    
                     "style": "",
                     "visible": "false",
                     "singletile": false,
@@ -143,7 +143,7 @@
             {
                 "wmslayer": {
                     "label": "BANO",
-                    "url": "http://geobretagne.fr/geoserver/osm/ows?",
+                    "url": "https://geobretagne.fr/geoserver/osm/ows?",
                     "layer": "bano",
                     "description": "La Base Adresses Nationale Ouverte (BANO) est une initiative d'OpenStreetMap France. Elle a pour objet la constitution d'une base la plus complète possible de points d'adresse à l'échelle de la France. (zoom >= 13)",
                     "metadataurl":"http://wiki.openstreetmap.org/wiki/WikiProject_France/WikiProject_Base_Adresses_Nationale_Ouverte_(BANO)",                    
