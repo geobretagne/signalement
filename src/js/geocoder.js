@@ -66,7 +66,7 @@ Signalement.geocoder = (function () {
             //var apiKey = "tyujsdxmzox31ituc2uw0qwl"; // geoportail
             //var apiKey = "e7ahlktjm9cdexiaazosg6bw"; // localhost
             //var openLSGeocodeUrl = "http://gpp3-wxs.ign.fr/" + apiKey + "/geoportail/ols?";
-            var openLSGeocodeUrl = "http://geobretagne.fr/openls?";
+            var openLSGeocodeUrl = "../openls?";
             
             if (address[0] && address[1]) {
                 countryCode="StreetAddress";
