@@ -174,7 +174,7 @@ Signalement.rss = (function () {
         + ' <ogc:PropertyName>LIBELLE</ogc:PropertyName>'
         +  ' <Filter>'
         +    ' <Intersects>'
-        +    ' <PropertyName>the_geom</PropertyName>'       
+        +    ' <PropertyName>geom</PropertyName>'
         + gmlnode
         +    ' </Intersects>'
         +    ' </Filter>'
