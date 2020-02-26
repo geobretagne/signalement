@@ -7,7 +7,7 @@
             "service": "ign"
         },
         "phplocation": {
-            "url": "../proxy/?url=http://kartenn.region-bretagne.fr/signalement/ws/"
+            "url": "../proxy/?url=https://kartenn.region-bretagne.fr/signalement/ws/"
         },
         "helpurl": {
             "url": "https://docs.google.com/document/d/1BlfXeqN7TwmXzf1HdQFHsKtThyoVbQw2LFQuneMwZtc/edit?pli=1"
