@@ -27,13 +27,13 @@
             "featureprefix": "edit_rb",
             "featuretype": "signalement_adresse",
             "geometryname": "geom",
-            "wfsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wfs?",
-            "wmsurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms?",
+            "wfsurl": "https://ows.region-bretagne.fr/geoserver/edit_rb/wfs?",
+            "wmsurl": "https://ows.region-bretagne.fr/geoserver/edit_rb/wms?",
             "metadataurl": "https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=58e7b791-8495-47df-819f-0660fb8d8645",
             "description": "La couche Signalement voies adresses en Bretagne recense les ajouts, suppressions et modifications opérés sur les voies et adresses en Bretagne<p><img src='src/img/add.png'</img>contribution publique</p><p><img src='src/img/prive.png'</img>contribution privée</p>",
             "cswurl": "https://geobretagne.fr/geonetwork/srv/fr/csw?",
-            "kmlurl": "http://ows.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
-            "rssurl": "http://kartenn.region-bretagne.fr/signalement/ws/rss.php?"
+            "kmlurl": "https://ows.region-bretagne.fr/geoserver/edit_rb/wms/kml?layers=edit_rb:signalement_adresse",
+            "rssurl": "https://kartenn.region-bretagne.fr/signalement/ws/rss.php?"
         },
         "baselayers": [
             {
@@ -78,7 +78,7 @@
                     "description": "Le fond photographique de GéoBretagne est un composé d' orthophotographies réalisées par plusieurs producteurs",
                     "metadataurl":"https://geobretagne.fr/geonetwork/apps/georchestra/?uuid=3a0ac2e3-7af1-4dec-9f36-dae6b5a8c731",
                     "attributiontext": "Ortho composite",
-                    "attributionurl": "http://geobretagne.fr"
+                    "attributionurl": "https://geobretagne.fr"
                 }
             },
             {

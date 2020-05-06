@@ -592,7 +592,7 @@ Signalement.signalement = (function () {
                 initLoader();
             }
             mon_loader.show();
-            var wfsurl = "http://ows.region-bretagne.fr/geoserver/rb/wfs?";            
+            var wfsurl = "https://ows.region-bretagne.fr/geoserver/rb/wfs?";            
             var post = '<wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" service="WFS" version="1.1.0"' + ' outputFormat="json"'+ ' xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/WFS-transaction.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
             '<wfs:Query typeName="rb:communes_osm" ' +
             'srsName="EPSG:3857" >' +
