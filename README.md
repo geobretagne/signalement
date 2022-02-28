@@ -1,4 +1,4 @@
 SIGN'ADRESSE
 ===========
 
-Applicatif de signalement de création, modification et suppression d'adresse, développé dans le cadre du pôle métier voirie-adresse de GéoBretagne. Version visible sur http://dev.geobretagne.fr/signalement/
+Applicatif de signalement de création, modification et suppression d'adresse, développé dans le cadre du pôle métier voirie-adresse de GéoBretagne. Version visible sur https://geobretagne.fr/signalement/
